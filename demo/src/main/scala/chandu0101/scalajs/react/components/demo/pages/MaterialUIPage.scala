@@ -7,14 +7,14 @@ import chandu0101.scalajs.react.components.demo.util.Components
 import chandu0101.scalajs.react.components.mixins.AsyncLoad
 import japgolly.scalajs.react._
 
-/**
- * Created by chandrasekharkode .
- */
 object MaterialUIPage {
 
   lazy val menus = List(
     DemoLeftNav.Menu(route = minfo.path.value, text = "Info"),
-    DemoLeftNav.Menu(route = mbuttons.path.value, text = "Buttons"),
+    DemoLeftNav.Menu(
+      route = mbuttons.path.value,
+      text = "Buttons"
+    ),
     DemoLeftNav.Menu(route = mdatepicker.path.value, text = "Date Picker"),
     DemoLeftNav.Menu(route = mdialog.path.value, text = "Dialog"),
     DemoLeftNav.Menu(route = mdropdown.path.value, text = "Dropdown Menu"),
@@ -35,14 +35,11 @@ object MaterialUIPage {
 
   }
 
-  val component = ReactComponentB[Props]("MaterialUIPage")
-    .initialState(State(checked = false))
-    .backend(new Backend(_))
-    .render((P, S, B) => {
-    LeftnavPage(menus, P.content)
-  })
-    .configure(AsyncLoad.mixin)
-    .build
+  val component = ReactComponentB[Props]("MaterialUIPage").initialState(State(checked = false)).backend(new Backend(_)).render(
+      (P, S, B) => {
+        LeftnavPage(menus, P.content)
+      }
+    ).configure(AsyncLoad.mixin).build
 
   case class Props(content: ReactElement)
 

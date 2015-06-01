@@ -7,9 +7,6 @@ import org.scalajs.dom.{Event, html}
 
 import scala.scalajs.js
 
-/**
- * Created by chandrasekharkode .
- */
 trait ClickAwayable {
   def onClickAway()
 
@@ -29,10 +26,16 @@ object ClickAwayable {
           }
         }
     }
-    c.componentDidMount(scope => {
-      initiateListener(scope)
-      dom.document.addEventListener("click", scope.backend.asInstanceOf[ClickAwayable].listener)
-      })
-      .componentWillUnmount(scope => dom.document.removeEventListener("click", scope.backend.asInstanceOf[ClickAwayable].listener))
+    c.componentDidMount(
+      scope => {
+        initiateListener(scope)
+        dom.document.addEventListener("click", scope.backend.asInstanceOf[ClickAwayable].listener)
+      }
+    ).componentWillUnmount(
+        scope => dom.document.removeEventListener(
+          "click",
+          scope.backend.asInstanceOf[ClickAwayable].listener
+        )
+      )
   }
 }

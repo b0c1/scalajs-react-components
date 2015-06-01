@@ -1,6 +1,5 @@
 package chandu0101.scalajs.react.components.materialui.datepicker
 
-
 import chandu0101.scalajs.react.components.all._
 import chandu0101.scalajs.react.components.materialui.styles.MaterialUICss._
 import chandu0101.scalajs.react.components.util.DateTime
@@ -9,7 +8,6 @@ import japgolly.scalajs.react.vdom.prefix_<^._
 
 import scala.scalajs.js
 import scala.scalajs.js.Date
-
 
 /**
  * Created by chandrasekharkode .
@@ -20,18 +18,27 @@ import scala.scalajs.js.Date
  */
 object MuiCalenderMonth {
 
+  val component = ReactComponentB[Props]("MuiCalenderMonth").initialState(State(checked = false)).backend(new Backend(_)).render(
+      (P, S, B) => {
+        <.div(^.classSet1M(mui_date_picker_calendar_month, P.clsNames))(
+          B.getWeekElements
+        )
+      }
+    ).build
 
-  val component = ReactComponentB[Props]("MuiCalenderMonth")
-    .initialState(State(checked = false))
-    .backend(new Backend(_))
-    .render((P, S, B) => {
-   <.div(^.classSet1M(mui_date_picker_calendar_month, P.clsNames))(
-      B.getWeekElements
+  def apply(selectedDate: Date,
+            clsNames: CssClassType = Map(),
+            displayDate: Date,
+            ref: js.UndefOr[String] = "",
+            key: js.Any = {},
+            onDayTouchTap: REventIDateUnit = null) = component.set(key, ref)(
+    Props(
+      selectedDate,
+      clsNames,
+      displayDate,
+      onDayTouchTap
     )
-  })
-    .build
-
-  def apply(selectedDate: Date, clsNames: CssClassType = Map(), displayDate: Date, ref: js.UndefOr[String] = "", key: js.Any = {}, onDayTouchTap: REventIDateUnit = null) = component.set(key, ref)(Props(selectedDate, clsNames, displayDate, onDayTouchTap))
+  )
 
   case class State(checked: Boolean)
 
@@ -44,10 +51,11 @@ object MuiCalenderMonth {
     }
 
     def getDayElements(week: List[Date]) = {
-      week.zipWithIndex.map { case (day, i) => {
-        val selected = DateTime.isEqualDate(t.props.selectedDate, day)
-        MuiDayButton(date = day, onTouchTap = handleDayTouchTap, selected = selected, key = i)
-      }
+      week.zipWithIndex.map {
+        case (day, i) => {
+          val selected = DateTime.isEqualDate(t.props.selectedDate, day)
+          MuiDayButton(date = day, onTouchTap = handleDayTouchTap, selected = selected, key = i)
+        }
       }
     }
 
@@ -58,6 +66,5 @@ object MuiCalenderMonth {
   }
 
   case class Props(selectedDate: Date, clsNames: CssClassType, displayDate: Date, onDayTouchTap: REventIDateUnit)
-
 
 }

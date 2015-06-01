@@ -1,6 +1,5 @@
 package chandu0101.scalajs.react.components.materialui
 
-
 import chandu0101.scalajs.react.components.all._
 import chandu0101.scalajs.react.components.materialui.styles.MaterialUICss._
 import chandu0101.scalajs.react.components.util.CommonUtils
@@ -10,12 +9,10 @@ import org.scalajs.dom.html
 
 import scala.scalajs.js
 
-
-
 /**
  * Created by chandrasekharkode on 12/21/14.
  *
- *   className: React.PropTypes.string,
+ * className: React.PropTypes.string,
     label: React.PropTypes.string.isRequired,
     show: React.PropTypes.bool,
     touch: React.PropTypes.bool
@@ -26,9 +23,9 @@ object MuiTooltip {
     def setRippleSize(n: html.Element) = {
       val ripple = toolRipple(t).get.getDOMNode()
       val tooltipSize = n.offsetWidth
-      val ripplePadding = if(t.props.touch) 45 else 20
-      val rippleSize = s"${tooltipSize + ripplePadding}px"
-      if(t.props.show) {
+      val ripplePadding = if (t.props.touch) 45 else 20
+      val rippleSize = s"${tooltipSize + ripplePadding }px"
+      if (t.props.show) {
         ripple.style.height = rippleSize
         ripple.style.width = rippleSize
       } else {
@@ -40,21 +37,27 @@ object MuiTooltip {
 
   val toolRipple = Ref[html.Element]("toolRipple")
 
-  lazy val component = ReactComponentB[Props]("MuiTooltip")
-    .stateless
-    .backend(new Backend(_))
-    .render((P, S, B) => {
-      val classes = CommonUtils.cssMap1M(mui_tooltip,P.clsNames, mui_is_shown -> P.show, mui_is_touch -> P.touch)
-     <.div(^.classSetM(classes))(
-       <.div( ^.ref := toolRipple , ^.cls := mui_tooltip_ripple),
-          <.span(^.cls := mui_tooltip_label)(P.label)
+  lazy val component = ReactComponentB[Props]("MuiTooltip").stateless.backend(new Backend(_)).render(
+      (P, S, B) => {
+        val classes = CommonUtils.cssMap1M(mui_tooltip, P.clsNames, mui_is_shown -> P.show, mui_is_touch -> P.touch)
+        <.div(^.classSetM(classes))(
+          <.div(^.ref := toolRipple, ^.cls := mui_tooltip_ripple), <.span(^.cls := mui_tooltip_label)(P.label)
+        )
+      }
+    ).domType[html.Element].componentDidMount($ => $.backend.setRippleSize($.getDOMNode())).componentDidUpdate(
+      ($,
+       _,
+       _) => $.backend.setRippleSize(
+        $.getDOMNode()
       )
-    }).domType[html.Element]
-    .componentDidMount($ => $.backend.setRippleSize($.getDOMNode()))
-    .componentDidUpdate(($, _, _) => $.backend.setRippleSize($.getDOMNode()))
-    .build
+    ).build
 
   case class Props(show: Boolean, touch: Boolean, clsNames: CssClassType, label: String)
 
-  def apply(show: Boolean = false, touch: Boolean = false, clsNames: CssClassType = Map(), label: String, ref: js.UndefOr[String] = "", key: js.Any = {}) = component.set(key, ref)(Props(show, touch, clsNames, label))
+  def apply(show: Boolean = false,
+            touch: Boolean = false,
+            clsNames: CssClassType = Map(),
+            label: String,
+            ref: js.UndefOr[String] = "",
+            key: js.Any = {}) = component.set(key, ref)(Props(show, touch, clsNames, label))
 }

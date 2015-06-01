@@ -8,12 +8,7 @@ import org.scalajs.dom.html
 
 import scala.scalajs.js
 
-
-/**
- * Created by chandrasekharkode .
- */
 object MuiRadioButton {
-
 
   case class State(checked: Boolean)
 
@@ -36,30 +31,68 @@ object MuiRadioButton {
   }
 
   val theEnhancedSwitchRef = Ref.to(MuiEnhancedSwitch.component, "theEnhancedSwitchRefRadioButton")
-  val component = ReactComponentB[Props]("MuiRadioButton")
-    .initialStateP(p => State(p.defaultChecked))
-    .backend(new Backend(_))
-    .render((P, S, B) => {
-    val radiotButtonElement = <.div(MuiToggleRadioButtonOff(^.cls := "mui-radio-button-target"), MuiToggleRadioButtonOn(^.cls := "mui-radio-button-fill"))
-    MuiEnhancedSwitch(ref = theEnhancedSwitchRef,
-      inputType = "radio",
-      switchElement = radiotButtonElement,
-      clsNames = Map("mui-radio-button" -> true),
-      onSwitch = B.handleCheck,
-      iconClassName = "mui-radio-button-icon",
-      label = P.label,
-      name = P.name,
-      value = P.value,
-      id = P.id,
-      defaultSwitched = P.defaultChecked,
-      disabled = P.disabled,
-      labelPosition = P.labelPosition)
-  })
-    .build
 
-  case class Props(id : String = "",disabled: Boolean, labelPosition: String, classNames: Map[String, Boolean], label: String, name: String, onCheck: REventIStringUnit, value: String, defaultChecked: Boolean)
+  val component            = ReactComponentB[Props]("MuiRadioButton").initialStateP(p => State(p.defaultChecked)).backend(
+      new Backend(_)
+    ).render(
+      (P, S, B) => {
+        val radiotButtonElement = <.div(
+          MuiToggleRadioButtonOff(^.cls := "mui-radio-button-target"),
+          MuiToggleRadioButtonOn(^.cls := "mui-radio-button-fill")
+        )
+        MuiEnhancedSwitch(
+          ref = theEnhancedSwitchRef,
+          inputType = "radio",
+          switchElement = radiotButtonElement,
+          clsNames = Map(
+            "mui-radio-button" -> true
+          ),
+          onSwitch = B.handleCheck,
+          iconClassName = "mui-radio-button-icon",
+          label = P.label,
+          name = P.name,
+          value = P.value,
+          id = P.id,
+          defaultSwitched = P.defaultChecked,
+          disabled = P.disabled,
+          labelPosition = P.labelPosition
+        )
+      }
+    ).build
 
-  def apply(id : String = "",disabled: Boolean = false, labelPosition: String = "right", classNames: Map[String, Boolean] = Map(), label: String = "", name: String = "", onCheck: REventIStringUnit = null, value: String = null, defaultChecked: Boolean = false, ref: js.UndefOr[String] = "", key: js.Any = {}) = {
-    component.set(key = key, ref = ref)(Props(id,disabled, labelPosition, classNames, label, name, onCheck, value, defaultChecked))
+  case class Props(id: String = "",
+                   disabled: Boolean,
+                   labelPosition: String,
+                   classNames: Map[String, Boolean],
+                   label: String,
+                   name: String,
+                   onCheck: REventIStringUnit,
+                   value: String,
+                   defaultChecked: Boolean)
+
+  def apply(id: String = "",
+            disabled: Boolean = false,
+            labelPosition: String = "right",
+            classNames: Map[String, Boolean] = Map(),
+            label: String = "",
+            name: String = "",
+            onCheck: REventIStringUnit = null,
+            value: String = null,
+            defaultChecked: Boolean = false,
+            ref: js.UndefOr[String] = "",
+            key: js.Any = {}) = {
+    component.set(key = key, ref = ref)(
+      Props(
+        id,
+        disabled,
+        labelPosition,
+        classNames,
+        label,
+        name,
+        onCheck,
+        value,
+        defaultChecked
+      )
+    )
   }
 }

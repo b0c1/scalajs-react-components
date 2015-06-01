@@ -5,10 +5,6 @@ import chandu0101.scalajs.react.components.materialui._
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
 
-
-/**
- * Created by chandrasekharkode .
- */
 object MuiToolbarDemo {
 
   val codeValue =
@@ -51,36 +47,32 @@ object MuiToolbarDemo {
   )
 
   val iconMenuItems = List(
-    MuiMenu.Item(text = "Download"),
-    MuiMenu.Item(text = "More Info")
+    MuiMenu.Item(text = "Download"), MuiMenu.Item(text = "More Info")
   )
 
-  val component = ReactComponentB[Unit]("MuiToolbarDemo")
-    .render(P => {
-   <.div(
-     <.h3("Toolbars"),
-       <.div(
-          MuiToolbar()(
-            MuiToolbarGroup(key = 0, float = "left")(
-              MuiDropdownMenu(menuItems = filteredOptions)
-            ),
-            MuiToolbarGroup(key = 1, float = "right")(
-              MuiFontIcon(className = "mui-icon-pie"),
-              MuiFontIcon(className = "mui-icon-sort"),
-              MuiDropDownIcon(iconClassName ="navigation-expand-more" ,menuItems = iconMenuItems),
-              <.span(^.cls := "mui-toolbar-separator")(" "),
-              MuiRaisedButton(label = "Create Broadcast", primary = true)
+  val component = ReactComponentB[Unit]("MuiToolbarDemo").render(
+      P => {
+        <.div(
+          <.h3("Toolbars"), <.div(
+            MuiToolbar()(
+              MuiToolbarGroup(key = 0, float = "left")(
+                MuiDropdownMenu(menuItems = filteredOptions)
+              ), MuiToolbarGroup(key = 1, float = "right")(
+                MuiFontIcon(className = "mui-icon-pie"), MuiFontIcon(className = "mui-icon-sort"), MuiDropDownIcon(
+                  iconClassName = "navigation-expand-more",
+                  menuItems = iconMenuItems
+                ), <.span(^.cls := "mui-toolbar-separator")(" "), MuiRaisedButton(
+                  label = "Create Broadcast",
+                  primary = true
+                )
+              )
+            ), <.div(^.marginTop := "70px")(
+              <.pre(^.cls := "code-block")(<.code(codeValue))
             )
-          ),
-       <.div(^.marginTop := "70px")(
-          <.pre(^.cls := "code-block")(<.code(codeValue))
+          )
         )
-
-        )
-    )
-  })
-    .configure(CodeExample.installSyntaxHighlighting)
-    .buildU
+      }
+    ).configure(CodeExample.installSyntaxHighlighting).buildU
 
   def apply() = component()
 }

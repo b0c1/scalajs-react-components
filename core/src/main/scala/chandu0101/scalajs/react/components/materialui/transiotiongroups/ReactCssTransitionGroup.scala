@@ -3,9 +3,7 @@ package chandu0101.scalajs.react.components.materialui.transiotiongroups
 import japgolly.scalajs.react.{React, ReactComponentU_, ReactNode, vdom}
 
 import scala.scalajs.js
-/**
- * Created by chandrasekharkode .
- */
+
 object ReactCssTransitionGroup {
   /** Items in the CSSTransitionGroup need this attribute for animation to work properly. */
   @inline final def key = vdom.Attrs.key
@@ -13,7 +11,7 @@ object ReactCssTransitionGroup {
 }
 
 case class ReactCssTransitionGroup(name: String,
-                                   className : js.UndefOr[String] = js.undefined,
+                                   className: js.UndefOr[String] = js.undefined,
                                    enter: js.UndefOr[Boolean] = js.undefined,
                                    leave: js.UndefOr[Boolean] = js.undefined,
                                    component: js.UndefOr[String] = js.undefined) {

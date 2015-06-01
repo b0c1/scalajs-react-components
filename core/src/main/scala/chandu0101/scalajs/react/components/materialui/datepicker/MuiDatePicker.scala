@@ -1,6 +1,5 @@
 package chandu0101.scalajs.react.components.materialui.datepicker
 
-
 import chandu0101.scalajs.react.components.all._
 import chandu0101.scalajs.react.components.materialui.MuiTextField
 import chandu0101.scalajs.react.components.materialui.styles.MaterialUICss._
@@ -13,33 +12,40 @@ import org.scalajs.dom.Event
 import scala.scalajs.js
 import scala.scalajs.js.{Date, Function1}
 
-
-/**
- * Created by chandrasekharkode .
- */
 object MuiDatePicker {
 
-
   val LANDSCAPE: String = "landscape"
-  val INLINE: String = "inline"
-  val theInputRef = Ref.to(MuiTextField.component, "theDatePickerTextField")
-  val theDialogWindowRef = Ref.to(MuiDatePickerDialog.component, "theDialogWindowRef")
-  val component = ReactComponentB[Props]("MuiDatePicker")
-    .initialStateP(p => State(p.defaultDate, new Date()))
-    .backend(new Backend(_))
-    .render((P, S, B) => {
-    val classes = CommonUtils.cssMap1M(mui_date_picker, P.clsNames,
-      mui_is_landscape -> (P.mode == LANDSCAPE),
-      mui_is_inline -> (P.mode == INLINE)
-    )
-    val defaultInputValue = if (P.defaultDate != null) P.formatDate(P.defaultDate) else null
-   <.div(^.classSetM(classes))(
-      MuiTextField(ref = theInputRef, defaultValue = defaultInputValue, onFocus = B.handleInputFocus, name = P.name, onTouchTap = B.handleInputTouchTap, hintText = P.placeholder ,id = s"${P.placeholder}YEAH"),
-      MuiDatePickerDialog(ref = theDialogWindowRef, initialDate = S.dialogDate, onAccept = B.handleDialogAccept)
-    )
-  })
-    .build
 
+  val INLINE   : String = "inline"
+
+  val theInputRef = Ref.to(MuiTextField.component, "theDatePickerTextField")
+
+  val theDialogWindowRef = Ref.to(MuiDatePickerDialog.component, "theDialogWindowRef")
+
+  val component = ReactComponentB[Props]("MuiDatePicker").initialStateP(
+      p => State(
+        p.defaultDate,
+        new Date()
+      )
+    ).backend(new Backend(_)).render(
+      (P, S, B) => {
+        val classes = CommonUtils.cssMap1M(
+          mui_date_picker, P.clsNames, mui_is_landscape -> (P.mode == LANDSCAPE), mui_is_inline -> (P.mode == INLINE)
+        )
+        val defaultInputValue = if (P.defaultDate != null) P.formatDate(P.defaultDate) else null
+        <.div(^.classSetM(classes))(
+          MuiTextField(
+            ref = theInputRef,
+            defaultValue = defaultInputValue,
+            onFocus = B.handleInputFocus,
+            name = P.name,
+            onTouchTap = B.handleInputTouchTap,
+            hintText = P.placeholder,
+            id = s"${P.placeholder }YEAH"
+          ), MuiDatePickerDialog(ref = theDialogWindowRef, initialDate = S.dialogDate, onAccept = B.handleDialogAccept)
+        )
+      }
+    ).build
 
   case class State(date: Date, dialogDate: Date = new Date())
 
@@ -76,9 +82,43 @@ object MuiDatePicker {
     override def listeners: List[(String, Function1[Event, _])] = List(Events.KEYUP -> handleWindowKeyUp)
   }
 
-  case class Props(defaultDate: Date, onChange: DateUnit, clsNames: CssClassType, ref: js.UndefOr[String], key: js.Any, onTouchTap: REventIUnit, formatDate: DateString, onFocus: REventIUnit, mode: String, placeholder: String, name: String)
+  case class Props(defaultDate: Date,
+                   onChange: DateUnit,
+                   clsNames: CssClassType,
+                   ref: js.UndefOr[String],
+                   key: js.Any,
+                   onTouchTap: REventIUnit,
+                   formatDate: DateString,
+                   onFocus: REventIUnit,
+                   mode: String,
+                   placeholder: String,
+                   name: String)
 
-  def apply(defaultDate: Date = null, onChange: DateUnit = null, clsNames: CssClassType = Map(), ref: js.UndefOr[String] = "", key: js.Any = {}, onTouchTap: REventIUnit = null, formatDate: DateString = DateTime.format, onFocus: REventIUnit = null, mode: String = "", placeholder: String = "", name: String = "") =
-    component.set(key, ref)(Props(defaultDate, onChange, clsNames, ref, key, onTouchTap, formatDate, onFocus, mode, placeholder, name))
+  def apply(defaultDate: Date = null,
+            onChange: DateUnit = null,
+            clsNames: CssClassType = Map(),
+            ref: js.UndefOr[String] = "",
+            key: js.Any = {},
+            onTouchTap: REventIUnit = null,
+            formatDate: DateString = DateTime.format,
+            onFocus: REventIUnit = null,
+            mode: String = "",
+            placeholder: String = "",
+            name: String = "") =
+    component.set(key, ref)(
+      Props(
+        defaultDate,
+        onChange,
+        clsNames,
+        ref,
+        key,
+        onTouchTap,
+        formatDate,
+        onFocus,
+        mode,
+        placeholder,
+        name
+      )
+    )
 
 }

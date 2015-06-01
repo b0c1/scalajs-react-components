@@ -5,18 +5,13 @@ import japgolly.scalajs.react.vdom.TagMod
 import japgolly.scalajs.react.vdom.prefix_<^._
 import japgolly.scalajs.react.{ReactNode, _}
 
-
-
-/**
- * Created by chandrasekharkode .
- */
 object MuiSvgIcon {
 
-  val component = ReactComponentB[Props]("SvgIcon")
-    .render((P, C) => {
-       svgtag(P.props, ^.cls := "mui-svg-icon", ^.key := "svgicon")(C)
-     })
-    .build
+  val component = ReactComponentB[Props]("SvgIcon").render(
+      (P, C) => {
+        svgtag(P.props, ^.cls := "mui-svg-icon", ^.key := "svgicon")(C)
+      }
+    ).build
 
   case class Props(props: TagMod*)
 

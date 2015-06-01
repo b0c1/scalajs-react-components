@@ -6,10 +6,6 @@ import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
 import org.scalajs.dom
 
-
-/**
- * Created by chandrasekharkode .
- */
 object ReactTreeViewDemo {
 
   val code =
@@ -47,29 +43,27 @@ object ReactTreeViewDemo {
 
   }
 
-  val component = ReactComponentB[Unit]("ReactTreeViewDemo")
-    .initialState(State())
-    .backend(new Backend(_))
-    .render((P, S, B) => {
-    <.div(
-      <.h3("Demo"),
-      CodeExample(code)(
-        <.div(Style.treeViewDemo)(
-          ReactTreeView(root = data, openByDefault = true, onItemSelect = B.onItemSelect, showSearchBox = true),
-          <.strong(^.id := "treeviewcontent", Style.selectedContent)
+  val component = ReactComponentB[Unit]("ReactTreeViewDemo").initialState(State()).backend(new Backend(_)).render(
+      (P, S, B) => {
+        <.div(
+          <.h3("Demo"), CodeExample(code)(
+            <.div(Style.treeViewDemo)(
+              ReactTreeView(root = data, openByDefault = true, onItemSelect = B.onItemSelect, showSearchBox = true),
+              <.strong(^.id := "treeviewcontent", Style.selectedContent)
+            )
+          )
         )
+      }
+    ).buildU
+
+  lazy val data = TreeItem(
+    "root", TreeItem(
+      "dude1", TreeItem("dude1c")
+    ), TreeItem("dude2"), TreeItem("dude3"), TreeItem(
+      "dude4", TreeItem(
+        "dude4c", TreeItem("dude4cc")
       )
     )
-  }).buildU
-
-  lazy val data = TreeItem("root",
-    TreeItem("dude1",
-        TreeItem("dude1c")),
-    TreeItem("dude2"),
-    TreeItem("dude3"),
-    TreeItem("dude4",
-      TreeItem("dude4c",
-        TreeItem("dude4cc")))
   )
 
   def apply() = component()

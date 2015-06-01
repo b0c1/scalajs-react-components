@@ -1,9 +1,6 @@
 package chandu0101.scalajs.react.components.util
 
-
 import japgolly.scalajs.react.vdom.prefix_<^._
-
-
 
 /**
  * Created by chandrasekharkode
@@ -31,26 +28,26 @@ trait RCustomTags {
 
   val alignItems = "alignItems".reactStyle
 
-  val MsFlexAlign = "MsFlexAlign".reactStyle
-  val WebkitAlignItems = "WebkitAlignItems".reactStyle
-  val WebkitBoxAlign = "WebkitBoxAlign".reactStyle
-  val MsFlexDirection = "MsFlexDirection".reactStyle
-  val MsFlexPack = "MsFlexPack".reactStyle
-  val WebkitBoxDirection = "WebkitBoxDirection".reactStyle
-  val WebkitBoxOrient = "WebkitBoxOrient".reactStyle
-  val WebkitBoxPack = "WebkitBoxPack".reactStyle
-  val WebkitFlexDirection = "WebkitFlexDirection".reactStyle
+  val MsFlexAlign          = "MsFlexAlign".reactStyle
+  val WebkitAlignItems     = "WebkitAlignItems".reactStyle
+  val WebkitBoxAlign       = "WebkitBoxAlign".reactStyle
+  val MsFlexDirection      = "MsFlexDirection".reactStyle
+  val MsFlexPack           = "MsFlexPack".reactStyle
+  val WebkitBoxDirection   = "WebkitBoxDirection".reactStyle
+  val WebkitBoxOrient      = "WebkitBoxOrient".reactStyle
+  val WebkitBoxPack        = "WebkitBoxPack".reactStyle
+  val WebkitFlexDirection  = "WebkitFlexDirection".reactStyle
   val WebkitJustifyContent = "WebkitJustifyContent".reactStyle
-  val justifyContent = "justifyContent".reactStyle
+  val justifyContent       = "justifyContent".reactStyle
 
-  val MsFlexWrap = "MsFlexWrap".reactStyle
+  val MsFlexWrap     = "MsFlexWrap".reactStyle
   val WebkitFlexWrap = "WebkitFlexWrap".reactStyle
 
-  val MsFlex = "MsFlex".reactStyle
+  val MsFlex        = "MsFlex".reactStyle
   val WebkitBoxFlex = "WebkitBoxFlex".reactStyle
-  val WebkitFlex = "WebkitFlex".reactStyle
-  val flex = "flex".reactStyle
-  val alignSelf = "alignSelf".reactStyle
+  val WebkitFlex    = "WebkitFlex".reactStyle
+  val flex          = "flex".reactStyle
+  val alignSelf     = "alignSelf".reactStyle
   val flexDirection = "flexDirection".reactStyle
 
   val flexWrap = "flexWrap".reactStyle
@@ -61,7 +58,6 @@ trait RCustomTags {
   val WebkitAlignSelf = "WebkitAlignSelf".reactStyle
 
   /* Attributes */
-
   val ariaLabel = "aria-label".reactAttr
 
   val onMouseEnter = "onMouseEnter".reactAttr
@@ -78,15 +74,11 @@ trait RCustomTags {
 
   val defaultChecked = "defaultChecked".reactAttr
 
-
   /* Tags */
-
   val svgtag = "svg".reactTag
 
   val polygon = "polygon".reactTag
 
   val path = "path".reactTag
-
-
 
 }

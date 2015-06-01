@@ -6,10 +6,6 @@ import chandu0101.scalajs.react.components.materialui.svgicons.MuiActionGrade
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
 
-
-/**
- * Created by chandrasekharkode .
- */
 object MuiIconButtonsDemo {
 
   val code =
@@ -19,16 +15,17 @@ object MuiIconButtonsDemo {
       |
     """.stripMargin
 
-  val component = ReactComponentB[Unit]("MuiIconButtonsDemo")
-    .render(P => {
-     <.div(
-      <.h3("Icon Buttons"),
-       CodeExample(code)(
-        MuiIconButton.withChildren(tooltip = "Yay")(MuiActionGrade()),
-        MuiIconButton.withChildren(disabled = true)(MuiActionGrade())
-       )
-      )
-    }).buildU
+  val component = ReactComponentB[Unit]("MuiIconButtonsDemo").render(
+      P => {
+        <.div(
+          <.h3("Icon Buttons"), CodeExample(code)(
+            MuiIconButton.withChildren(tooltip = "Yay")(MuiActionGrade()), MuiIconButton.withChildren(disabled = true)(
+              MuiActionGrade()
+            )
+          )
+        )
+      }
+    ).buildU
 
   def apply() = component()
 

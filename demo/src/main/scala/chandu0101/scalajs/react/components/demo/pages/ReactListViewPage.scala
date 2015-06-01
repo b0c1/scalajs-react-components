@@ -20,13 +20,11 @@ object ReactListViewPage {
 
   }
 
-  val component = ReactComponentB[Props]("ReactListViewPage")
-    .initialState(State(checked = false))
-    .backend(new Backend(_))
-    .render((P, S, B) => {
-    LeftnavPage(menus, P.content)
-  })
-    .build
+  val component = ReactComponentB[Props]("ReactListViewPage").initialState(State(checked = false)).backend(new Backend(_)).render(
+      (P, S, B) => {
+        LeftnavPage(menus, P.content)
+      }
+    ).build
 
   case class Props(content: ReactElement)
 

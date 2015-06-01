@@ -6,13 +6,9 @@ import chandu0101.scalajs.react.components.maps.GoogleMap
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
 
-
-/**
- * Created by chandrasekharkode .
- */
 object CustomMarkerIcon {
 
-  val code =
+  val code      =
     """
       |val latlng = LatLng(-33.9 ,151.2)
       |
@@ -51,17 +47,18 @@ object CustomMarkerIcon {
       |  GoogleMap(center = latlng , markers = markers , zoom = 10 )
       |
     """.stripMargin
-  val component = ReactComponentB[Unit]("plain")
-    .render(P => {
-   <.div(
-     <.h2(^.cls := "mui-font-style-headline")("Custom Marker Icon"),
-      CodeExample(code)(
-        GoogleMap(center = latlng , markers = markers , zoom = 10)
-      )
-    )
-  }).buildU
 
-  val latlng = LatLng(-33.9 ,151.2)
+  val component = ReactComponentB[Unit]("plain").render(
+      P => {
+        <.div(
+          <.h2(^.cls := "mui-font-style-headline")("Custom Marker Icon"), CodeExample(code)(
+            GoogleMap(center = latlng, markers = markers, zoom = 10)
+          )
+        )
+      }
+    ).buildU
+
+  val latlng = LatLng(-33.9, 151.2)
 
   /*
      url = image location
@@ -71,9 +68,9 @@ object CustomMarkerIcon {
    */
   val image = Icon(
     url = "http://www.bookyourparis.com/images-site/beachflag.png",
-    size = Size(20,32),
-    origin = Point(0,0),
-    anchor = Point(0,32)
+    size = Size(20, 32),
+    origin = Point(0, 0),
+    anchor = Point(0, 32)
   )
 
   /*
@@ -84,15 +81,15 @@ object CustomMarkerIcon {
      coordinate.
    */
   val shape = Shape(
-   coords = List(1, 1, 1, 20, 18, 20, 18 , 1),
-   tpe = "poly"
+    coords = List(1, 1, 1, 20, 18, 20, 18, 1), tpe = "poly"
   )
 
   val markers = List(
-    Marker( position = LatLng(-33.890542,151.274856) ,title = "Bondi Beach" , icon = image),
-    Marker( position = LatLng(-33.923036,151.259052) ,title = "Coogee Beach" ,icon = image),
-    Marker( position = LatLng(-34.028249,151.157507) ,title = "Cronulla Beach",icon = image),
-    Marker( position = LatLng(-33.80010128657071,151.28747820854187) ,title = "Manly Beach",icon = image)
+    Marker(position = LatLng(-33.890542, 151.274856), title = "Bondi Beach", icon = image),
+    Marker(position = LatLng(-33.923036, 151.259052), title = "Coogee Beach", icon = image),
+    Marker(position = LatLng(-34.028249, 151.157507), title = "Cronulla Beach", icon = image),
+    Marker(position = LatLng(-33.80010128657071, 151.28747820854187), title = "Manly Beach", icon = image)
   )
+
   def apply() = component()
 }

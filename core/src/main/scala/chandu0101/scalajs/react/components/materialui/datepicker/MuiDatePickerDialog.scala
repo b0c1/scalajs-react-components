@@ -1,6 +1,5 @@
 package chandu0101.scalajs.react.components.materialui.datepicker
 
-
 import chandu0101.scalajs.react.components.all._
 import chandu0101.scalajs.react.components.materialui.styles.MaterialUICss._
 import chandu0101.scalajs.react.components.materialui.{MuiDialogWindow, MuiFlatButton}
@@ -13,8 +12,6 @@ import org.scalajs.dom.{Event, KeyboardEvent}
 import scala.scalajs.js
 import scala.scalajs.js.{Date, Function1}
 
-
-
 /**
  * Created by chandrasekharkode .
  *
@@ -23,28 +20,45 @@ import scala.scalajs.js.{Date, Function1}
  */
 object MuiDatePickerDialog {
 
-
   val theDialogWindowRef = Ref.to(MuiDialogWindow.component, "theDialogWindowRef")
-  val theCalenderRef = Ref.to(MuiCalender.component, "theCalenderRef")
-  val component = ReactComponentB[Props]("MuiDatePickerDialog")
-    .initialState(State())
-    .backend(new Backend(_))
-    .render((P, S, B) => {
-    val classes = CommonUtils.cssMap1M(mui_date_picker_dialog, P.clsNames)
-    val actions = List(
-      MuiFlatButton(key = 0, label = "Cancel", secondary = true, onTouchTap = B.handleCancelTouchTap, clsNames = Map(mui_dialog_window_action -> true)),
-      MuiFlatButton(key = 1, label = "OK", secondary = true, onTouchTap = B.handleOKTouchTap, clsNames = Map(mui_dialog_window_action -> true))
-    )
-    MuiDialogWindow(ref = theDialogWindowRef, clsNames = classes, contentClassName = mui_date_picker_dialog_window,
-      onDismiss = B.handleDialogDismiss _, onShow = B.handleDialogShow _, repositionOnUpdate = false, actions = actions
-    )(
-        MuiCalender(key = "mcal", ref = theCalenderRef, initialDate = P.initialDate, isActive = S.isCalendarActive)
-      )
-  })
-    .configure(WindowListeners.mixin)
-    .build
 
-  def apply(onAccept: DateUnit = null, clsNames: CssClassType = Map(), ref: js.UndefOr[String] = "", key: js.Any = {}, initialDate: Date = null) =
+  val theCalenderRef     = Ref.to(MuiCalender.component, "theCalenderRef")
+
+  val component          = ReactComponentB[Props]("MuiDatePickerDialog").initialState(State()).backend(new Backend(_)).render(
+      (P, S, B) => {
+        val classes = CommonUtils.cssMap1M(mui_date_picker_dialog, P.clsNames)
+        val actions = List(
+          MuiFlatButton(
+            key = 0,
+            label = "Cancel",
+            secondary = true,
+            onTouchTap = B.handleCancelTouchTap,
+            clsNames = Map(mui_dialog_window_action -> true)
+          ), MuiFlatButton(
+            key = 1, label = "OK", secondary = true, onTouchTap = B.handleOKTouchTap, clsNames = Map(
+              mui_dialog_window_action -> true
+            )
+          )
+        )
+        MuiDialogWindow(
+          ref = theDialogWindowRef,
+          clsNames = classes,
+          contentClassName = mui_date_picker_dialog_window,
+          onDismiss = B.handleDialogDismiss _,
+          onShow = B.handleDialogShow _,
+          repositionOnUpdate = false,
+          actions = actions
+        )(
+            MuiCalender(key = "mcal", ref = theCalenderRef, initialDate = P.initialDate, isActive = S.isCalendarActive)
+          )
+      }
+    ).configure(WindowListeners.mixin).build
+
+  def apply(onAccept: DateUnit = null,
+            clsNames: CssClassType = Map(),
+            ref: js.UndefOr[String] = "",
+            key: js.Any = {},
+            initialDate: Date = null) =
     component.set(key, ref)(Props(onAccept, clsNames, initialDate))
 
   case class State(isCalendarActive: Boolean = false)

@@ -1,6 +1,5 @@
 package chandu0101.scalajs.react.components.materialui.datepicker
 
-
 import chandu0101.scalajs.react.components.all._
 import chandu0101.scalajs.react.components.materialui.styles.MaterialUICss._
 import chandu0101.scalajs.react.components.materialui.transiotiongroups.MuiSliderIn
@@ -14,7 +13,6 @@ import org.scalajs.dom.{Event, KeyboardEvent}
 import scala.scalajs.js
 import scala.scalajs.js.{Date, Function1}
 
-
 /**
  * Created by chandrasekharkode .
  *
@@ -23,44 +21,58 @@ import scala.scalajs.js.{Date, Function1}
  */
 object MuiCalender {
 
-  val dayList = List("S", "M", "T", "W", "T", "F", "S")
-  val component = ReactComponentB[Props]("MuiCalender")
-    .initialStateP(p => State(DateTime.getFirstDayOfMonth(p.initialDate), p.initialDate))
-    .backend(new Backend(_))
-    .render((P, S, B) => {
-    val weekCount = DateTime.getWeekArray(S.displayDate).length
-    val classes = CommonUtils.cssMap1M(mui_date_picker_calendar, P.clsNames, mui_is_4week -> (weekCount == 4),
-      mui_is_5week -> (weekCount == 5),
-      mui_is_6week -> (weekCount == 6)
-    )
-   <.div(^.classSetM(classes))(
-      MuiDateDisplay(clsNames = Map(mui_date_picker_calendar_date_display -> true), selectedDate = S.selectedDate),
-     <.div(^.cls := mui_date_picker_calendar_container)(
-        MuiCalenderToolbar(displayDate = S.displayDate, onLeftTouchTap = B.handleLeftTouchTap, onRightTouchTap = B.handleRightTouchTap),
-        <.ul(^.cls := mui_date_picker_calendar_week_title)(
-          dayList.map(day => <.li(^.cls := mui_date_picker_calendar_week_title_day)(day))
-        ),
-        MuiSliderIn(direction = S.transitionDirection)(
-          MuiCalenderMonth(key = S.displayDate.toDateString(),
-            clsNames = Map(MuiSliderIn.childCss -> true),
-            displayDate = S.displayDate,
-            selectedDate = S.selectedDate,
-            onDayTouchTap = B.handleDayTouchTap
+  val dayList   = List("S", "M", "T", "W", "T", "F", "S")
+
+  val component = ReactComponentB[Props]("MuiCalender").initialStateP(
+      p => State(
+        DateTime.getFirstDayOfMonth(p.initialDate),
+        p.initialDate
+      )
+    ).backend(new Backend(_)).render(
+      (P, S, B) => {
+        val weekCount = DateTime.getWeekArray(S.displayDate).length
+        val classes = CommonUtils.cssMap1M(
+          mui_date_picker_calendar,
+          P.clsNames,
+          mui_is_4week -> (weekCount == 4),
+          mui_is_5week -> (weekCount == 5),
+          mui_is_6week -> (weekCount == 6)
+        )
+        <.div(^.classSetM(classes))(
+          MuiDateDisplay(clsNames = Map(mui_date_picker_calendar_date_display -> true), selectedDate = S.selectedDate),
+          <.div(^.cls := mui_date_picker_calendar_container)(
+            MuiCalenderToolbar(
+              displayDate = S.displayDate,
+              onLeftTouchTap = B.handleLeftTouchTap,
+              onRightTouchTap = B.handleRightTouchTap
+            ), <.ul(^.cls := mui_date_picker_calendar_week_title)(
+              dayList.map(day => <.li(^.cls := mui_date_picker_calendar_week_title_day)(day))
+            ), MuiSliderIn(direction = S.transitionDirection)(
+              MuiCalenderMonth(
+                key = S.displayDate.toDateString(),
+                clsNames = Map(MuiSliderIn.childCss -> true),
+                displayDate = S.displayDate,
+                selectedDate = S.selectedDate,
+                onDayTouchTap = B.handleDayTouchTap
+              )
+            )
           )
         )
-      )
-    )
-  })
-    .componentWillReceiveProps((scope, next) => {
-    if (next.initialDate != scope.props.initialDate) {
-      val d = if (next.initialDate == null) new Date() else next.initialDate
-      scope.modState(_.copy(displayDate = DateTime.getFirstDayOfMonth(d), selectedDate = next.initialDate))
-    }
-  })
-    .configure(WindowListeners.mixin)
-    .build
+      }
+    ).componentWillReceiveProps(
+      (scope, next) => {
+        if (next.initialDate != scope.props.initialDate) {
+          val d = if (next.initialDate == null) new Date() else next.initialDate
+          scope.modState(_.copy(displayDate = DateTime.getFirstDayOfMonth(d), selectedDate = next.initialDate))
+        }
+      }
+    ).configure(WindowListeners.mixin).build
 
-  def apply(clsNames: CssClassType = Map(), ref: js.UndefOr[String] = "", key: js.Any = {}, isActive: Boolean = false, initialDate: Date = new Date()) =
+  def apply(clsNames: CssClassType = Map(),
+            ref: js.UndefOr[String] = "",
+            key: js.Any = {},
+            isActive: Boolean = false,
+            initialDate: Date = new Date()) =
     component.set(key, ref)(Props(clsNames, isActive, initialDate))
 
   case class State(displayDate: Date, selectedDate: Date, transitionDirection: String = "left")
@@ -70,11 +82,11 @@ object MuiCalender {
     lazy val handleWindowKeyDown: js.Function1[Event, Unit] = (e: Event) => {
       val keyEvent = e.asInstanceOf[KeyboardEvent]
       keyEvent.keyCode match {
-        case KeyCode.up => if (keyEvent.shiftKey) addSelectedMonths(-1) else addSelectedDays(-7)
-        case KeyCode.down => if (keyEvent.shiftKey) addSelectedMonths(1) else addSelectedDays(7)
+        case KeyCode.up    => if (keyEvent.shiftKey) addSelectedMonths(-1) else addSelectedDays(-7)
+        case KeyCode.down  => if (keyEvent.shiftKey) addSelectedMonths(1) else addSelectedDays(7)
         case KeyCode.right => if (keyEvent.shiftKey) addSelectedMonths(1) else addSelectedDays(1)
-        case KeyCode.left => if (keyEvent.shiftKey) addSelectedMonths(-1) else addSelectedDays(-1)
-        case _ => ;
+        case KeyCode.left  => if (keyEvent.shiftKey) addSelectedMonths(-1) else addSelectedDays(-1)
+        case _             => ;
       }
     }
 

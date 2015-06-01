@@ -1,12 +1,7 @@
 package chandu0101.scalajs.react.components.util
 
-
 import chandu0101.scalajs.react.components.all._
 
-
-/**
- * Created by chandrasekharkode .
- */
 object CommonUtils {
 
   def cssMapM(map: CssClassType, ps: (String, Boolean)*) = map.++(ps)
@@ -27,10 +22,12 @@ object CommonUtils {
     require(url != null, "Missing argument 'url'.")
     require(parameters != null, "Missing argument 'parameters'.")
 
-    parameters.foldLeft(url)((base, kv) =>
-      base ++ {
-        if (base.contains("?")) "&" else "?"
-      } ++ kv._1 ++ "=" + kv._2)
+    parameters.foldLeft(url)(
+      (base, kv) =>
+        base ++ {
+          if (base.contains("?")) "&" else "?"
+        } ++ kv._1 ++ "=" + kv._2
+    )
   }
 
 }

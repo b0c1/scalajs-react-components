@@ -9,17 +9,14 @@ import org.scalajs.dom.html
 
 import scala.scalajs.js
 
-
-
 /**
  * Created by chandrasekharkode .
- *    circle: React.PropTypes.bool,
+ * circle: React.PropTypes.bool,
     innerClassName: React.PropTypes.string,
     rounded: React.PropTypes.bool,
     zDepth: React.PropTypes.oneOf([0,1,2,3,4,5])*
  */
 object MuiPaper {
-
 
   val theInnerContainerRef = Ref[html.Element]("theInnerContainerRef")
 
@@ -27,32 +24,53 @@ object MuiPaper {
     def getInnerContainer = theInnerContainerRef(t).get
   }
 
-
-  val component = ReactComponentB[Props]("MuiPaper")
-    .stateless
-    .backend(new Backend(_))
-    .render((P, C, S, B) => {
-       val classes = CommonUtils.cssMap1M(mui_paper,
-         P.clsNames,
-        mui_z_depth.concat(P.zDepth.toString) -> true,
-        mui_rounded -> P.rounded,
-        mui_circle -> P.circle)
-       val innerClasses = CommonUtils.cssMapM(P.innerClassNames,
-        mui_paper_container -> true,
-        mui_z_depth_bottom -> true)
-        <.div(^.classSetM(classes), P.style!= null ?= P.style )(
-         <.div(^.classSetM(innerClasses) , ^.ref := theInnerContainerRef ) (
-           C
+  val component = ReactComponentB[Props]("MuiPaper").stateless.backend(new Backend(_)).render(
+      (P, C, S, B) => {
+        val classes = CommonUtils.cssMap1M(
+          mui_paper,
+          P.clsNames,
+          mui_z_depth.concat(P.zDepth.toString) -> true,
+          mui_rounded -> P.rounded,
+          mui_circle -> P.circle
+        )
+        val innerClasses = CommonUtils.cssMapM(
+          P.innerClassNames, mui_paper_container -> true, mui_z_depth_bottom -> true
+        )
+        <.div(^.classSetM(classes), P.style != null ?= P.style)(
+          <.div(^.classSetM(innerClasses), ^.ref := theInnerContainerRef)(
+            C
           )
-         )
-      }).domType[html.Element]
-    .build
+        )
+      }
+    ).domType[html.Element].build
 
+  case class Props(style: TagMod,
+                   circle: Boolean,
+                   clsNames: CssClassType,
+                   rounded: Boolean,
+                   ref: js.UndefOr[String],
+                   zDepth: Int,
+                   key: js.Any,
+                   innerClassNames: CssClassType)
 
-  case class Props(style : TagMod, circle : Boolean ,clsNames : CssClassType ,rounded : Boolean ,ref :  js.UndefOr[String] ,zDepth : Int ,key : js.Any ,innerClassNames : CssClassType  )
-
-  def apply(style : TagMod = null, circle : Boolean = false,clsNames : CssClassType = Map(),rounded : Boolean = true,ref :  js.UndefOr[String] = "",zDepth : Int = 1,key : js.Any = {},innerClassNames : CssClassType = Map()   )(children : ReactNode*) = component.set(key,ref)(Props(style,circle,clsNames,rounded,ref,zDepth,key,innerClassNames),children)
-
-
+  def apply(style: TagMod = null,
+            circle: Boolean = false,
+            clsNames: CssClassType = Map(),
+            rounded: Boolean = true,
+            ref: js.UndefOr[String] = "",
+            zDepth: Int = 1,
+            key: js.Any = {},
+            innerClassNames: CssClassType = Map())(children: ReactNode*) = component.set(key, ref)(
+    Props(
+      style,
+      circle,
+      clsNames,
+      rounded,
+      ref,
+      zDepth,
+      key,
+      innerClassNames
+    ), children
+  )
 
 }

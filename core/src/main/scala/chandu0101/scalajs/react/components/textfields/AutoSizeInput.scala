@@ -1,6 +1,5 @@
 package chandu0101.scalajs.react.components.textfields
 
-
 import chandu0101.scalajs.react.components.all._
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
@@ -9,37 +8,43 @@ import org.scalajs.dom.html
 
 import scala.scalajs.js
 
-
-/**
- * Created by chandrasekharkode .
- */
 object AutoSizeInput {
 
-
   val theSizerRef = Ref[html.Element]("theSizerRef")
+
   val theInputRef = Ref[html.Input]("theInputrRef")
-  val component = ReactComponentB[Props]("AutoSizeInput")
-    .initialStateP(p => State(p.minWidth))
-    .backend(new Backend(_))
-    .render((P, S, B) => {
-    val nbpsValue = P.value.replaceAll(" ", "&nbsp;")
-    val inputStyle: TagMod = P.style.autoSizeInput.+(^.width := S.inputWidth)
-   <.div(P.style.autoSizeInputWrapper)(
-      <.input(P.inputProps, ^.ref := theInputRef, inputStyle),
-     <.div(^.ref := theSizerRef, P.style.sizerStyle)(^.dangerouslySetInnerHtml(nbpsValue))
-    )
 
-  })
-    .componentDidMount(scope => {
-    scope.backend.copyInputStyles
-    scope.backend.updateInputWidth
-  })
-    .componentDidUpdate((scope, _, _) => {
-    scope.backend.updateInputWidth
-  })
-    .build
+  val component   = ReactComponentB[Props]("AutoSizeInput").initialStateP(p => State(p.minWidth)).backend(new Backend(_)).render(
+      (P, S, B) => {
+        val nbpsValue = P.value.replaceAll(" ", "&nbsp;")
+        val inputStyle: TagMod = P.style.autoSizeInput.+(^.width := S.inputWidth)
+        <.div(P.style.autoSizeInputWrapper)(
+          <.input(P.inputProps, ^.ref := theInputRef, inputStyle), <.div(
+            ^.ref := theSizerRef,
+            P.style.sizerStyle
+          )(^.dangerouslySetInnerHtml(nbpsValue))
+        )
 
-  def apply(minWidth: Int = 1, ref: js.UndefOr[String] = "", key: js.Any = {}, defaultValue: String = "", value: String = "", onFocus: EmptyFunc = null, onChange: REventIUnit = null, style: Style = new Style {})(inputProps: TagMod*) =
+      }
+    ).componentDidMount(
+      scope => {
+        scope.backend.copyInputStyles
+        scope.backend.updateInputWidth
+      }
+    ).componentDidUpdate(
+      (scope, _, _) => {
+        scope.backend.updateInputWidth
+      }
+    ).build
+
+  def apply(minWidth: Int = 1,
+            ref: js.UndefOr[String] = "",
+            key: js.Any = {},
+            defaultValue: String = "",
+            value: String = "",
+            onFocus: EmptyFunc = null,
+            onChange: REventIUnit = null,
+            style: Style = new Style {})(inputProps: TagMod*) =
     component.set(key, ref)(Props(minWidth, ref, key, defaultValue, value, onFocus, onChange, style, inputProps))
 
   trait Style {
@@ -48,7 +53,14 @@ object AutoSizeInput {
 
     def autoSizeInput: TagMod = Seq[TagMod]()
 
-    def sizerStyle = Seq(^.position := "absolute", ^.visibility := "hidden", ^.height := 0, ^.width := 0, ^.overflow := "scroll", ^.whiteSpace := "wrap")
+    def sizerStyle = Seq(
+      ^.position := "absolute",
+      ^.visibility := "hidden",
+      ^.height := 0,
+      ^.width := 0,
+      ^.overflow := "scroll",
+      ^.whiteSpace := "wrap"
+    )
 
   }
 
@@ -83,5 +95,14 @@ object AutoSizeInput {
 
   }
 
-  case class Props(minWidth: Int, ref: js.UndefOr[String], key: js.Any, defaultValue: String, value: String, onFocus: EmptyFunc, onChange: REventIUnit, style: Style, inputProps: TagMod*)
+  case class Props(minWidth: Int,
+                   ref: js.UndefOr[String],
+                   key: js.Any,
+                   defaultValue: String,
+                   value: String,
+                   onFocus: EmptyFunc,
+                   onChange: REventIUnit,
+                   style: Style,
+                   inputProps: TagMod*)
+
 }

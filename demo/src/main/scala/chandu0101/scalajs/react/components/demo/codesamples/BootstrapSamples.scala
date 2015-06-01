@@ -1,10 +1,6 @@
 package chandu0101.scalajs.react.components.demo.codesamples
 
-/**
- * Created by chandrasekharkode .
- */
 object BootstrapSamples {
-
 
   val buttonOptions = """ val buttonOptions = ReactComponentB[Unit]("buttons")
                         |    .render(P => {
@@ -19,7 +15,6 @@ object BootstrapSamples {
                         |      )
                         |    )
                         |  }).buildU""".stripMargin
-
 
   val buttonSizes = """  val buttonSizes = ReactComponentB[Unit]("changeme")
                       |    .render(P => {
@@ -43,7 +38,6 @@ object BootstrapSamples {
                       |      )
                       |  }).buildU""".stripMargin
 
-
   val buttonBlocks = """ val buttonBlocks = ReactComponentB[Unit]("blocklevelbuttons")
                        |      .render(P => {
                        |      div(cls:= "well", maxWidth := "400px",marginBottom := "10px" )(
@@ -51,7 +45,6 @@ object BootstrapSamples {
                        |        bootStrap.Button(bsSize = "large", block = true)("Block level button")
                        |      )
                        |    }).buildU""".stripMargin
-
 
   val buttonStates = """val buttonState = ReactComponentB[Unit]("buttonstates")
                        |      .render(P => {
@@ -69,7 +62,6 @@ object BootstrapSamples {
                        |      )
                        |    }).buildU""".stripMargin
 
-
   val buttontags = """  val buttonTags = ReactComponentB[Unit]("changeme")
                      |      .render(P => {
                      |      div(
@@ -81,7 +73,6 @@ object BootstrapSamples {
                      |    }).buildU
                      | """.stripMargin
 
-
   val bGroupBasic = """val bGroupBasic = ReactComponentB[Unit]("bGroupBasic")
                       |      .render(P => {
                       |      div(
@@ -92,7 +83,6 @@ object BootstrapSamples {
                       |        )
                       |      )
                       |    }).buildU""".stripMargin
-
 
   val buttonToolBar = """ val buttonToolBar = ReactComponentB[Unit]("changeme")
                         |      .render(P => {
@@ -116,7 +106,6 @@ object BootstrapSamples {
                         |      )
                         |    }).buildU""".stripMargin
 
-
   val buttonNesting = """val buttonNesting = ReactComponentB[Unit]("changeme")
                         |      .render(P => {
                         |      div(
@@ -130,7 +119,6 @@ object BootstrapSamples {
                         |       )
                         |      )
                         |    }).buildU""".stripMargin
-
 
   val buttonVerticalNesting = """val buttonVerticalNesting = ReactComponentB[Unit]("verticalvaraition")
                                 |    .render(P => {
@@ -156,7 +144,6 @@ object BootstrapSamples {
                                 |    )
                                 |  }).buildU""".stripMargin
 
-
   val buttonJustified = """val buttonJustified = ReactComponentB[Unit]("buttonsJustified")
                           |      .render(P => {
                           |      div(
@@ -173,14 +160,12 @@ object BootstrapSamples {
                           |      )
                           |    }).buildU""".stripMargin
 
-
   val basicPanel = """val basicPanel = ReactComponentB[Unit]("changeme")
                      |      .render(P => {
                      |      div(
                      |        bootStrap.Panel()("Basic Panel Example")
                      |      )
                      |    }).buildU""".stripMargin
-
 
   val panelWithHeading =
     """
@@ -218,14 +203,14 @@ object BootstrapSamples {
     """.stripMargin
 
   val progressBarWithLabel =
-   """
-     |val progressBarWithLabel = ReactComponentB[Unit]("changeme")
-     |  .render(P => {
-     |  div(
-     |    bootStrap.ProgressBar(now = 60.0 , label = "%(percent)s%" )()
-     |  )
-     |}).buildU
-   """.stripMargin
+    """
+      |val progressBarWithLabel = ReactComponentB[Unit]("changeme")
+      |  .render(P => {
+      |  div(
+      |    bootStrap.ProgressBar(now = 60.0 , label = "%(percent)s%" )()
+      |  )
+      |}).buildU
+    """.stripMargin
 
   val progressBarAlternatives =
     """
@@ -239,7 +224,6 @@ object BootstrapSamples {
       |      )
       |    }).buildU
     """.stripMargin
-
 
   val progressBarAnimated =
     """
@@ -265,6 +249,5 @@ object BootstrapSamples {
       |      )
       |    }).buildU
     """.stripMargin
-
 
 }

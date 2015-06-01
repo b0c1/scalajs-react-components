@@ -5,12 +5,7 @@ import chandu0101.scalajs.react.components.materialui.{MuiDialog, MuiRaisedButto
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
 
-
-/**
- * Created by chandrasekharkode .
- */
 object MuiDialogDemo {
-
 
   val code =
     """
@@ -28,15 +23,13 @@ object MuiDialogDemo {
       | )
     """.stripMargin
 
+  class Backend(t: BackendScope[_, _]) {
 
-
-
-  class Backend(t:BackendScope[_,_]) {
-
-    def onButtonTouchTap(e:ReactEventI)= {
+    def onButtonTouchTap(e: ReactEventI) = {
       theDialogRef(t).get.backend.show(e)
     }
-    def onDialogSubmit(e:ReactEventI) = {
+
+    def onDialogSubmit(e: ReactEventI) = {
       println("dialog submitted")
       theDialogRef(t).get.backend.dismiss(e)
     }
@@ -44,28 +37,24 @@ object MuiDialogDemo {
 
   val theDialogRef = Ref.to(MuiDialog.component, "theDialogRef")
 
-  val component = ReactComponentB[Unit]("plain")
-    .stateless
-    .backend(new Backend(_))
-    .render((P,S,B) => {
-      val dialogActions = List(
-      MuiDialog.Action( text = "CANCEL"),
-      MuiDialog.Action( text = "SUBMIT" , onClick = B.onDialogSubmit))
-     <.div(
-       <.h3("MuiDialog"),
-        CodeExample(code)(
-         MuiRaisedButton(label = "Demo", onTouchTap = B.onButtonTouchTap)
-        ),
-        MuiDialog(ref = theDialogRef,title = "Title", actions = dialogActions)(
-         """
-           | This is an example of a dialog component built with Facebook's React and following
-           | Google's Material Design principles.
-         """.stripMargin
+  val component = ReactComponentB[Unit]("plain").stateless.backend(new Backend(_)).render(
+      (P, S, B) => {
+        val dialogActions = List(
+          MuiDialog.Action(text = "CANCEL"), MuiDialog.Action(text = "SUBMIT", onClick = B.onDialogSubmit)
         )
-       )
-    }).buildU
+        <.div(
+          <.h3("MuiDialog"), CodeExample(code)(
+            MuiRaisedButton(label = "Demo", onTouchTap = B.onButtonTouchTap)
+          ), MuiDialog(ref = theDialogRef, title = "Title", actions = dialogActions)(
+            """
+              | This is an example of a dialog component built with Facebook's React and following
+              | Google's Material Design principles.
+            """.stripMargin
+          )
+        )
+      }
+    ).buildU
 
   def apply() = component()
-
 
 }

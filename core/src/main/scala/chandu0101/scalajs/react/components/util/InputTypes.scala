@@ -1,8 +1,5 @@
 package chandu0101.scalajs.react.components.util
 
-/**
- * Created by chandrasekharkode .
- */
 object InputTypes {
 
   val NUMBER = "number"

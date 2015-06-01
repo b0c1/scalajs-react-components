@@ -5,10 +5,6 @@ import chandu0101.scalajs.react.components.materialui.MuiMenu
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
 
-
-/**
- * Created by chandrasekharkode .
- */
 object MuiMenuDemo {
 
   val labelMenuCode =
@@ -23,9 +19,12 @@ object MuiMenuDemo {
     """.stripMargin
 
   val labelMenuItems = List(
-    MuiMenu.Item(index = 0, text = "ID", data = "1234567", icon = "home"),
-    MuiMenu.Item(index = 1, text = "Type", data = "Announcement", icon = "home"),
-    MuiMenu.Item(index = 2, text = "Caller ID", data = "(123) 456-7890", icon = "home")
+    MuiMenu.Item(index = 0, text = "ID", data = "1234567", icon = "home"), MuiMenu.Item(
+      index = 1,
+      text = "Type",
+      data = "Announcement",
+      icon = "home"
+    ), MuiMenu.Item(index = 2, text = "Caller ID", data = "(123) 456-7890", icon = "home")
   )
 
   val numberMenuCode =
@@ -56,9 +55,12 @@ object MuiMenuDemo {
     """.stripMargin
 
   val iconMenuItems = List(
-   MuiMenu.Item( index = 0, text = "Live Answer" , icon = "communication_phone" , number = "19"),
-   MuiMenu.Item( index = 1, text = "Voicemail" , icon = "communication_voicemail" , number = "9"),
-   MuiMenu.Item( index = 2, text = "Starred" , icon = "action_stars" , number = "92")
+    MuiMenu.Item(index = 0, text = "Live Answer", icon = "communication_phone", number = "19"), MuiMenu.Item(
+      index = 1,
+      text = "Voicemail",
+      icon = "communication_voicemail",
+      number = "9"
+    ), MuiMenu.Item(index = 2, text = "Starred", icon = "action_stars", number = "92")
   )
 
   val filterMenuCoe =
@@ -72,9 +74,11 @@ object MuiMenuDemo {
     """.stripMargin
 
   val filterMenuItems = List(
-    MuiMenu.Item(index = 0 , text = "Text opt-In" ,toggle = true),
-    MuiMenu.Item(index = 1 , text = "Text opt-Out" ,toggle = true),
-    MuiMenu.Item(index = 2 , text = "Voice opt-In" ,toggle = true)
+    MuiMenu.Item(index = 0, text = "Text opt-In", toggle = true), MuiMenu.Item(
+      index = 1,
+      text = "Text opt-Out",
+      toggle = true
+    ), MuiMenu.Item(index = 2, text = "Voice opt-In", toggle = true)
   )
 
   val nestedMenuCode =
@@ -97,18 +101,17 @@ object MuiMenuDemo {
     """.stripMargin
 
   val nestedMenuItems = List(
-   MuiMenu.Item(mtype = MuiMenu.Types.NESTED , text = "Repots" ,items = List(
-      MuiMenu.Item( text = "Nested Item 1"),
-      MuiMenu.Item(mtype = MuiMenu.Types.NESTED , text = "Nested Item 4" ,items = List(
-        MuiMenu.Item(text = "Nested Item 5"),
-        MuiMenu.Item(text = "Nested Item 6")
-       )),
-      MuiMenu.Item(text = "Nested Item 7")
-     )),
-    MuiMenu.Item(text = "Audio Library"),
-    MuiMenu.Item(text = "Settings"),
-    MuiMenu.Item(text = "Logout")
+    MuiMenu.Item(
+      mtype = MuiMenu.Types.NESTED, text = "Repots", items = List(
+        MuiMenu.Item(text = "Nested Item 1"), MuiMenu.Item(
+          mtype = MuiMenu.Types.NESTED, text = "Nested Item 4", items = List(
+            MuiMenu.Item(text = "Nested Item 5"), MuiMenu.Item(text = "Nested Item 6")
+          )
+        ), MuiMenu.Item(text = "Nested Item 7")
+      )
+    ), MuiMenu.Item(text = "Audio Library"), MuiMenu.Item(text = "Settings"), MuiMenu.Item(text = "Logout")
   )
+
   class Backend(t: BackendScope[_, _]) {
 
     def onMenuItemCLick(e: ReactEventI, index: Int, route: String) = {
@@ -116,43 +119,33 @@ object MuiMenuDemo {
     }
   }
 
-  val component = ReactComponentB[Unit]("MuiMenuDemo")
-    .stateless
-    .backend(new Backend(_))
-    .render((P, S, B) => {
-   <.div(
-     <.h3("Label Menu"),
-      CodeExample(labelMenuCode)(
-       <.div(^.width := "256px")(
-          MuiMenu(menuItems = labelMenuItems, onItemClick = B.onMenuItemCLick)
+  val component = ReactComponentB[Unit]("MuiMenuDemo").stateless.backend(new Backend(_)).render(
+      (P, S, B) => {
+        <.div(
+          <.h3("Label Menu"), CodeExample(labelMenuCode)(
+            <.div(^.width := "256px")(
+              MuiMenu(menuItems = labelMenuItems, onItemClick = B.onMenuItemCLick)
+            )
+          ), <.h3("Number Menu"), CodeExample(numberMenuCode)(
+            <.div(^.width := "256px")(
+              MuiMenu(menuItems = numberMenuItems, onItemClick = B.onMenuItemCLick)
+            )
+          ), <.h3("Icon Menu"), CodeExample(iconMenuCode)(
+            <.div(^.width := "256px")(
+              MuiMenu(menuItems = iconMenuItems, onItemClick = B.onMenuItemCLick)
+            )
+          ), <.h3("Filter Menu"), CodeExample(filterMenuCoe)(
+            <.div(^.width := "256px")(
+              MuiMenu(menuItems = filterMenuItems, onItemClick = B.onMenuItemCLick)
+            )
+          ), <.h3("Nested Menu"), CodeExample(nestedMenuCode)(
+            <.div(^.width := "256px")(
+              MuiMenu(menuItems = nestedMenuItems, onItemClick = B.onMenuItemCLick)
+            )
+          )
         )
-      ),
-     <.h3("Number Menu"),
-      CodeExample(numberMenuCode)(
-       <.div(^.width := "256px")(
-          MuiMenu(menuItems = numberMenuItems, onItemClick = B.onMenuItemCLick)
-        )
-      ),
-     <.h3("Icon Menu"),
-      CodeExample(iconMenuCode)(
-       <.div(^.width := "256px")(
-          MuiMenu(menuItems = iconMenuItems, onItemClick = B.onMenuItemCLick)
-        )
-      ),
-     <.h3("Filter Menu"),
-      CodeExample(filterMenuCoe)(
-       <.div(^.width := "256px")(
-          MuiMenu(menuItems = filterMenuItems, onItemClick = B.onMenuItemCLick)
-        )
-      ),
-     <.h3("Nested Menu"),
-      CodeExample(nestedMenuCode)(
-       <.div(^.width := "256px")(
-          MuiMenu(menuItems = nestedMenuItems, onItemClick = B.onMenuItemCLick)
-        )
-      )
-    )
-  }).buildU
+      }
+    ).buildU
 
   def apply() = component()
 

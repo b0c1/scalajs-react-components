@@ -26,7 +26,6 @@ import scala.scalajs.js
  */
 object MuiDialogWindow {
 
-
   case class State(open: Boolean)
 
   class Backend(t: BackendScope[Props, State]) extends WindowListeners {
@@ -50,12 +49,12 @@ object MuiDialogWindow {
     def isOpen = t.state.open
 
     def dismiss() = {
-//      CssEvents.onTransitionEnd(t.getDOMNode(),(e : Event) => {
-        //allow scrolling
-        val body = dom.document.getElementsByTagName("body")(0).asInstanceOf[html.Element]
-        body.style.overflow = ""
-        body.style.position = ""
-//      })
+      //      CssEvents.onTransitionEnd(t.getDOMNode(),(e : Event) => {
+      //allow scrolling
+      val body = dom.document.getElementsByTagName("body")(0).asInstanceOf[html.Element]
+      body.style.overflow = ""
+      body.style.position = ""
+      //      })
       t.modState(_.copy(open = false))
       if (t.props.onDismiss != null) t.props.onDismiss
     }
@@ -63,47 +62,81 @@ object MuiDialogWindow {
     def show() = {
       //prevent scrolling
       val body = dom.document.getElementsByTagName("body")(0).asInstanceOf[html.Element]
-       body.style.overflow = "hidden"
-       body.style.position = "fixed"
+      body.style.overflow = "hidden"
+      body.style.position = "fixed"
       if (t.props.onShow != null) t.props.onShow
       t.modState(_.copy(open = true))
     }
 
     def handleOverlatTouchTap() = dismiss()
 
-    lazy val handleWindowKeyUp: js.Function1[Event, _] = (e: Event) => {
+    lazy     val handleWindowKeyUp: js.Function1[Event, _]                 = (e: Event) => {
       if (e.asInstanceOf[KeyboardEvent].keyCode == KeyCode.escape) dismiss()
     }
-    override val listeners: List[(String, js.Function1[Event, _])] = List((Events.KEYUP, handleWindowKeyUp))
+
+    override val listeners        : List[(String, js.Function1[Event, _])] = List((Events.KEYUP, handleWindowKeyUp))
   }
 
-  val theDialogWindowRef = Ref.to(MuiPaper.component,"thePaperDialogWindow")
+  val theDialogWindowRef = Ref.to(MuiPaper.component, "thePaperDialogWindow")
 
-  val component = ReactComponentB[Props]("MuiDialogWindow")
-    .initialStateP(p => State(p.openImmediately))
-    .backend(new Backend(_))
-    .render((P, C, S, B) => {
-    val classes = CommonUtils.cssMap(mui_dialog_window, (mui_is_shown, S.open)).++(P.clsNames)
-    val contentClasses = CommonUtils.cssMap(P.contentClassName.concat(s" $mui_dialog_window_contents"))
-    <.div(^.classSetM(classes))(
-      MuiPaper(ref = theDialogWindowRef, clsNames = contentClasses, zDepth = 4, rounded = true)(
-        C,
-        <.div(^.cls := mui_dialog_window_actions, ^.key := "actionsdiv")(
-          P.actions
+  val component = ReactComponentB[Props]("MuiDialogWindow").initialStateP(p => State(p.openImmediately)).backend(
+      new Backend(
+        _
+      )
+    ).render(
+      (P, C, S, B) => {
+        val classes = CommonUtils.cssMap(mui_dialog_window, (mui_is_shown, S.open)).++(P.clsNames)
+        val contentClasses = CommonUtils.cssMap(P.contentClassName.concat(s" $mui_dialog_window_contents"))
+        <.div(^.classSetM(classes))(
+          MuiPaper(ref = theDialogWindowRef, clsNames = contentClasses, zDepth = 4, rounded = true)(
+            C, <.div(^.cls := mui_dialog_window_actions, ^.key := "actionsdiv")(
+              P.actions
+            )
+          ), MuiOverlay(show = S.open, onTouchTap = B.dismiss _)
         )
-      ),
-      MuiOverlay(show = S.open, onTouchTap = B.dismiss _)
+      }
+    ).domType[html.Element].componentDidMount($ => $.backend.positionDialog($.getDOMNode())).componentDidUpdate(
+      ($,
+       _,
+       _) => $.backend.positionDialog(
+        $.getDOMNode()
+      )
+    ).configure(WindowListeners.mixin).build
+
+  case class Props(contentClassName: String,
+                   onDismiss: EmptyFunc,
+                   onShow: EmptyFunc,
+                   openImmediately: Boolean,
+                   onClickAway: REventIUnit,
+                   clsNames: CssClassType,
+                   ref: js.UndefOr[String],
+                   key: js.Any,
+                   actions: List[ReactNode],
+                   repositionOnUpdate: Boolean)
+
+  def apply(contentClassName: String = "",
+            onDismiss: EmptyFunc = null,
+            onShow: EmptyFunc = null,
+            openImmediately: Boolean = false,
+            onClickAway: REventIUnit = null,
+            clsNames: CssClassType = Map(),
+            ref: js.UndefOr[String] = "",
+            key: js.Any = {},
+            actions: List[ReactNode] = List(),
+            repositionOnUpdate: Boolean = false)(children: ReactNode*) =
+    component.set(key, ref)(
+      Props(
+        contentClassName,
+        onDismiss,
+        onShow,
+        openImmediately,
+        onClickAway,
+        clsNames,
+        ref,
+        key,
+        actions,
+        repositionOnUpdate
+      ), children
     )
-  }).domType[html.Element]
-    .componentDidMount($ => $.backend.positionDialog($.getDOMNode()))
-    .componentDidUpdate(($, _, _) => $.backend.positionDialog($.getDOMNode()))
-    .configure(WindowListeners.mixin)
-    .build
-
-
-  case class Props(contentClassName: String, onDismiss: EmptyFunc, onShow: EmptyFunc, openImmediately: Boolean, onClickAway: REventIUnit, clsNames: CssClassType, ref: js.UndefOr[String], key: js.Any, actions: List[ReactNode], repositionOnUpdate: Boolean)
-
-  def apply(contentClassName: String = "", onDismiss: EmptyFunc = null, onShow: EmptyFunc = null, openImmediately: Boolean = false, onClickAway: REventIUnit = null, clsNames: CssClassType = Map(), ref: js.UndefOr[String] = "", key: js.Any = {}, actions: List[ReactNode] = List(), repositionOnUpdate: Boolean = false)(children: ReactNode*) =
-    component.set(key, ref)(Props(contentClassName, onDismiss, onShow, openImmediately, onClickAway, clsNames, ref, key, actions, repositionOnUpdate), children)
 
 }

@@ -6,16 +6,13 @@ import org.scalajs.dom.Event
 
 import scala.scalajs.js.Date
 
-/**
- * Created by chandrasekharkode .
- */
 trait MTypes {
 
   type REventIBooleanUnit = (ReactEventI, Boolean) => Unit
 
   type REventIUnit = (ReactEventI) => Unit
 
-  type REventIIntUnit = (ReactEventI,Int) => Unit
+  type REventIIntUnit = (ReactEventI, Int) => Unit
 
   type DateUnit = (Date) => Unit
 
@@ -25,9 +22,9 @@ trait MTypes {
 
   type EmptyFunc = () => Any
 
-  type StringIntUnit = (String,Int) => Unit
+  type StringIntUnit = (String, Int) => Unit
 
-  type StringStringIntAny = (String,String,Int) => Any
+  type StringStringIntAny = (String, String, Int) => Any
 
   type REventIDateUnit = (ReactEventI, Date) => Unit
 
@@ -35,7 +32,7 @@ trait MTypes {
 
   type EventUnit = (Event) => Unit
 
-  type EventRElementPositionAny = (Event,RElementPosition) => Any
+  type EventRElementPositionAny = (Event, RElementPosition) => Any
 
   type REventIDoubleUnit = (ReactEventI, Double) => Unit
 
@@ -51,12 +48,12 @@ trait MTypes {
 
   type CssClassType = Map[String, Boolean]
 
-  type MapUnit = (Map[String,Any]) => Unit
+  type MapUnit = (Map[String, Any]) => Unit
 
-  type MapMapUnit = (Map[String,Any],Map[String,Any]) => Unit
+  type MapMapUnit = (Map[String, Any], Map[String, Any]) => Unit
 
-  type MapString = (Map[String,Any]) => String
+  type MapString = (Map[String, Any]) => String
 
-  type StringRPointAny = (String,RPoint) => Any
+  type StringRPointAny = (String, RPoint) => Any
 
 }

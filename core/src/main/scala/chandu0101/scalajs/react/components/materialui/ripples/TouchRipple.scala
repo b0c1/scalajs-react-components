@@ -1,6 +1,5 @@
 package chandu0101.scalajs.react.components.materialui.ripples
 
-
 import chandu0101.scalajs.react.components.all._
 import chandu0101.scalajs.react.components.materialui.styles.MaterialUICss._
 import chandu0101.scalajs.react.components.util.DomUtil
@@ -12,7 +11,6 @@ import org.scalajs.dom.{MouseEvent, html}
 import scala.collection.mutable.ListBuffer
 import scala.scalajs.js
 import scala.scalajs.js.Math
-
 
 /**
  * Created by chandrasekharkode .
@@ -47,9 +45,11 @@ object TouchRipple {
       val leftValue = pointerX - rippleRadius
       val topValue = pointerY - rippleRadius
 
-      Seq(^.height := s"${rippleSize}px", ^.width := s"${rippleSize}px",
-        ^.top := s"${topValue}px",
-        ^.left := s"${leftValue}px"
+      Seq(
+        ^.height := s"${rippleSize }px",
+        ^.width := s"${rippleSize }px",
+        ^.top := s"${topValue }px",
+        ^.left := s"${leftValue }px"
       )
     }
 
@@ -58,7 +58,7 @@ object TouchRipple {
     def start(e: ReactEventI) = {
       val ripples = t.state.ripples
       val nextKey = ripples.last.key + 1
-      val rippleAndIndex = ripples.zipWithIndex.view.filter { case (r, index) => !r.started}.head
+      val rippleAndIndex = ripples.zipWithIndex.view.filter { case (r, index) => !r.started }.head
       val style: TagMod = if (!t.props.centerRipple) getRippleStyle(e) else Seq[TagMod]()
       ripples.update(rippleAndIndex._2, rippleAndIndex._1.copy(started = true))
       ripples += Ripple(nextKey, started = false, ending = false, style)
@@ -69,15 +69,17 @@ object TouchRipple {
       val ripples = t.state.ripples
       //Only update if a ripple was found
       if (ripples.view.exists(r => r.started && !r.ending)) {
-        val rippleAndIndex = ripples.zipWithIndex.view.filter { case (r, index) => r.started && !r.ending}.head
+        val rippleAndIndex = ripples.zipWithIndex.view.filter { case (r, index) => r.started && !r.ending }.head
         ripples.update(rippleAndIndex._2, rippleAndIndex._1.copy(ending = true))
         t.modState(_.copy(ripples = ripples))
         //Wait 2 seconds and remove the ripple from DOM
-        dom.window.setTimeout(() => {
-          if (t.isMounted()) {
-            t.modState(_.copy(ripples = ripples.tail))
-          }
-        }, 2000)
+        dom.window.setTimeout(
+          () => {
+            if (t.isMounted()) {
+              t.modState(_.copy(ripples = ripples.tail))
+            }
+          }, 2000
+        )
       }
     }
 
@@ -93,34 +95,43 @@ object TouchRipple {
 
     def handleTouchEnd(e: ReactEventI): Unit = end
 
-    def getRippleElements = t.state.ripples.map(r => RippleCircle(key = r.key, started = r.started, ending = r.ending)(r.style))
+    def getRippleElements = t.state.ripples.map(
+      r => RippleCircle(
+        key = r.key,
+        started = r.started,
+        ending = r.ending
+      )(r.style)
+    )
 
   }
 
-  val component = ReactComponentB[Props]("TouchRipple")
-    .initialState(State(ListBuffer(Ripple())))
-    .backend(new Backend(_))
-    .render((P, C, S, B) => {
-    val classes = ^.classSet1M(mui_touch_ripple, P.clsNames)
-    <.div(
-      ^.onMouseDown ==> B.handleMouseDown,
-      ^.onMouseUp ==> B.handleMouseUp,
-      ^.onMouseOut ==> B.handleMouseOut,
-      ^.onTouchStart ==> B.handleTouchStart,
-      ^.onTouchEnd ==> B.handleTouchEnd
-    )(
-        <.div(classes)(B.getRippleElements),
-        C
-      )
-  })
-    .build
+  val component = ReactComponentB[Props]("TouchRipple").initialState(State(ListBuffer(Ripple()))).backend(new Backend(_)).render(
+      (P, C, S, B) => {
+        val classes = ^.classSet1M(mui_touch_ripple, P.clsNames)
+        <.div(
+          ^.onMouseDown ==> B.handleMouseDown,
+          ^.onMouseUp ==> B.handleMouseUp,
+          ^.onMouseOut ==> B.handleMouseOut,
+          ^.onTouchStart ==> B.handleTouchStart,
+          ^.onTouchEnd ==> B.handleTouchEnd
+        )(
+            <.div(classes)(B.getRippleElements), C
+          )
+      }
+    ).build
 
   case class Props(clsNames: CssClassType, key: js.Any, ref: js.UndefOr[String], centerRipple: Boolean)
 
-  def withChildren(clsNames: CssClassType = Map(), key: js.Any = {}, ref: js.UndefOr[String] = "", centerRipple: Boolean = false)(children : ReactNode*) =
-    component.set(key, ref)(Props(clsNames, key, ref, centerRipple),children)
-  
-  def apply(clsNames: CssClassType = Map(), key: js.Any = {}, ref: js.UndefOr[String] = "", centerRipple: Boolean = false) = 
+  def withChildren(clsNames: CssClassType = Map(),
+                   key: js.Any = {},
+                   ref: js.UndefOr[String] = "",
+                   centerRipple: Boolean = false)(children: ReactNode*) =
+    component.set(key, ref)(Props(clsNames, key, ref, centerRipple), children)
+
+  def apply(clsNames: CssClassType = Map(),
+            key: js.Any = {},
+            ref: js.UndefOr[String] = "",
+            centerRipple: Boolean = false) =
     component.set(key, ref)(Props(clsNames, key, ref, centerRipple))
 
 }

@@ -7,13 +7,9 @@ import chandu0101.scalajs.react.components.util.JsonUtil
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
 
-
-/**
- * Created by chandrasekharkode .
- */
 object CustomCssReactTable {
 
-  val code =
+  val code      =
     """
       |  val data : Vector[Map[String,Any]] = JsonUtil.jsonArrayToMap(SampleData.personJson)
       |  val columns : List[String] = List("fname","lname","email","country")
@@ -42,18 +38,21 @@ object CustomCssReactTable {
       |
       |
     """.stripMargin
-  val component = ReactComponentB[Unit]("plain")
-    .render(P => {
-   <.div(
-     <.h2(^.cls := "mui-font-style-headline")("Custom Css"),
-      CodeExample(code)(
-       ReactTable(data = data ,columns = columns , css = newCss)
-      )
-    )
-  }).buildU
 
-  val data : Vector[Map[String,Any]] = JsonUtil.jsonArrayToMap(SampleData.personJson)
-  val columns : List[String] = List("fname","lname","email","country")
+  val component = ReactComponentB[Unit]("plain").render(
+      P => {
+        <.div(
+          <.h2(^.cls := "mui-font-style-headline")("Custom Css"), CodeExample(code)(
+            ReactTable(data = data, columns = columns, css = newCss)
+          )
+        )
+      }
+    ).buildU
+
+  val data   : Vector[Map[String, Any]] = JsonUtil.jsonArrayToMap(SampleData.personJson)
+
+  val columns: List[String]             = List("fname", "lname", "email", "country")
+
   /*
    Default CSS values
 
@@ -73,7 +72,7 @@ object CustomCssReactTable {
 
   */
   // if i want to change table class
-  val newCss = ReactTable.CSS( table = "table table-hover table-striped table-mc-blue")
+  val newCss                            = ReactTable.CSS(table = "table table-hover table-striped table-mc-blue")
 
   def apply() = component()
 

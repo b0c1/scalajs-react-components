@@ -1,7 +1,7 @@
-package chandu0101.scalajs.react.components.materialui
+package chandu0101.scalajs.react.components
+package materialui
 
 import japgolly.scalajs.react._
-import materialui.Mui
 
 import scala.scalajs.js
 
@@ -14,36 +14,37 @@ ref: PropTypes.String,
     disabled: React.PropTypes.bool,
     iconClassName: React.PropTypes.string,
     iconStyle: React.PropTypes.js.Any,
-    onBlur: React.PropTypes.ReavtEvent => Unit,
-    onFocus: React.PropTypes.ReactEvent => Unit,
+    onBlur: React.PropTypes.ReavtEvent => Callback,
+    onFocus: React.PropTypes.ReactEvent => Callback,
     tooltip: React.PropTypes.string,
     touch: React.PropTypes.bool,
 
  */
-case class MuiIconButton(iconClassName: js.UndefOr[String] = js.undefined,
-                         onBlur: js.UndefOr[ReactEvent => Unit] = js.undefined,
-                         touch: js.UndefOr[Boolean] = js.undefined,
-                         style: js.UndefOr[js.Any] = js.undefined,
-                         iconStyle: js.UndefOr[js.Any] = js.undefined,
-                         ref: js.UndefOr[String] = js.undefined,
-                         key: js.UndefOr[String] = js.undefined,
-                         className: js.UndefOr[String] = js.undefined,
-                         onFocus: js.UndefOr[ReactEvent => Unit] = js.undefined,
-                         disabled: js.UndefOr[Boolean] = js.undefined,
-                         tooltip: js.UndefOr[String] = js.undefined) {
+case class MuiIconButton(
+  iconClassName: U[String]                 = uNone,
+  onBlur:        U[ReactEvent => Callback] = uNone,
+  touch:         U[Boolean]                = uNone,
+  style:         U[js.Any]                 = uNone,
+  iconStyle:     U[js.Any]                 = uNone,
+  ref:           U[String]                 = uNone,
+  key:           U[String]                 = uNone,
+  className:     U[String]                 = uNone,
+  onFocus:       U[ReactEvent => Callback] = uNone,
+  disabled:      U[Boolean]                = uNone,
+  tooltip:       U[String]                 = uNone) {
   def toJS = {
-    val p = js.Dynamic.literal()
-    iconClassName.foreach(v => p.updateDynamic("iconClassName")(v))
-    onBlur.foreach(v => p.updateDynamic("onBlur")(v))
-    touch.foreach(v => p.updateDynamic("touch")(v))
-    style.foreach(v => p.updateDynamic("style")(v))
-    iconStyle.foreach(v => p.updateDynamic("iconStyle")(v))
-    ref.foreach(v => p.updateDynamic("ref")(v))
-    key.foreach(v => p.updateDynamic("key")(v))
-    className.foreach(v => p.updateDynamic("className")(v))
-    onFocus.foreach(v => p.updateDynamic("onFocus")(v))
-    disabled.foreach(v => p.updateDynamic("disabled")(v))
-    tooltip.foreach(v => p.updateDynamic("tooltip")(v))
+    val p = new TypedJsProps
+    iconClassName.foreach(p.setV("iconClassName"))
+    onBlur       .foreach(p.setF1C("onBlur"))
+    touch        .foreach(p.setV("touch"))
+    style        .foreach(p.setV("style"))
+    iconStyle    .foreach(p.setV("iconStyle"))
+    ref          .foreach(p.setV("ref"))
+    key          .foreach(p.setV("key"))
+    className    .foreach(p.setV("className"))
+    onFocus      .foreach(p.setF1C("onFocus"))
+    disabled     .foreach(p.setV("disabled"))
+    tooltip      .foreach(p.setV("tooltip"))
     p
   }
 

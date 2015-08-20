@@ -1,10 +1,9 @@
-package chandu0101.scalajs.react.components.materialui
+package chandu0101.scalajs.react.components
+package materialui
 
 import japgolly.scalajs.react._
-import materialui.Mui
 
 import scala.scalajs.js
-import scala.scalajs.js.Dynamic.{literal => json}
 import scala.scalajs.js.{Array => JArray}
 
 
@@ -16,41 +15,42 @@ ref: PropTypes.String,
     docked: React.PropTypes.bool,
     header: React.PropTypes.element,
     menuItems: React.PropTypes.JArray[MuiMenuItem].isRequired,
-    onChange: React.PropTypes.(ReactEvent,Int,js.Object) => Unit,
-    onNavOpen: React.PropTypes.() => Unit,
-    onNavClose: React.PropTypes.() => Unit,
+    onChange: React.PropTypes.(ReactEvent,Int,js.Object) => Callback,
+    onNavOpen: React.PropTypes.Callback,
+    onNavClose: React.PropTypes.Callback,
     openRight: React.PropTypes.bool,
     selectedIndex: React.PropTypes.number
 
  */
 object MuiLeftNav {
 
-  def apply(menuItems: JArray[MuiMenuItem],
-            style: js.UndefOr[js.Any] = js.undefined,
-            onChange: js.UndefOr[(ReactEvent, Int, js.Object) => Unit] = js.undefined,
-            ref: js.UndefOr[String] = js.undefined,
-            onNavClose: js.UndefOr[() => Unit] = js.undefined,
-            onNavOpen: js.UndefOr[() => Unit] = js.undefined,
-            key: js.UndefOr[String] = js.undefined,
-            className: js.UndefOr[String] = js.undefined,
-            docked: js.UndefOr[Boolean] = js.undefined,
-            header: js.UndefOr[ReactElement] = js.undefined,
-            selectedIndex: js.UndefOr[Int] = js.undefined,
-            openRight: js.UndefOr[Boolean] = js.undefined) = {
+  def apply(
+    menuItems:     JArray[MuiMenuItem],
+    style:         U[js.Any]                                   = uNone,
+    onChange:      U[(ReactEvent, Int, js.Object) => Callback] = uNone,
+    ref:           U[String]                                   = uNone,
+    onNavClose:    U[Callback]                                 = uNone,
+    onNavOpen:     U[Callback]                                 = uNone,
+    key:           U[String]                                   = uNone,
+    className:     U[String]                                   = uNone,
+    docked:        U[Boolean]                                  = uNone,
+    header:        U[ReactElement]                             = uNone,
+    selectedIndex: U[Int]                                      = uNone,
+    openRight:     U[Boolean]                                  = uNone) = {
 
-    val p = js.Dynamic.literal()
-    p.updateDynamic("menuItems")(menuItems.map(_.toJson))
-    style.foreach(v => p.updateDynamic("style")(v))
-    onChange.foreach(v => p.updateDynamic("onChange")(v))
-    ref.foreach(v => p.updateDynamic("ref")(v))
-    onNavClose.foreach(v => p.updateDynamic("onNavClose")(v))
-    onNavOpen.foreach(v => p.updateDynamic("onNavOpen")(v))
-    key.foreach(v => p.updateDynamic("key")(v))
-    className.foreach(v => p.updateDynamic("className")(v))
-    docked.foreach(v => p.updateDynamic("docked")(v))
-    header.foreach(v => p.updateDynamic("header")(v))
-    selectedIndex.foreach(v => p.updateDynamic("selectedIndex")(v))
-    openRight.foreach(v => p.updateDynamic("openRight")(v))
+    val p = new TypedJsProps
+    p.setV("menuItems")(menuItems.map(_.toJson))
+    style        .foreach(p.setV("style"))
+    onChange     .foreach(p.setF3C("onChange"))
+    ref          .foreach(p.setV("ref"))
+    onNavClose   .foreach(p.setC("onNavClose"))
+    onNavOpen    .foreach(p.setC("onNavOpen"))
+    key          .foreach(p.setV("key"))
+    className    .foreach(p.setV("className"))
+    docked       .foreach(p.setV("docked"))
+    header       .foreach(p.setV("header"))
+    selectedIndex.foreach(p.setV("selectedIndex"))
+    openRight    .foreach(p.setV("openRight"))
 
     val f = React.asInstanceOf[js.Dynamic].createFactory(Mui.LeftNav)
     f(p).asInstanceOf[ReactComponentU_]
@@ -71,8 +71,8 @@ trait MuiLeftNavM extends js.Object {
 style: PropTypes.js.Any,
 ref: PropTypes.String,
   autoWidth: React.PropTypes.bool,
-    onItemTap: React.PropTypes.(ReactEvent,Int,js.Object) => Unit,
-    onToggle: React.PropTypes.(ReactEvent,Int,Boolean) => Unit,
+    onItemTap: React.PropTypes.(ReactEvent,Int,js.Object) => Callback,
+    onToggle: React.PropTypes.(ReactEvent,Int,Boolean) => Callback,
     menuItems: React.PropTypes.JArray[MuiMenuItem].isRequired,
     selectedIndex: React.PropTypes.number,
     hideable: React.PropTypes.bool,
@@ -88,42 +88,43 @@ ref: PropTypes.String,
  */
 object MuiMenu {
 
-  def apply(onToggle : js.UndefOr[(ReactEvent,Int,Boolean) => Unit] = js.undefined,
-            menuItems : JArray[MuiMenuItem],
-            visible : js.UndefOr[Boolean]=js.undefined,
-            style : js.UndefOr[js.Any] = js.undefined,
-            ref : js.UndefOr[String] = js.undefined,
-            onItemTap : js.UndefOr[(ReactEvent,Int,js.Object) => Unit] = js.undefined,
-            menuItemStyleLink : js.UndefOr[js.Any] = js.undefined,
-            zDepth : js.UndefOr[Int] = js.undefined,
-            menuItemStyle : js.UndefOr[js.Any] = js.undefined,
-            key : js.UndefOr[String] = js.undefined,
-            autoWidth : js.UndefOr[Boolean]=js.undefined,
-            menuItemClassNameSubheader : js.UndefOr[String] = js.undefined,
-            menuItemStyleSubheader : js.UndefOr[js.Any] = js.undefined,
-            hideable : js.UndefOr[Boolean]=js.undefined,
-            menuItemClassNameLink : js.UndefOr[String] = js.undefined,
-            menuItemClassName : js.UndefOr[String] = js.undefined,
-            selectedIndex : js.UndefOr[Int] = js.undefined) = {
+  def apply(
+    onToggle:                   U[(ReactEvent, Int, Boolean) => Callback]   = uNone,
+    menuItems:                  JArray[MuiMenuItem],
+    visible:                    U[Boolean]                                  = uNone,
+    style:                      U[js.Any]                                   = uNone,
+    ref:                        U[String]                                   = uNone,
+    onItemTap:                  U[(ReactEvent, Int, js.Object) => Callback] = uNone,
+    menuItemStyleLink:          U[js.Any]                                   = uNone,
+    zDepth:                     U[Int]                                      = uNone,
+    menuItemStyle:              U[js.Any]                                   = uNone,
+    key:                        U[String]                                   = uNone,
+    autoWidth:                  U[Boolean]                                  = uNone,
+    menuItemClassNameSubheader: U[String]                                   = uNone,
+    menuItemStyleSubheader:     U[js.Any]                                   = uNone,
+    hideable:                   U[Boolean]                                  = uNone,
+    menuItemClassNameLink:      U[String]                                   = uNone,
+    menuItemClassName:          U[String]                                   = uNone,
+    selectedIndex:              U[Int]                                      = uNone) = {
 
-    val p = js.Dynamic.literal()
-    onToggle.foreach(v => p.updateDynamic("onToggle")(v))
-    p.updateDynamic("menuItems")(menuItems.map(_.toJson))
-    visible.foreach(v => p.updateDynamic("visible")(v))
-    style.foreach(v => p.updateDynamic("style")(v))
-    ref.foreach(v => p.updateDynamic("ref")(v))
-    onItemTap.foreach(v => p.updateDynamic("onItemTap")(v))
-    menuItemStyleLink.foreach(v => p.updateDynamic("menuItemStyleLink")(v))
-    zDepth.foreach(v => p.updateDynamic("zDepth")(v))
-    menuItemStyle.foreach(v => p.updateDynamic("menuItemStyle")(v))
-    key.foreach(v => p.updateDynamic("key")(v))
-    autoWidth.foreach(v => p.updateDynamic("autoWidth")(v))
-    menuItemClassNameSubheader.foreach(v => p.updateDynamic("menuItemClassNameSubheader")(v))
-    menuItemStyleSubheader.foreach(v => p.updateDynamic("menuItemStyleSubheader")(v))
-    hideable.foreach(v => p.updateDynamic("hideable")(v))
-    menuItemClassNameLink.foreach(v => p.updateDynamic("menuItemClassNameLink")(v))
-    menuItemClassName.foreach(v => p.updateDynamic("menuItemClassName")(v))
-    selectedIndex.foreach(v => p.updateDynamic("selectedIndex")(v))
+    val p = new TypedJsProps
+    onToggle                  .foreach(p.setF3C("onToggle"))
+    p                         .setV("menuItems")(menuItems.map(_.toJson))
+    visible                   .foreach(p.setV("visible"))
+    style                     .foreach(p.setV("style"))
+    ref                       .foreach(p.setV("ref"))
+    onItemTap                 .foreach(p.setF3C("onItemTap"))
+    menuItemStyleLink         .foreach(p.setV("menuItemStyleLink"))
+    zDepth                    .foreach(p.setV("zDepth"))
+    menuItemStyle             .foreach(p.setV("menuItemStyle"))
+    key                       .foreach(p.setV("key"))
+    autoWidth                 .foreach(p.setV("autoWidth"))
+    menuItemClassNameSubheader.foreach(p.setV("menuItemClassNameSubheader"))
+    menuItemStyleSubheader    .foreach(p.setV("menuItemStyleSubheader"))
+    hideable                  .foreach(p.setV("hideable"))
+    menuItemClassNameLink     .foreach(p.setV("menuItemClassNameLink"))
+    menuItemClassName         .foreach(p.setV("menuItemClassName"))
+    selectedIndex             .foreach(p.setV("selectedIndex"))
 
     val f = React.asInstanceOf[js.Dynamic].createFactory(Mui.Menu)
     f(p).asInstanceOf[ReactComponentU_]
@@ -132,36 +133,38 @@ object MuiMenu {
 }
 
 
-case class MuiMenuItem(payload: js.UndefOr[String] = js.undefined,
-                       text: js.UndefOr[String] = js.undefined,
-                       id: js.UndefOr[String] = js.undefined,
-                       number: js.UndefOr[String] = js.undefined,
-                       data: js.UndefOr[String] = js.undefined,
-                       iconClassName: js.UndefOr[String] = js.undefined,
-                       toggle: js.UndefOr[Boolean] = js.undefined,
-                       disabled: js.UndefOr[Boolean] = js.undefined,
-                       defaultToggled: js.UndefOr[Boolean] = js.undefined,
-                       route: js.UndefOr[String] = js.undefined,
-                       `type`: js.UndefOr[MuiMenuItemType] = js.undefined,
-                       className: js.UndefOr[String] = js.undefined,
-                       selected: js.UndefOr[Boolean] = js.undefined,
-                       style : js.UndefOr[js.Any] = js.undefined) {
-  def toJson = {
-    val p = json()
-    defaultToggled.foreach(v => p.updateDynamic("defaultToggled")(v))
-    text.foreach(v => p.updateDynamic("text")(v))
-    selected.foreach(v => p.updateDynamic("selected")(v))
-    className.foreach(v => p.updateDynamic("className")(v))
-    number.foreach(v => p.updateDynamic("number")(v))
-    data.foreach(v => p.updateDynamic("data")(v))
-    iconClassName.foreach(v => p.updateDynamic("iconClassName")(v))
-    `type`.foreach(v => p.updateDynamic("type")(v.name))
-    route.foreach(v => p.updateDynamic("route")(v))
-    disabled.foreach(v => p.updateDynamic("disabled")(v))
-    payload.foreach(v => p.updateDynamic("payload")(v))
-    toggle.foreach(v => p.updateDynamic("toggle")(v))
-    id.foreach(v => p.updateDynamic("id")(v))
-    style.foreach(v => p.updateDynamic("style")(v))
+case class MuiMenuItem(
+  payload:        U[String]          = uNone,
+  text:           U[String]          = uNone,
+  id:             U[String]          = uNone,
+  number:         U[String]          = uNone,
+  data:           U[String]          = uNone,
+  iconClassName:  U[String]          = uNone,
+  toggle:         U[Boolean]         = uNone,
+  disabled:       U[Boolean]         = uNone,
+  defaultToggled: U[Boolean]         = uNone,
+  route:          U[String]          = uNone,
+  `type`:         U[MuiMenuItemType] = uNone,
+  className:      U[String]          = uNone,
+  selected:       U[Boolean]         = uNone,
+  style :         U[js.Any]          = uNone) {
+  
+  def toJson: js.Any = {
+    val p = new TypedJsProps
+    defaultToggled.foreach(p.setV("defaultToggled"))
+    text          .foreach(p.setV("text"))
+    number        .foreach(p.setV("number"))
+    data          .foreach(p.setV("data"))
+    iconClassName .foreach(p.setV("iconClassName"))
+    `type`        .foreach(p.setV("type"))
+    route         .foreach(p.setV("route"))
+    disabled      .foreach(p.setV("disabled"))
+    payload       .foreach(p.setV("payload"))
+    toggle        .foreach(p.setV("toggle"))
+    id            .foreach(p.setV("id"))
+    className     .foreach(p.setV("className"))
+    selected      .foreach(p.setV("selected"))
+    style         .foreach(p.setV("style"))
     p
   }
 }
@@ -169,23 +172,23 @@ case class MuiMenuItem(payload: js.UndefOr[String] = js.undefined,
 object MuiMenuItem {
   def fromJson(obj: js.Dynamic) =
     MuiMenuItem(
-      defaultToggled = if (js.isUndefined(obj.defaultToggled)) js.undefined else obj.defaultToggled.asInstanceOf[Boolean],
-      text = if (js.isUndefined(obj.text)) js.undefined else obj.text.asInstanceOf[String],
-      data = if (js.isUndefined(obj.data)) js.undefined else obj.text.asInstanceOf[String],
-      number = if (js.isUndefined(obj.number)) js.undefined else obj.number.asInstanceOf[String],
-      iconClassName = if (js.isUndefined(obj.iconClassName)) js.undefined else obj.iconClassName.asInstanceOf[String],
-      route = if (js.isUndefined(obj.route)) js.undefined else obj.route.asInstanceOf[String],
-      disabled = if (js.isUndefined(obj.disabled)) js.undefined else obj.disabled.asInstanceOf[Boolean],
-      payload = if (js.isUndefined(obj.payload)) js.undefined else obj.payload.asInstanceOf[String],
-      toggle = if (js.isUndefined(obj.toggle)) js.undefined else obj.toggle.asInstanceOf[Boolean],
-      id = if (js.isUndefined(obj.id)) js.undefined else obj.id.asInstanceOf[String],
-      className = if (js.isUndefined(obj.className)) js.undefined else obj.className.asInstanceOf[String],
-      style = if (js.isUndefined(obj.style)) js.undefined else obj.style.asInstanceOf[js.Any],
-      selected = if (js.isUndefined(obj.selected)) js.undefined else obj.selected.asInstanceOf[Boolean]
+      defaultToggled = if (js.isUndefined(obj.defaultToggled)) uNone else obj.defaultToggled.asInstanceOf[Boolean],
+      text = if (js.isUndefined(obj.text)) uNone else obj.text.asInstanceOf[String],
+      data = if (js.isUndefined(obj.data)) uNone else obj.text.asInstanceOf[String],
+      number = if (js.isUndefined(obj.number)) uNone else obj.number.asInstanceOf[String],
+      iconClassName = if (js.isUndefined(obj.iconClassName)) uNone else obj.iconClassName.asInstanceOf[String],
+      route = if (js.isUndefined(obj.route)) uNone else obj.route.asInstanceOf[String],
+      disabled = if (js.isUndefined(obj.disabled)) uNone else obj.disabled.asInstanceOf[Boolean],
+      payload = if (js.isUndefined(obj.payload)) uNone else obj.payload.asInstanceOf[String],
+      toggle = if (js.isUndefined(obj.toggle)) uNone else obj.toggle.asInstanceOf[Boolean],
+      id = if (js.isUndefined(obj.id)) uNone else obj.id.asInstanceOf[String],
+      className = if (js.isUndefined(obj.className)) uNone else obj.className.asInstanceOf[String],
+      style = if (js.isUndefined(obj.style)) uNone else obj.style.asInstanceOf[js.Any],
+      selected = if (js.isUndefined(obj.selected)) uNone else obj.selected.asInstanceOf[Boolean]
     )
 }
 
-class MuiMenuItemType private(val name: String) extends AnyVal
+class MuiMenuItemType private(val value: String) extends ComponentEnum
 
 object MuiMenuItemType {
 

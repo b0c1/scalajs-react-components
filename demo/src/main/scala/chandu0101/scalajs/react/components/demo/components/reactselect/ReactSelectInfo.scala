@@ -1,4 +1,5 @@
-package chandu0101.scalajs.react.components.demo.components.reactselect
+package chandu0101.scalajs.react.components
+package demo.components.reactselect
 
 import chandu0101.scalajs.react.components.demo.components.{InfoTemplate, RedLink}
 import japgolly.scalajs.react._

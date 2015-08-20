@@ -1,4 +1,5 @@
-package chandu0101.scalajs.react.components.demo.components.reactlistview
+package chandu0101.scalajs.react.components
+package demo.components.reactlistview
 
 import chandu0101.scalajs.react.components.demo.components.CodeExample
 import chandu0101.scalajs.react.components.listviews.ReactListView
@@ -31,31 +32,30 @@ object ReactListViewDemo {
 
   case class State(content: String = "")
 
-  class Backend(t: BackendScope[_, _]) {
-
-    def onItemSelect(item: String) = {
-        val content =
-          s"Selected Item : $item <br>"
-        dom.document.getElementById("listviewcontent").innerHTML = content
+  case class Backend(t: BackendScope[Unit, State]) {
+    val onItemSelect: StringCb = {
+      item =>
+        val content = s"Selected Item : $item <br>"
+        Callback(dom.document.getElementById("listviewcontent").innerHTML = content)
     }
-
+    def render(S: State) = {
+      <.div(
+        <.h3("Demo"),
+        CodeExample(code)(
+          <.div(Style.listViewDemo)(
+            ReactListView(items = data, showSearchBox = true, onItemSelect = onItemSelect),
+            <.strong(^.id := "listviewcontent" ,Style.selectedContent)("Selected Content Here")
+          )
+        )
+      )
+    }
   }
 
   val component = ReactComponentB[Unit]("ReactListViewDemo")
     .initialState(State())
-    .backend(new Backend(_))
-    .render((P, S, B) => {
-    <.div(
-      <.h3("Demo"),
-      CodeExample(code)(
-        <.div(Style.listViewDemo)(
-          ReactListView(items = data, showSearchBox = true ,onItemSelect = B.onItemSelect),
-          <.strong(^.id := "listviewcontent" ,Style.selectedContent)("Selected Content Here")
-        )
-      )
-    )
-  }).buildU
-
+    .backend(Backend)
+    .render($ => $.backend.render($.state))
+    .buildU
 
   lazy val data = List("ScalaJS","JavasScript","ReactJS","Html","Css","Software","Browser")
 

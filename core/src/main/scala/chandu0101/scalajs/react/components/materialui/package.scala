@@ -1,4 +1,6 @@
-import japgolly.scalajs.react.{React, ReactComponentSpec, TopNode}
+package chandu0101.scalajs.react.components
+
+import japgolly.scalajs.react._
 
 import scala.scalajs.js
 import scala.scalajs.js.annotation.JSName
@@ -91,12 +93,11 @@ package object materialui {
 
   lazy val ThemeManager = js.Dynamic.newInstance(Mui.Styles.ThemeManager)().asInstanceOf[ThemeManager]
 
-  def installMuiContext[P, S, B, N <: TopNode]: ReactComponentSpec[P, S, B, N] => Unit =
-    spec => {
-      val t = spec.asInstanceOf[js.Dynamic]
-      t.updateDynamic("childContextTypes")(js.Dynamic.literal("muiTheme" -> React.asInstanceOf[js.Dynamic].PropTypes.`object`): js.Object)
-      t.updateDynamic("getChildContext")((() => js.Dynamic.literal("muiTheme" -> ThemeManager.getCurrentTheme())): js.Function)
-    }
-
-
+  def installMuiContext[P, S, B, N <: TopNode]: ReactComponentSpec[P, S, B, N] => Callback =
+    spec =>
+      Callback {
+        val t = spec.asInstanceOf[js.Dynamic]
+        t.updateDynamic("childContextTypes")(js.Dynamic.literal("muiTheme" -> React.asInstanceOf[js.Dynamic].PropTypes.`object`): js.Object)
+        t.updateDynamic("getChildContext")((() => js.Dynamic.literal("muiTheme" -> ThemeManager.getCurrentTheme())): js.Function)
+      }
 }

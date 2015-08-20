@@ -1,10 +1,9 @@
-package chandu0101.scalajs.react.components.demo.components
+package chandu0101.scalajs.react.components
+package demo.components
 
-import chandu0101.scalajs.react.components.all._
 import chandu0101.scalajs.react.components.demo.routes.AppRouter.Page
-import chandu0101.scalajs.react.components.demo.routes.{AppRouter, LeftRoute}
 import japgolly.scalajs.react._
-import japgolly.scalajs.react.extra.router2.RouterCtl
+import japgolly.scalajs.react.extra.router.RouterCtl
 import japgolly.scalajs.react.vdom.prefix_<^._
 
 import scala.scalajs.js
@@ -28,7 +27,7 @@ object ComponentGridItem {
       ^.fontSize := "18px",
       ^.fontWeight := "500",
       ^.letterSpacing := "0",
-      lineHeight2 := "54px",
+      ^.lineHeight := "54px",
       ^.margin := "0",
       ^.padding := "0",
       ^.textAlign := "center")
@@ -45,27 +44,38 @@ object ComponentGridItem {
 
   case class State(itemHover: Boolean = false)
 
-  class Backend(t: BackendScope[Props, State]) {
+  case class Backend(t: BackendScope[Props, State]) {
+    val onMouseOver = t.modState(_.copy(itemHover = true))
 
-    def onMouseOver() = t.modState(_.copy(itemHover = true))
+    val onMouseOut = t.modState(_.copy(itemHover = false))
 
-    def onMouseOut() = t.modState(_.copy(itemHover = false))
-
+    def render(P: Props, S: State) = {
+      <.div(
+        Style.item,
+        S.itemHover ?= Style.itemHover,
+        P.ctrl setOnClick P.route,
+        onMouseEnter --> onMouseOver,
+        onMouseLeave --> onMouseOut )(
+        <.h3(
+          Style.itemTitle,
+          ^.key := P.heading,
+          P.heading),
+        <.img(
+          ^.src := P.img,
+          Style.itemImage,
+          ^.key := "alink"
+        )
+      )
+    }
   }
 
   val component = ReactComponentB[Props]("ComponentGridElement")
     .initialState(State())
-    .backend(new Backend(_))
-    .render((P, S, B) => {
-   <.div(Style.item, S.itemHover ?= Style.itemHover,P.ctrl setOnClick P.route,
-     onMouseEnter --> B.onMouseOver, onMouseLeave --> B.onMouseOut)(
-     <.h3(Style.itemTitle, ^.key := P.heading)(P.heading),
-     <.img(^.src := P.img, Style.itemImage, ^.key := "alink")
-    )
-  })
+    .backend(Backend)
+    .render($ => $.backend.render($.props, $.state))
     .build
 
   case class Props(heading: String, route: Page, img: String,ctrl : RouterCtl[Page])
 
-  def apply(heading: String, route: Page, img: String,ctrl : RouterCtl[Page], ref: js.UndefOr[String] = "", key: js.Any = {}) = component.set(key, ref)(Props(heading, route, img,ctrl))
+  def apply(heading: String, route: Page, img: String,ctrl : RouterCtl[Page], ref: U[String] = "", key: js.Any = {}) = component.set(key, ref)(Props(heading, route, img,ctrl))
 }

@@ -1,10 +1,11 @@
-package chandu0101.scalajs.react.components.demo.routes
+package chandu0101.scalajs.react.components
+package demo.routes
 
 
 import chandu0101.scalajs.react.components.demo.components.{AppHeader, ScalaCSSTutorial}
 import chandu0101.scalajs.react.components.demo.pages._
 import japgolly.scalajs.react._
-import japgolly.scalajs.react.extra.router2.{Resolution, RouterConfigDsl, RouterCtl, _}
+import japgolly.scalajs.react.extra.router.{Resolution, RouterConfigDsl, RouterCtl, _}
 import japgolly.scalajs.react.vdom.prefix_<^._
 import org.scalajs.dom
 

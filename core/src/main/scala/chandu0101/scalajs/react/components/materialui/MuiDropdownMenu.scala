@@ -1,11 +1,10 @@
-package chandu0101.scalajs.react.components.materialui
+package chandu0101.scalajs.react.components
+package materialui
 
 
 import japgolly.scalajs.react._
-import materialui.Mui
 
 import scala.scalajs.js
-import scala.scalajs.js.Dynamic.{literal => json}
 import scala.scalajs.js.{Array => JArray}
 
 /**
@@ -14,7 +13,7 @@ style: PropTypes.js.Any,
 ref: PropTypes.String,
   className: React.PropTypes.string,
     autoWidth: React.PropTypes.bool,
-    onChange: React.PropTypes.(ReactEvent,Int,Item) => Unit,
+    onChange: React.PropTypes.(ReactEvent,Int,Item) => Callback,
     menuItems: React.PropTypes.JArray[Item].isRequired,
     menuItemStyle: React.PropTypes.js.Any,
     selectedIndex: React.PropTypes.number
@@ -22,38 +21,41 @@ ref: PropTypes.String,
   */
 
 object MuiDropdownMenu {
+  def apply(
+    menuItems:     JArray[Item],
+    style:         U[js.Any]                                = uNone,
+    onChange:      U[(ReactEvent, Int, Item) => Callback] = uNone,
+    ref:           U[String]                                = uNone,
+    menuItemStyle: U[js.Any]                                = uNone,
+    key:           U[String]                                = uNone,
+    autoWidth:     U[Boolean]                               = uNone,
+    className:     U[String]                                = uNone,
+    selectedIndex: U[Int]                                   = uNone) = {
 
-
-  def apply(menuItems: JArray[Item],
-            style: js.UndefOr[js.Any] = js.undefined,
-            onChange: js.UndefOr[(ReactEvent, Int, js.Object) => Unit] = js.undefined,
-            ref: js.UndefOr[String] = js.undefined,
-            menuItemStyle: js.UndefOr[js.Any] = js.undefined,
-            key: js.UndefOr[String] = js.undefined,
-            autoWidth: js.UndefOr[Boolean] = js.undefined,
-            className: js.UndefOr[String] = js.undefined,
-            selectedIndex: js.UndefOr[Int] = js.undefined) = {
-
-    val p = js.Dynamic.literal()
-    p.updateDynamic("menuItems")(menuItems.map(_.toJson))
-    style.foreach(v => p.updateDynamic("style")(v))
-    onChange.foreach(v => p.updateDynamic("onChange")(v))
-    ref.foreach(v => p.updateDynamic("ref")(v))
-    menuItemStyle.foreach(v => p.updateDynamic("menuItemStyle")(v))
-    key.foreach(v => p.updateDynamic("key")(v))
-    autoWidth.foreach(v => p.updateDynamic("autoWidth")(v))
-    className.foreach(v => p.updateDynamic("className")(v))
-    selectedIndex.foreach(v => p.updateDynamic("selectedIndex")(v))
+    val p = new TypedJsProps
+    p.setV("menuItems")(menuItems.map(_.toJson))
+    style        .foreach(p.setV("style"))
+    onChange     .map(wrap).foreach(p.setF3C("onChange"))
+    ref          .foreach(p.setV("ref"))
+    menuItemStyle.foreach(p.setV("menuItemStyle"))
+    key          .foreach(p.setV("key"))
+    autoWidth    .foreach(p.setV("autoWidth"))
+    className    .foreach(p.setV("className"))
+    selectedIndex.foreach(p.setV("selectedIndex"))
 
     val f = React.asInstanceOf[js.Dynamic].createFactory(Mui.DropDownMenu)
     f(p).asInstanceOf[ReactComponentU_]
   }
 
+  def wrap(f: (ReactEvent, Int, Item) => Callback): (ReactEvent, Int, js.Dynamic) => Callback = {
+    (e, idx, obj) => f(e, idx, Item.fromJson(obj))
+  }
+
   case class Item(payload: String, text: String) {
-    def toJson = {
-      val p = json()
-      p.updateDynamic("text")(text)
-      p.updateDynamic("payload")(payload)
+    def toJson: js.Any = {
+      val p = new TypedJsProps
+      p.setV("text")(text)
+      p.setV("payload")(payload)
       p
     }
   }

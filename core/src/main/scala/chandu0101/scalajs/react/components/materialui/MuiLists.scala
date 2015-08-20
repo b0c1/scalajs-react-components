@@ -1,7 +1,7 @@
-package chandu0101.scalajs.react.components.materialui
+package chandu0101.scalajs.react.components
+package materialui
 
 import japgolly.scalajs.react._
-import materialui.Mui
 
 import scala.scalajs.js
 
@@ -14,16 +14,17 @@ ref: PropTypes.String,
  */
 object MuiListDivider {
 
-  def apply(key: js.UndefOr[String] = js.undefined,
-            style: js.UndefOr[js.Any] = js.undefined,
-            ref: js.UndefOr[String] = js.undefined,
-            inset: js.UndefOr[Boolean] = js.undefined) = {
+  def apply(
+    key:   U[String]  = uNone,
+    style: U[js.Any]  = uNone,
+    ref:   U[String]  = uNone,
+    inset: U[Boolean] = uNone) = {
 
-    val p = js.Dynamic.literal()
-    key.foreach(v => p.updateDynamic("key")(v))
-    style.foreach(v => p.updateDynamic("style")(v))
-    ref.foreach(v => p.updateDynamic("ref")(v))
-    inset.foreach(v => p.updateDynamic("inset")(v))
+    val p = new TypedJsProps
+    key  .foreach(p.setV("key"))
+    style.foreach(p.setV("style"))
+    ref  .foreach(p.setV("ref"))
+    inset.foreach(p.setV("inset"))
 
     val f = React.asInstanceOf[js.Dynamic].createFactory(Mui.ListDivider)
     f(p).asInstanceOf[ReactComponentU_]
@@ -40,8 +41,8 @@ ref: PropTypes.String,
     leftAvatar: React.PropTypes.element,
     leftCheckbox: React.PropTypes.element,
     leftIcon: React.PropTypes.element,
-    onMouseOut: React.PropTypes.ReactEvent => Unit,
-    onMouseOver: React.PropTypes.ReactEvent => Unit,
+    onMouseOut: React.PropTypes.ReactEvent => Callback,
+    onMouseOver: React.PropTypes.ReactEvent => Callback,
     rightAvatar: React.PropTypes.element,
     rightIcon: React.PropTypes.element,
     rightToggle: React.PropTypes.element,
@@ -49,38 +50,39 @@ ref: PropTypes.String,
     secondaryTextLines: React.PropTypes.number
 
  */
-case class MuiListItem(secondaryText: js.UndefOr[ReactElement] = js.undefined,
-                       style: js.UndefOr[js.Any] = js.undefined,
-                       disableTouchTap: js.UndefOr[Boolean] = js.undefined,
-                       insetChildren: js.UndefOr[Boolean] = js.undefined,
-                       ref: js.UndefOr[String] = js.undefined,
-                       rightAvatar: js.UndefOr[ReactElement] = js.undefined,
-                       leftAvatar: js.UndefOr[ReactElement] = js.undefined,
-                       key: js.UndefOr[String] = js.undefined,
-                       onMouseOver: js.UndefOr[ReactEvent => Unit] = js.undefined,
-                       onMouseOut: js.UndefOr[ReactEvent => Unit] = js.undefined,
-                       secondaryTextLines: js.UndefOr[Int] = js.undefined,
-                       leftIcon: js.UndefOr[ReactElement] = js.undefined,
-                       rightIcon: js.UndefOr[ReactElement] = js.undefined,
-                       rightToggle: js.UndefOr[ReactElement] = js.undefined,
-                       leftCheckbox: js.UndefOr[ReactElement] = js.undefined) {
+case class MuiListItem(
+  secondaryText:      U[ReactElement]           = uNone,
+  style:              U[js.Any]                 = uNone,
+  disableTouchTap:    U[Boolean]                = uNone,
+  insetChildren:      U[Boolean]                = uNone,
+  ref:                U[String]                 = uNone,
+  rightAvatar:        U[ReactElement]           = uNone,
+  leftAvatar:         U[ReactElement]           = uNone,
+  key:                U[String]                 = uNone,
+  onMouseOver:        U[ReactEvent => Callback] = uNone,
+  onMouseOut:         U[ReactEvent => Callback] = uNone,
+  secondaryTextLines: U[Int]                    = uNone,
+  leftIcon:           U[ReactElement]           = uNone,
+  rightIcon:          U[ReactElement]           = uNone,
+  rightToggle:        U[ReactElement]           = uNone,
+  leftCheckbox:       U[ReactElement]           = uNone) {
   def toJS = {
-    val p = js.Dynamic.literal()
-    secondaryText.foreach(v => p.updateDynamic("secondaryText")(v))
-    style.foreach(v => p.updateDynamic("style")(v))
-    disableTouchTap.foreach(v => p.updateDynamic("disableTouchTap")(v))
-    insetChildren.foreach(v => p.updateDynamic("insetChildren")(v))
-    ref.foreach(v => p.updateDynamic("ref")(v))
-    rightAvatar.foreach(v => p.updateDynamic("rightAvatar")(v))
-    leftAvatar.foreach(v => p.updateDynamic("leftAvatar")(v))
-    key.foreach(v => p.updateDynamic("key")(v))
-    onMouseOver.foreach(v => p.updateDynamic("onMouseOver")(v))
-    onMouseOut.foreach(v => p.updateDynamic("onMouseOut")(v))
-    secondaryTextLines.foreach(v => p.updateDynamic("secondaryTextLines")(v))
-    leftIcon.foreach(v => p.updateDynamic("leftIcon")(v))
-    rightIcon.foreach(v => p.updateDynamic("rightIcon")(v))
-    rightToggle.foreach(v => p.updateDynamic("rightToggle")(v))
-    leftCheckbox.foreach(v => p.updateDynamic("leftCheckbox")(v))
+    val p = new TypedJsProps
+    secondaryText     .foreach(p.setV("secondaryText"))
+    style             .foreach(p.setV("style"))
+    disableTouchTap   .foreach(p.setV("disableTouchTap"))
+    insetChildren     .foreach(p.setV("insetChildren"))
+    ref               .foreach(p.setV("ref"))
+    rightAvatar       .foreach(p.setV("rightAvatar"))
+    leftAvatar        .foreach(p.setV("leftAvatar"))
+    key               .foreach(p.setV("key"))
+    onMouseOver       .foreach(p.setF1C("onMouseOver"))
+    onMouseOut        .foreach(p.setF1C("onMouseOut"))
+    secondaryTextLines.foreach(p.setV("secondaryTextLines"))
+    leftIcon          .foreach(p.setV("leftIcon"))
+    rightIcon         .foreach(p.setV("rightIcon"))
+    rightToggle       .foreach(p.setV("rightToggle"))
+    leftCheckbox      .foreach(p.setV("leftCheckbox"))
     p
   }
 
@@ -101,20 +103,22 @@ ref: PropTypes.String,
 
  *
  */
-case class MuiList(subheaderStyle: js.UndefOr[js.Any] = js.undefined,
-                   insetSubheader: js.UndefOr[Boolean] = js.undefined,
-                   style: js.UndefOr[js.Any] = js.undefined,
-                   ref: js.UndefOr[String] = js.undefined,
-                   key: js.UndefOr[String] = js.undefined,
-                   subheader: js.UndefOr[String] = js.undefined) {
+case class MuiList(
+  subheaderStyle: U[js.Any]  = uNone,
+  insetSubheader: U[Boolean] = uNone,
+  style:          U[js.Any]  = uNone,
+  ref:            U[String]  = uNone,
+  key:            U[String]  = uNone,
+  subheader:      U[String]  = uNone) {
+
   def toJS = {
-    val p = js.Dynamic.literal()
-    subheaderStyle.foreach(v => p.updateDynamic("subheaderStyle")(v))
-    insetSubheader.foreach(v => p.updateDynamic("insetSubheader")(v))
-    style.foreach(v => p.updateDynamic("style")(v))
-    ref.foreach(v => p.updateDynamic("ref")(v))
-    key.foreach(v => p.updateDynamic("key")(v))
-    subheader.foreach(v => p.updateDynamic("subheader")(v))
+    val p = new TypedJsProps
+    subheaderStyle.foreach(p.setV("subheaderStyle"))
+    insetSubheader.foreach(p.setV("insetSubheader"))
+    style         .foreach(p.setV("style"))
+    ref           .foreach(p.setV("ref"))
+    key           .foreach(p.setV("key"))
+    subheader     .foreach(p.setV("subheader"))
     p
   }
 

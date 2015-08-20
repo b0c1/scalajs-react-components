@@ -1,9 +1,9 @@
-package chandu0101.scalajs.react.components.treeviews
+package chandu0101.scalajs.react.components
+package treeviews
 
-import chandu0101.scalajs.react.components.all._
 import chandu0101.scalajs.react.components.searchboxes.ReactSearchBox
+import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
-import japgolly.scalajs.react.{ReactComponentB, _}
 
 import scala.collection.mutable
 import scala.scalajs.js
@@ -17,7 +17,6 @@ case class TreeItem(item: Any, children: TreeItem*) {
 }
 
 object ReactTreeView {
-
 
   trait Style {
 
@@ -51,45 +50,76 @@ object ReactTreeView {
   
   val nodeRefs : mutable.Map[String,RefComp[NodeProps,NodeState,NodeBackend,TopNode]] = mutable.Map.empty
 
-  case class State(filterText : String = "" ,filterMode : Boolean = false,selectedNode : BackendScope[NodeProps,NodeState] = null)
+  case class State(filterText:   String = "",
+                   filterMode:   Boolean = false,
+                   selectedNode: U[BackendScope[NodeProps, NodeState]] = uNone)
 
-  class Backend(t: BackendScope[Props, State]) {
+  case class Backend(t: BackendScope[Props, State]) {
 
-    def onNodeSelect(node : BackendScope[NodeProps,NodeState]) = {
-       if( t.state.selectedNode != node) {
-         if(t.state.selectedNode != null && t.state.selectedNode.isMounted()) {
-           t.state.selectedNode.modState(_.copy(selected = false))
-         }
-         t.modState(_.copy(selectedNode =  node , filterMode = false))
-         node.modState(_.copy(selected = true))
-       }
-      val p = node.props
-      if(t.props.onItemSelect != null)  t.props.onItemSelect(p.root.item.toString,p.parent,p.depth)
+    def onNodeSelect(node: BackendScope[NodeProps, NodeState]): Callback = {
+      val c1: U[Callback] = t.state.selectedNode.map{
+        selectedNode =>
+          val unSelect: U[Callback] =
+            selectedNode
+              .undef
+              .filterNot(_ == node)
+              .filter(_.isMounted())
+              .map(_.modState(_.copy(selected = false)))
+
+          val changeSelected: Callback =
+            t.modState(_.copy(selectedNode = node, filterMode = false))
+
+          val updateNode: Callback =
+            node.modState(_.copy(selected = true))
+
+          unSelect.voidU >> changeSelected >> updateNode
+      }
+
+      val c2: U[CallbackTo[Any]] =
+        t.props.onItemSelect.mapply(
+          node.props.root.item.toString,
+          node.props.parent,
+          node.props.depth
+        )
+
+      c1.voidU >> c2.voidU
     }
 
-    def onTextChange(text : String) = {
+    def onTextChange(text: String): Callback =
       t.modState(_.copy(filterText = text,filterMode = true))
 
+    def render(P: Props, S: State) = {
+      <.div(P.style.reactTreeView)(
+        P.showSearchBox ?= ReactSearchBox(onTextChange = onTextChange),
+        TreeNode.withKey("root")(
+          NodeProps(
+            root = P.root,
+            open = if (S.filterText.nonEmpty) true else P.open,
+            onNodeSelect = onNodeSelect,
+            filterText = S.filterText,
+            style = P.style,
+            filterMode = S.filterMode
+          )
+        )
+      )
     }
-
   }
 
 
-  class NodeBackend(t: BackendScope[NodeProps,NodeState]) {
+  case class NodeBackend(t: BackendScope[NodeProps, NodeState]) {
 
-   def onItemSelect(e:ReactEventH) = {
-     t.props.onNodeSelect(t)
-     e.preventDefault()
-     e.stopPropagation()
-   }
+   def onItemSelect(e:ReactEventH): Callback =
+     t.props.onNodeSelect(t) >>
+     e.preventDefaultCB >>
+     e.stopPropagationCB
 
-    def onTreeMenuToggle(e:ReactEventH) = {
-      if(t.props.root.children.nonEmpty) {
-         if(t.state.children.isEmpty) t.modState(_.copy(children = t.props.root.children))
-         else t.modState(_.copy(children = Nil))
-      }
-      e.preventDefault()
-      e.stopPropagation()
+    def onTreeMenuToggle(e: ReactEventH): Callback = {
+      val c1 =
+        (if (t.state.children.isEmpty) t.modState(_.copy(children = t.props.root.children))
+        else t.modState(_.copy(children = Nil)))
+      .filter(t.props.root.children.nonEmpty)
+
+      c1 >> e.preventDefaultCB >> e.stopPropagationCB
     }
 
     def isFilterTextExist(filterText : String,data : TreeItem) : Boolean = {
@@ -99,54 +129,77 @@ object ReactTreeView {
       data.item.toString.toLowerCase.contains(filterText.toLowerCase) || loop(data.children)
     }
 
+    def render(P: NodeProps, S: NodeState) = {
+     val children =  S.children
+     val depth = P.depth + 1
+     val parent =  if(P.parent.isEmpty) P.root.item.toString  else s"${P.parent}<-${P.root.item.toString}"
+     val treeMenuToggle  : TagMod = if(children.nonEmpty) <.span(^.onClick ==> onTreeMenuToggle, ^.key := "arrow",P.style.treeItemBefore)("▼")
+                        else if(P.root.children.nonEmpty && children.isEmpty) <.span(^.onClick ==> onTreeMenuToggle, ^.key := "arrow",P.style.treeItemBefore)("▶")
+                        else ""
+     <.li(P.style.treeItem,treeMenuToggle, ^.key := "toggle", P.style.treeItemContent)(<.span(S.selected ?= P.style.selectedTreeItemContent, ^.onClick ==> onItemSelect,P.root.item.toString))(
+      <.ul(P.style.treeGroup)(
+       children.map(child => {
+         val key : js.Any = s"$parent$depth${child.item}"
+         val open = if(!P.filterText.trim.isEmpty) true else false
+        isFilterTextExist(P.filterText,child) ?=  TreeNode.withKey(key)(P.copy(root = child,depth = depth,parent = parent,open = open,filterText = P.filterText))
+       }) )
+     )
+
+    }
   }
 
-  case class NodeState(children : Seq[TreeItem] = Nil,selected : Boolean = false)
+  case class NodeState(children: Seq[TreeItem] = Nil, selected: Boolean = false)
 
-  case class NodeProps(root : TreeItem , open : Boolean,depth : Int =0,parent : String = "",onNodeSelect : (BackendScope[NodeProps,NodeState]) => Any ,filterText : String ,style : Style ,filterMode : Boolean )
+  case class NodeProps(root: TreeItem,
+                       open: Boolean,
+                       depth: Int = 0,
+                       parent: String = "",
+                       onNodeSelect: (BackendScope[NodeProps, NodeState]) => Callback,
+                       filterText: String,
+                       style: Style,
+                       filterMode: Boolean)
 
  lazy val TreeNode : ReactComponentC.ReqProps[NodeProps,NodeState,NodeBackend,TopNode] = ReactComponentB[NodeProps]("ReactTreeNode")
-    .initialStateP(p => if(p.open) NodeState(p.root.children) else NodeState())
-    .backend(new NodeBackend(_))
-    .render((P,S,B) => {
-       val children =  S.children
-       val depth = P.depth + 1
-       val parent =  if(P.parent.isEmpty) P.root.item.toString  else s"${P.parent}<-${P.root.item.toString}"
-       val treeMenuToggle  : TagMod = if(children.nonEmpty) <.span(^.onClick ==> B.onTreeMenuToggle, ^.key := "arrow",P.style.treeItemBefore)("▼")
-                          else if(P.root.children.nonEmpty && children.isEmpty) <.span(^.onClick ==> B.onTreeMenuToggle, ^.key := "arrow",P.style.treeItemBefore)("▶")
-                          else ""
-       <.li(P.style.treeItem,treeMenuToggle, ^.key := "toggle", P.style.treeItemContent)(<.span(S.selected ?= P.style.selectedTreeItemContent, ^.onClick ==> B.onItemSelect,P.root.item.toString))(
-        <.ul(P.style.treeGroup)(
-         children.map(child => {
-           val key : js.Any = s"$parent$depth${child.item}"
-           val open = if(!P.filterText.trim.isEmpty) true else false
-          B.isFilterTextExist(P.filterText,child) ?=  TreeNode.withKey(key)(P.copy(root = child,depth = depth,parent = parent,open = open,filterText = P.filterText))
-         }) )
-       )
-    })
-   .componentWillReceiveProps((scope,nextProps) => {
-    if(nextProps.filterMode) {
-     if(nextProps.open) scope.modState(_.copy(children = nextProps.root.children))
-     else scope.modState(_.copy(children = Nil))
-   }
-   })
-   .build
+    .initialState_P(p => if(p.open) NodeState(p.root.children) else NodeState())
+    .backend(NodeBackend)
+    .render($ => $.backend.render($.props, $.state))
+    .componentWillReceiveProps { (scope, nextProps) =>
+     val c1: Callback =
+       if (nextProps.open)
+         scope.modState(_.copy(children = nextProps.root.children))
+       else
+         scope.modState(_.copy(children = Nil))
+
+     c1.filter(nextProps.filterMode)
+    }
+    .build
 
 
   val component = ReactComponentB[Props]("ReactTreeView")
     .initialState(State())
-    .backend(new Backend(_))
-    .render((P, S, B) => {
-     <.div(P.style.reactTreeView)(
-        P.showSearchBox ?= ReactSearchBox(onTextChange = B.onTextChange),
-        TreeNode.withKey("root")(NodeProps(root= P.root,open = if(S.filterText.nonEmpty) true else P.open,onNodeSelect = B.onNodeSelect,filterText = S.filterText ,style = P.style,filterMode = S.filterMode))
-      )
-    })
+    .backend(Backend)
+    .render($ => $.backend.render($.props, $.state))
     .build
 
-  case class Props(root: TreeItem, open: Boolean, onItemSelect : StringStringIntAny,showSearchBox : Boolean ,style : Style)
+  case class Props(
+    root:          TreeItem,
+    open:          Boolean,
+    onItemSelect:  U[StringStringIntCbAny],
+    showSearchBox: Boolean,
+    style:         Style
+  )
 
 
-  def apply(root: TreeItem, openByDefault: Boolean = false,onItemSelect : StringStringIntAny = null,showSearchBox : Boolean = false, ref: js.UndefOr[String] = "", key: js.Any = "dude" ,style: Style = new Style {}) = component.set(key, ref)(Props(root, openByDefault,onItemSelect,showSearchBox,style))
+  def apply(
+    root:          TreeItem,
+    openByDefault: Boolean                 = false,
+    onItemSelect:  U[StringStringIntCbAny] = uNone,
+    showSearchBox: Boolean                 = false,
+    ref:           U[String]               = "",
+    key:           js.Any                  = "dude",
+    style:         Style                   = new Style {}) =
 
+    component.set(key, ref)(
+      Props(root, openByDefault, onItemSelect, showSearchBox, style)
+    )
 }

@@ -1,10 +1,11 @@
-package chandu0101.scalajs.react.components.tables
+package chandu0101.scalajs.react.components
+package tables
 
 import chandu0101.scalajs.react.components.optionselectors.DefaultSelect
 import chandu0101.scalajs.react.components.pagers.Pager
 import chandu0101.scalajs.react.components.searchboxes.ReactSearchBox
+import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
-import japgolly.scalajs.react.{BackendScope, ReactComponentB, _}
 
 import scala.collection.immutable
 import scala.scalajs.js.Date
@@ -85,19 +86,16 @@ object ReactTable {
 
   case class State(filterText: String, offset: Int, rowsPerPage: Int, filteredModels: Vector[Model], sortedState: Map[String, String])
 
-  class Backend(t: BackendScope[Props, State]) {
+  case class Backend(t: BackendScope[Props, State]) {
 
+    val onTextChange: StringCb =
+      value => t.modState(_.copy(filteredModels = getFilterdModels(value, t.props.data), offset = 0))
 
-    def onTextChange(value: String) =
-      t.modState(_.copy(filteredModels = getFilterdModels(value, t.props.data), offset = 0))
-
-    def onPreviousClick() = {
+    def onPreviousClick: Callback =
       t.modState(s => s.copy(offset = s.offset - s.rowsPerPage))
-    }
 
-    def onNextClick() = {
+    def onNextClick: Callback =
       t.modState(s => s.copy(offset = s.offset + s.rowsPerPage))
-    }
 
     def getFilterdModels(text: String, models: Vector[Model]) = {
       if (text.isEmpty) models
@@ -115,8 +113,17 @@ object ReactTable {
       }
     }
 
-    def onPageSizeChange(value: String) = t.modState(_.copy(rowsPerPage = value.toInt))
+    def onPageSizeChange(value: String): Callback =
+      t.modState(_.copy(rowsPerPage = value.toInt))
 
+    def render(P: Props, S: State) = {
+      <.div(P.style.reactTableContainer)(
+        P.enableSearch ?= ReactSearchBox(onTextChange = onTextChange,style = P.searchBoxStyle),
+        settingsBar((P, this, S)),
+        tableC((P, S, this)),
+        Pager(S.rowsPerPage, S.filteredModels.length, S.offset, onNextClick, onPreviousClick)
+      )
+    }
   }
 
   def getIntSort(key: String) = (m1: Model, m2: Model) => m1(key).asInstanceOf[Int] < m2(key).asInstanceOf[Int]
@@ -156,94 +163,99 @@ object ReactTable {
 
 
   val tableHeader = ReactComponentB[(Props, Backend, State)]("reactTableHeader")
-    .render(P => {
-    val (props, b, state) = P
-    <.div(props.style.tableHeader,
-      if (props.config.nonEmpty) {
-        props.columns.map { item => {
-          val cell = getColumnDiv(item,props.config)
-          val f = getSortFunction(item, props.config)
-          if (f.isDefined) {
-            cell(^.cursor := "pointer",
-              ^.onClick --> b.sort(f.get, item), item.capitalize,
-              state.sortedState.isDefinedAt(item) ?= props.style.sortIcon(state.sortedState(item) == ASC)
-            )
+    .render_P{
+      case (props, b, state) =>
+        <.div(props.style.tableHeader,
+          if (props.config.nonEmpty) {
+            props.columns.map { item => {
+              val cell = getColumnDiv(item,props.config)
+              val f = getSortFunction(item, props.config)
+              if (f.isDefined) {
+                cell(^.cursor := "pointer",
+                  ^.onClick --> b.sort(f.get, item), item.capitalize,
+                  state.sortedState.isDefinedAt(item) ?= props.style.sortIcon(state.sortedState(item) == ASC)
+                )
+              }
+              else cell(item.capitalize)
+            }
+            }
           }
-          else cell(item.capitalize)
-        }
-        }
-      }
-      else props.columns.map(s => <.div(s.capitalize))
-    )
-  }).build
+          else props.columns.map(s => <.div(s.capitalize))
+        )
+    }.build
 
 
   val tableRow = ReactComponentB[(Model, Props)]("TableRow")
-    .render(P => {
-    val (row, props) = P
-    <.div(props.style.tableRow,
-      if (props.config.nonEmpty) {
-        props.columns.map { item =>
-          val cell = getColumnDiv(item,props.config)
-          val f = getRenderFunction(item, props.config)
-          if (f.isDefined) cell(f.get(row(item)))
-          else cell(row(item).toString)
-        }
-      }
-      else props.columns.map { item => <.div(row(item).toString)}
-    )
-  }).build
+    .render_P{
+      case (row, props) =>
+        <.div(props.style.tableRow,
+          if (props.config.nonEmpty) {
+            props.columns.map { item =>
+              val cell = getColumnDiv(item,props.config)
+              val f = getRenderFunction(item, props.config)
+              if (f.isDefined) cell(f.get(row(item)))
+              else cell(row(item).toString)
+            }
+          }
+          else props.columns.map { item => <.div(row(item).toString)}
+        )
+    }.build
 
 
   val tableC = ReactComponentB[(Props, State, Backend)]("table")
-    .render(P => {
-    val (props, state, b) = P
-    val rows = state.filteredModels.slice(state.offset, state.offset + state.rowsPerPage).zipWithIndex.map { case (row, i) => tableRow.withKey(i)((row, props))}
-    <.div(props.style.table)(
-      tableHeader((props, b, state)),
-      rows
-    )
-  }).build
+    .render_P {
+      case (props, state, b) =>
+        val rows = state.filteredModels.slice(state.offset, state.offset + state.rowsPerPage).zipWithIndex.map { case (row, i) => tableRow.withKey(i)((row, props))}
+        <.div(props.style.table)(
+          tableHeader((props, b, state)),
+          rows
+        )
+    }.build
 
 
   val settingsBar = ReactComponentB[(Props, Backend, State)]("settingbar")
-    .render(P => {
-    val (p, b, s) = P
-    var value = ""
-    var options: List[String] = Nil
-    val total = s.filteredModels.length
-    if (total > p.rowsPerPage) {
-      value = s.rowsPerPage.toString
-      options = immutable.Range.inclusive(p.rowsPerPage, total, 10 * (total / 100 + 1)).:+(total).toList.map(_.toString)
-    }
-    <.div(p.style.settingsBar)(
-      <.div(<.strong("Total : " + s.filteredModels.size)),
-      DefaultSelect(label = "Page Size : ",
-        options = options,
-        value = value,
-        onChange = b.onPageSizeChange)
-    )
-  }).build
+    .render_P{
+      case (p, b, s) =>
+        var value = ""
+        var options: List[String] = Nil
+        val total = s.filteredModels.length
+        if (total > p.rowsPerPage) {
+          value = s.rowsPerPage.toString
+          options = immutable.Range.inclusive(p.rowsPerPage, total, 10 * (total / 100 + 1)).:+(total).toList.map(_.toString)
+        }
+        <.div(p.style.settingsBar)(
+          <.div(<.strong("Total : " + s.filteredModels.size)),
+          DefaultSelect(label = "Page Size : ",
+            options = options,
+            value = value,
+            onChange = b.onPageSizeChange)
+        )
+    }.build
 
   val component = ReactComponentB[Props]("ReactTable")
-    .initialStateP(p => State(filterText = "", offset = 0, p.rowsPerPage, p.data, Map()))
-    .backend(new Backend(_))
-    .render((P, S, B) => {
-    <.div(P.style.reactTableContainer)(
-      P.enableSearch ?= ReactSearchBox(onTextChange = B.onTextChange _,style = P.searchBoxStyle),
-      settingsBar((P, B, S)),
-      tableC((P, S, B)),
-      Pager(S.rowsPerPage, S.filteredModels.length, S.offset, B.onNextClick, B.onPreviousClick)
-
-    )
-  })
+    .initialState_P(p => State(filterText = "", offset = 0, p.rowsPerPage, p.data, Map()))
+    .backend(Backend)
+    .render($ => $.backend.render($.props, $.state))
     .build
 
+  case class Props(
+    data:           Vector[Model],
+    columns:        List[String],
+    config:         List[Config],
+    rowsPerPage:    Int,
+    style:          Style,
+    enableSearch:   Boolean,
+    searchBoxStyle: ReactSearchBox.Style
+  )
 
-  case class Props(data: Vector[Model], columns: List[String], config: List[Config], rowsPerPage: Int, style: Style,enableSearch : Boolean,searchBoxStyle :ReactSearchBox.Style)
+  def apply(
+    data:           Vector[Model],
+    columns:        List[String],
+    config:         List[Config] = List(),
+    rowsPerPage:    Int = 5,
+    style:          Style = DefaultStyle,
+    enableSearch:   Boolean = true,
+    searchBoxStyle: ReactSearchBox.Style = ReactSearchBox.DefaultStyle) =
 
-  def apply(data: Vector[Model], columns: List[String], config: List[Config] = List(), rowsPerPage: Int = 5, style: Style = DefaultStyle,enableSearch : Boolean = true,searchBoxStyle :ReactSearchBox.Style = ReactSearchBox.DefaultStyle) = {
-    component(Props(data, columns, config, rowsPerPage, style,enableSearch,searchBoxStyle))
-  }
-
+    component(Props(data, columns, config, rowsPerPage, style, enableSearch, searchBoxStyle))
 }

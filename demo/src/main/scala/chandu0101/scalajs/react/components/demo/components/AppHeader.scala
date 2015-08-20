@@ -1,8 +1,8 @@
-package chandu0101.scalajs.react.components.demo.components
+package chandu0101.scalajs.react.components
+package demo.components
 
-import chandu0101.scalajs.react.components.all._
 import japgolly.scalajs.react.vdom.prefix_<^._
-import japgolly.scalajs.react.{BackendScope, ReactComponentB, _}
+import japgolly.scalajs.react._
 
 /**
  * Created by chandrasekharkode .
@@ -52,29 +52,38 @@ object AppHeader {
 
   case class State(menuHover: String = "")
 
-  class Backend(t: BackendScope[_, State]) {
+  case class Backend(t: BackendScope[Unit, State]) {
 
-    def onMouseEnter(menu : String) = t.modState(_.copy(menuHover = menu))
+    def onMouseEnterCb(menu: String) = t.modState(_.copy(menuHover = menu))
 
-    def onMouseLeave() = t.modState(_.copy(menuHover = ""))
+    val onMouseLeaveCb =
+      t.modState(_.copy(menuHover = ""))
 
+    def render(S: State) = {
+      val docs   = "Docs"
+      val github = "Github"
+
+      <.header(Style.headerStyle)(
+        <.nav(Style.menuNav)(
+          <.a(Style.logo, ^.href := "#")("S J R C"),
+          <.div(^.marginLeft := "auto")(
+            <.a(
+              ^.target :="_blank",
+              (S.menuHover == github) ?= Style.menuItemHover,
+              Style.menuItem,
+              ^.href := "https://github.com/chandu0101/scalajs-react-components",
+              onMouseEnter --> onMouseEnterCb(github),
+              onMouseLeave --> onMouseLeaveCb)(github)
+          )
+        ))
+    }
   }
 
 
   val component = ReactComponentB[Unit]("AppHeader")
     .initialState(State())
-    .backend(new Backend(_))
-    .render((P,S,B) => {
-    val docs: String = "Docs"
-    val github: String = "Github"
-    <.header(Style.headerStyle)(
-        <.nav(Style.menuNav)(
-          <.a(Style.logo, ^.href := "#")("S J R C"),
-          <.div(^.marginLeft := "auto")(
-            <.a(^.target :="_blank" ,(S.menuHover == github) ?= Style.menuItemHover,Style.menuItem, ^.href := "https://github.com/chandu0101/scalajs-react-components", onMouseEnter --> B.onMouseEnter(github) , onMouseLeave --> B.onMouseLeave)(github)
-          )
-        ))
-    })
+    .backend(Backend)
+    .render($ => $.backend.render($.state))
     .buildU
 
   def apply() = component()

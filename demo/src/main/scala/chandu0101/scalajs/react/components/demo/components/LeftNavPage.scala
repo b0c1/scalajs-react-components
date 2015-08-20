@@ -1,8 +1,9 @@
-package chandu0101.scalajs.react.components.demo.components
+package chandu0101.scalajs.react.components
+package demo.components
 
 import chandu0101.scalajs.react.components.demo.routes.LeftRoute
 import japgolly.scalajs.react._
-import japgolly.scalajs.react.extra.router2.RouterCtl
+import japgolly.scalajs.react.extra.router.RouterCtl
 import japgolly.scalajs.react.vdom.prefix_<^._
 
 import scala.scalajs.js
@@ -26,7 +27,7 @@ object LeftNavPage {
   }
 
   val component = ReactComponentB[Props]("LeftNavPage")
-    .render(P => {
+    .render_P(P => {
     <.div(Style.container,
       <.div(Style.nav, LeftNav(P.menu,P.selectedPage,P.ctrl)),
       <.div(Style.content, P.selectedPage.render())
@@ -36,5 +37,5 @@ object LeftNavPage {
 
   case class Props(menu : List[LeftRoute], selectedPage : LeftRoute,ctrl : RouterCtl[LeftRoute])
 
-  def apply(menu : List[LeftRoute], selectedPage : LeftRoute,ctrl : RouterCtl[LeftRoute],ref: js.UndefOr[String] = "", key: js.Any = {}) = component.set(key, ref)(Props(menu,selectedPage,ctrl))
+  def apply(menu : List[LeftRoute], selectedPage : LeftRoute,ctrl : RouterCtl[LeftRoute],ref: U[String] = "", key: js.Any = {}) = component.set(key, ref)(Props(menu,selectedPage,ctrl))
 }

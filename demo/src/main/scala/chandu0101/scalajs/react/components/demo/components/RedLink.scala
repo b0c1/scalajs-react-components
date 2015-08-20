@@ -1,4 +1,5 @@
-package chandu0101.scalajs.react.components.demo.components
+package chandu0101.scalajs.react.components
+package demo.components
 
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
@@ -6,7 +7,7 @@ import japgolly.scalajs.react.vdom.prefix_<^._
 object RedLink {
 
   val component = ReactComponentB[Props]("RedLink")
-    .render(P => {
+    .render_P(P => {
     <.a(^.href := P.url ,
       P.name,
       ^.textDecoration.none ,

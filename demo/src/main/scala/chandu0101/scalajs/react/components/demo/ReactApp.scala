@@ -1,4 +1,5 @@
-package chandu0101.scalajs.react.components.demo
+package chandu0101.scalajs.react.components
+package demo
 
 import chandu0101.scalajs.react.components.demo.css.AppCSS
 import chandu0101.scalajs.react.components.demo.routes.AppRouter
@@ -19,7 +20,7 @@ object ReactApp extends JSApp {
     // remove waiting page stuff
     if (!js.isUndefined(g.loadingElement)) {
       g.document.body.removeChild(g.loadingElement)
-      g.loadingElement = js.undefined
+      g.loadingElement = uNone
       dom.document.body.className.replace("pg-loading", "")
       dom.document.body.className += " pg-loaded"
     }

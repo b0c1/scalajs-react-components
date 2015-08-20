@@ -1,7 +1,8 @@
-package chandu0101.scalajs.react.components.util
+package chandu0101.scalajs.react.components
+package util
 
 import chandu0101.scalajs.react.components.models.{RElementPosition, RPoint}
-import japgolly.scalajs.react.{ReactEventH, ReactEventI}
+import japgolly.scalajs.react._
 import org.scalajs.dom.Event
 
 import scala.scalajs.js.Date
@@ -11,52 +12,50 @@ import scala.scalajs.js.Date
  */
 trait MTypes {
 
-  type REventIBooleanUnit = (ReactEventI, Boolean) => Unit
+  type REventIBooleanCb = (ReactEventI, Boolean) => Callback
 
-  type REventIUnit = (ReactEventI) => Unit
+  type REventICb = ReactEventI => Callback
 
-  type REventIIntUnit = (ReactEventI,Int) => Unit
+  type REventIIntCb = (ReactEventI, Int) => Callback
 
-  type DateUnit = (Date) => Unit
+  type DateCb = Date => Callback
 
-  type StringUnit = (String) => Unit
+  type StringCb = String => Callback
 
-  type DateString = (Date) => String
+  type DateCbString = Date => CallbackTo[String]
 
-  type EmptyFunc = () => Any
+  type StringIntCb = (String, Int) => Callback
 
-  type StringIntUnit = (String,Int) => Unit
+  type StringStringIntCbAny = (String, String, Int) => CallbackTo[Any]
 
-  type StringStringIntAny = (String,String,Int) => Any
+  type REventIDateCb = (ReactEventI, Date) => Callback
 
-  type REventIDateUnit = (ReactEventI, Date) => Unit
+  type REventHCb = ReactEventH => Callback
 
-  type REventHUnit = (ReactEventH) => Unit
+  type EventCb = Event => Callback
 
-  type EventUnit = (Event) => Unit
+  type EventRElementPositionCbAny = (Event, RElementPosition) => CallbackTo[Any]
 
-  type EventRElementPositionAny = (Event,RElementPosition) => Any
+  type REventIDoubleCb = (ReactEventI, Double) => Callback
 
-  type REventIDoubleUnit = (ReactEventI, Double) => Unit
+  type REventIStringCb = (ReactEventI, String) => Callback
 
-  type REventIStringUnit = (ReactEventI, String) => Unit
+  type REventIStringCbAny = (ReactEventI, String) => CallbackTo[Any]
 
-  type REventIStringAny = (ReactEventI, String) => _
+  type REventIIntStringCb = (ReactEventI, Int, String) => Callback
 
-  type REventIIntStringUnit = (ReactEventI, Int, String) => Unit
+  type OnDropdownTap = (ReactEventI, String, String) => Callback
 
-  type OnDropdownTap = (ReactEventI, String, String) => Unit
-
-  type REventIIntBooleanUnit = (ReactEventI, Int, Boolean) => Unit
+  type REventIIntBooleanCb = (ReactEventI, Int, Boolean) => Callback
 
   type CssClassType = Map[String, Boolean]
 
-  type MapUnit = (Map[String,Any]) => Unit
+  type MapCb = (Map[String, Any]) => Callback
 
-  type MapMapUnit = (Map[String,Any],Map[String,Any]) => Unit
+  type MapMapCb = (Map[String, Any], Map[String, Any]) => Callback
 
-  type MapString = (Map[String,Any]) => String
+  type MapCbString = (Map[String, Any]) => CallbackTo[String]
 
-  type StringRPointAny = (String,RPoint) => Any
+  type StringRPointCbAny = (String, RPoint) => CallbackTo[Any]
 
 }

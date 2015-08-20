@@ -1,4 +1,5 @@
-package chandu0101.scalajs.react.components.demo.components.reacttreeview
+package chandu0101.scalajs.react.components
+package demo.components.reacttreeview
 
 import chandu0101.scalajs.react.components.demo.components.CodeExample
 import chandu0101.scalajs.react.components.treeviews.{ReactTreeView, TreeItem}
@@ -35,32 +36,34 @@ object ReactTreeViewDemo {
 
   case class State(content: String = "")
 
-  class Backend(t: BackendScope[_, _]) {
-
-    def onItemSelect(item: String, parent: String, depth: Int) = {
-      val content =
-        s"""Selected Item : $item <br>
-                                   |Its Parent  : $parent <br>
-                                                           |Its depth :  $depth <br> """.stripMargin
-      dom.document.getElementById("treeviewcontent").innerHTML = content
+  case class Backend(t: BackendScope[Unit, State]) {
+    val onItemSelect: StringStringIntCbAny = {
+      case (item, parent, depth) =>
+        val content =
+          s"""Selected Item : $item <br>
+              |Its Parent  : $parent <br>
+              |Its depth :  $depth <br> """.stripMargin
+        CallbackTo(dom.document.getElementById("treeviewcontent").innerHTML = content)
     }
 
+    def render(S: State) = {
+      <.div(
+        <.h3("Demo"),
+        CodeExample(code)(
+          <.div(Style.treeViewDemo)(
+            ReactTreeView(root = data, openByDefault = true, onItemSelect = onItemSelect, showSearchBox = false),
+            <.strong(^.id := "treeviewcontent", Style.selectedContent)
+          )
+        )
+      )
+    }
   }
 
   val component = ReactComponentB[Unit]("ReactTreeViewDemo")
     .initialState(State())
-    .backend(new Backend(_))
-    .render((P, S, B) => {
-    <.div(
-      <.h3("Demo"),
-      CodeExample(code)(
-        <.div(Style.treeViewDemo)(
-          ReactTreeView(root = data, openByDefault = true, onItemSelect = B.onItemSelect, showSearchBox = false),
-          <.strong(^.id := "treeviewcontent", Style.selectedContent)
-        )
-      )
-    )
-  }).buildU
+    .backend(Backend)
+    .render($ => $.backend.render($.state))
+    .buildU
 
   lazy val data = TreeItem("root",
     TreeItem("dude1",

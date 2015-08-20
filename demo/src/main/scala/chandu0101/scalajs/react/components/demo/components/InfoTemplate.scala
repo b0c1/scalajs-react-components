@@ -1,17 +1,11 @@
-package chandu0101.scalajs.react.components.demo.components
+package chandu0101.scalajs.react.components
+package demo.components
 
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
 
 import scala.scalajs.js
-import japgolly.scalajs.react._
-import japgolly.scalajs.react.vdom.prefix_<^._
-import scala.scalajs.js
-import scala.scalajs.js
-import scala.scalajs.js.undefined
-import scala.scalajs.js.UndefOr
 import scalacss.Defaults._
-import scalacss.ScalaCssReact._
 
 /**
  * Created by chandrasekharkode .
@@ -25,10 +19,8 @@ object InfoTemplate {
          paddingTop(40.px))
      }
 
-
-
   val component = ReactComponentB[Props]("InfoTemplate")
-    .render((P,C) => {
+    .renderPC(($, P, C) => {
       <.div(^.cls := "info-template")(
         <.div(^.cls := "component-info")(C),
         P.scalacss ?= <.div(
@@ -48,6 +40,6 @@ object InfoTemplate {
 
   case class Props(browsersTested : List[String] ,componentFilePath : String,scalacss : Boolean)
 
-  def apply(componentFilePath : String,scalacss : Boolean = false, browsersTested : List[String] = List() , ref: js.UndefOr[String] = "", key: js.Any = {})(children : ReactNode*) = component.set(key, ref)(Props(browsersTested,componentFilePath,scalacss),children)
+  def apply(componentFilePath : String,scalacss : Boolean = false, browsersTested : List[String] = List() , ref: U[String] = "", key: js.Any = {})(children : ReactNode*) = component.set(key, ref)(Props(browsersTested,componentFilePath,scalacss),children)
 
 }

@@ -1,6 +1,6 @@
-package chandu0101.scalajs.react.components.demo.components.demo
+package chandu0101.scalajs.react.components
+package demo.components.demo
 
-import chandu0101.scalajs.react.components.all._
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
 
@@ -32,30 +32,37 @@ object LocalDemoButton {
 
   case class State(buttonHover: Boolean = false)
 
-  class Backend(t: BackendScope[Props, State]) {
+  case class Backend(t: BackendScope[Props, State]) {
 
-    def onButtonClick(e: ReactEventI) = {
-      if (t.props.onButtonClick != null) t.props.onButtonClick(e)
-      e.preventDefault()
+    val onButtonClickCb: REventICb =
+      e => t.props.onButtonClick.mapply(e).voidU >> e.preventDefaultCB
+
+    val onMouseEnterCb: Callback =
+      t.modState(_.copy(buttonHover = true))
+
+    val onMouseLeaveCb: Callback =
+      t.modState(_.copy(buttonHover = false))
+
+    def render(P: Props, S: State) = {
+      val buttonStyle = styleSet1(P.style.button, P.style.buttonHover -> S.buttonHover)
+      if (P.linkButton)<.a(buttonStyle, ^.href := P.href,^.target := "_blank", onMouseEnter --> onMouseEnterCb, onMouseLeave --> onMouseLeaveCb)(P.name)
+      else <.a(
+        buttonStyle,
+        ^.onClick    ==>? P.onButtonClick.liftParam,
+        onMouseEnter -->  onMouseEnterCb,
+        onMouseLeave -->  onMouseLeaveCb)(P.name)
+
     }
-
-    def onMouseEnter = t.modState(_.copy(buttonHover = true))
-
-    def onMouseLeave = t.modState(_.copy(buttonHover = false))
   }
 
   val component = ReactComponentB[Props]("LocalDemoButton")
     .initialState(State())
-    .backend(new Backend(_))
-    .render((P, S, B) => {
-    val buttonStyle = styleSet1(P.style.button, P.style.buttonHover -> S.buttonHover)
-    if (P.linkButton)<.a(buttonStyle, ^.href := P.href,^.target := "_blank", onMouseEnter --> B.onMouseEnter, onMouseLeave --> B.onMouseLeave)(P.name)
-    else<.a(buttonStyle, ^.onClick ==> P.onButtonClick, onMouseEnter --> B.onMouseEnter, onMouseLeave --> B.onMouseLeave)(P.name)
-  })
+    .backend(Backend)
+    .render($ => $.backend.render($.props, $.state))
     .build
 
-  case class Props(name: String, onButtonClick: REventHUnit, linkButton: Boolean, href: String, style: Style)
+  case class Props(name: String, onButtonClick: U[REventHCb], linkButton: Boolean, href: String, style: Style)
 
-  def apply(name: String, onButtonClick: REventHUnit = null, linkButton: Boolean = false, href: String = "", style: Style = new Style {}, ref: js.UndefOr[String] = "", key: js.Any = {}) = component.set(key, ref)(Props(name, onButtonClick, linkButton, href, style))
+  def apply(name: String, onButtonClick: U[REventHCb] = uNone, linkButton: Boolean = false, href: String = "", style: Style = new Style {}, ref: U[String] = "", key: js.Any = {}) = component.set(key, ref)(Props(name, onButtonClick, linkButton, href, style))
 
 }

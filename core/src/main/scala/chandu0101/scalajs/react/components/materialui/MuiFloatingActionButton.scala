@@ -1,7 +1,7 @@
-package chandu0101.scalajs.react.components.materialui
+package chandu0101.scalajs.react.components
+package materialui
 
 import japgolly.scalajs.react._
-import materialui.Mui
 
 import scala.scalajs.js
 
@@ -22,69 +22,68 @@ key: PropTypes.string,
    rippleColor: React.PropTypes.string,
    iconStyle:PropTypes.js.Any,
    secondary: React.PropTypes.bool,
-    onBlur: React.PropTypes.ReactEventH => Unit,
-    onFocus: React.PropTypes.ReactEventH => Unit,
-    onMouseOut: React.PropTypes.ReactEventH => Unit,
-    onMouseOver: React.PropTypes.ReactEventH => Unit,
-    onTouchTap: React.PropTypes.ReactEventH => Unit,
-  onMouseDown: React.PropTypes.ReactEventH => Unit,
-    onMouseUp: React.PropTypes.ReactEventH => Unit,
-    onTouchEnd: React.PropTypes.ReactEventH => Unit,
-    onTouchStart: React.PropTypes.ReactEventH => Unit,
+    onBlur: React.PropTypes.ReactEventH => Callback,
+    onFocus: React.PropTypes.ReactEventH => Callback,
+    onMouseOut: React.PropTypes.ReactEventH => Callback,
+    onMouseOver: React.PropTypes.ReactEventH => Callback,
+    onTouchTap: React.PropTypes.ReactEventH => Callback,
+  onMouseDown: React.PropTypes.ReactEventH => Callback,
+    onMouseUp: React.PropTypes.ReactEventH => Callback,
+    onTouchEnd: React.PropTypes.ReactEventH => Callback,
+    onTouchStart: React.PropTypes.ReactEventH => Callback,
 
   */
-
-
-case class MuiFloatingActionButton(iconClassName: js.UndefOr[String] = js.undefined,
-                                   onBlur: js.UndefOr[ReactEventH => Unit] = js.undefined,
-                                   labelStyle: js.UndefOr[js.Any] = js.undefined,
-                                   onTouchStart: js.UndefOr[ReactEventH => Unit] = js.undefined,
-                                   mini: js.UndefOr[Boolean] = js.undefined,
-                                   rippleColor: js.UndefOr[String] = js.undefined,
-                                   style: js.UndefOr[js.Any] = js.undefined,
-                                   iconStyle: js.UndefOr[js.Any] = js.undefined,
-                                   label: js.UndefOr[String] = js.undefined,
-                                   ref: js.UndefOr[String] = js.undefined,
-                                   secondary: js.UndefOr[Boolean] = js.undefined,
-                                   onMouseUp: js.UndefOr[ReactEventH => Unit] = js.undefined,
-                                   onTouchEnd: js.UndefOr[ReactEventH => Unit] = js.undefined,
-                                   key: js.UndefOr[String] = js.undefined,
-                                   onMouseOver: js.UndefOr[ReactEventH => Unit] = js.undefined,
-                                   linkButton: js.UndefOr[Boolean] = js.undefined,
-                                   onTouchTap: js.UndefOr[ReactEventH => Unit] = js.undefined,
-                                   className: js.UndefOr[String] = js.undefined,
-                                   onMouseOut: js.UndefOr[ReactEventH => Unit] = js.undefined,
-                                   hoverColor: js.UndefOr[String] = js.undefined,
-                                   onFocus: js.UndefOr[ReactEventH => Unit] = js.undefined,
-                                   disabled: js.UndefOr[Boolean] = js.undefined,
-                                   href: js.UndefOr[String] = js.undefined,
-                                   onMouseDown: js.UndefOr[ReactEventH => Unit] = js.undefined) {
+case class MuiFloatingActionButton(
+  iconClassName: U[String]                  = uNone,
+  onBlur:        U[ReactEventH => Callback] = uNone,
+  labelStyle:    U[js.Any]                  = uNone,
+  onTouchStart:  U[ReactEventH => Callback] = uNone,
+  mini:          U[Boolean]                 = uNone,
+  rippleColor:   U[String]                  = uNone,
+  style:         U[js.Any]                  = uNone,
+  iconStyle:     U[js.Any]                  = uNone,
+  label:         U[String]                  = uNone,
+  ref:           U[String]                  = uNone,
+  secondary:     U[Boolean]                 = uNone,
+  onMouseUp:     U[ReactEventH => Callback] = uNone,
+  onTouchEnd:    U[ReactEventH => Callback] = uNone,
+  key:           U[String]                  = uNone,
+  onMouseOver:   U[ReactEventH => Callback] = uNone,
+  linkButton:    U[Boolean]                 = uNone,
+  onTouchTap:    U[ReactEventH => Callback] = uNone,
+  className:     U[String]                  = uNone,
+  onMouseOut:    U[ReactEventH => Callback] = uNone,
+  hoverColor:    U[String]                  = uNone,
+  onFocus:       U[ReactEventH => Callback] = uNone,
+  disabled:      U[Boolean]                 = uNone,
+  href:          U[String]                  = uNone,
+  onMouseDown:   U[ReactEventH => Callback] = uNone) {
   def toJS = {
-    val p = js.Dynamic.literal()
-    iconClassName.foreach(v => p.updateDynamic("iconClassName")(v))
-    onBlur.foreach(v => p.updateDynamic("onBlur")(v))
-    labelStyle.foreach(v => p.updateDynamic("labelStyle")(v))
-    onTouchStart.foreach(v => p.updateDynamic("onTouchStart")(v))
-    mini.foreach(v => p.updateDynamic("mini")(v))
-    rippleColor.foreach(v => p.updateDynamic("rippleColor")(v))
-    style.foreach(v => p.updateDynamic("style")(v))
-    iconStyle.foreach(v => p.updateDynamic("iconStyle")(v))
-    label.foreach(v => p.updateDynamic("label")(v))
-    ref.foreach(v => p.updateDynamic("ref")(v))
-    secondary.foreach(v => p.updateDynamic("secondary")(v))
-    onMouseUp.foreach(v => p.updateDynamic("onMouseUp")(v))
-    onTouchEnd.foreach(v => p.updateDynamic("onTouchEnd")(v))
-    key.foreach(v => p.updateDynamic("key")(v))
-    onMouseOver.foreach(v => p.updateDynamic("onMouseOver")(v))
-    linkButton.foreach(v => p.updateDynamic("linkButton")(v))
-    onTouchTap.foreach(v => p.updateDynamic("onTouchTap")(v))
-    className.foreach(v => p.updateDynamic("className")(v))
-    onMouseOut.foreach(v => p.updateDynamic("onMouseOut")(v))
-    hoverColor.foreach(v => p.updateDynamic("hoverColor")(v))
-    onFocus.foreach(v => p.updateDynamic("onFocus")(v))
-    disabled.foreach(v => p.updateDynamic("disabled")(v))
-    href.foreach(v => p.updateDynamic("href")(v))
-    onMouseDown.foreach(v => p.updateDynamic("onMouseDown")(v))
+    val p = new TypedJsProps
+    iconClassName.foreach(p.setV("iconClassName"))
+    onBlur       .foreach(p.setF1C("onBlur"))
+    labelStyle   .foreach(p.setV("labelStyle"))
+    onTouchStart .foreach(p.setF1C("onTouchStart"))
+    mini         .foreach(p.setV("mini"))
+    rippleColor  .foreach(p.setV("rippleColor"))
+    style        .foreach(p.setV("style"))
+    iconStyle    .foreach(p.setV("iconStyle"))
+    label        .foreach(p.setV("label"))
+    ref          .foreach(p.setV("ref"))
+    secondary    .foreach(p.setV("secondary"))
+    onMouseUp    .foreach(p.setF1C("onMouseUp"))
+    onTouchEnd   .foreach(p.setF1C("onTouchEnd"))
+    key          .foreach(p.setV("key"))
+    onMouseOver  .foreach(p.setF1C("onMouseOver"))
+    linkButton   .foreach(p.setV("linkButton"))
+    onTouchTap   .foreach(p.setF1C("onTouchTap"))
+    className    .foreach(p.setV("className"))
+    onMouseOut   .foreach(p.setF1C("onMouseOut"))
+    hoverColor   .foreach(p.setV("hoverColor"))
+    onFocus      .foreach(p.setF1C("onFocus"))
+    disabled     .foreach(p.setV("disabled"))
+    href         .foreach(p.setV("href"))
+    onMouseDown  .foreach(p.setF1C("onMouseDown"))
     p
   }
 

@@ -1,7 +1,6 @@
-package chandu0101.scalajs.react.components.draggables
+package chandu0101.scalajs.react.components
+package draggables
 
-
-import chandu0101.scalajs.react.components.all._
 import chandu0101.scalajs.react.components.models.{RElementPosition, RGrid, RPoint}
 import chandu0101.scalajs.react.components.util.DomUtil._
 import chandu0101.scalajs.react.components.util.Events
@@ -30,11 +29,17 @@ object ReactDraggable {
    * @param clientX Current left of this.getDOMNode()
    * @param clientY Current top of this.getDOMNode()
    */
-  case class State(dragging : Boolean = false,startX : Int = 0,startY : Int = 0, offsetX : Int = 0,offsetY : Int = 0,clientX : Int = 0,clientY : Int = 0)
+  case class State(dragging: Boolean = false,
+                   startX: Int = 0,
+                   startY: Int = 0,
+                   offsetX: Int = 0,
+                   offsetY: Int = 0,
+                   clientX: Int = 0,
+                   clientY: Int = 0)
 
-  class Backend(t: BackendScope[Props, State]) {
+  case class Backend(t: BackendScope[Props, State]) {
 
-    def createUIEvent = RElementPosition(t.getDOMNode(),top = t.state.clientY , left  = t.state.clientX)
+    def createUIEvent = RElementPosition(t.getDOMNode(), top = t.state.clientY, left = t.state.clientX)
 
     lazy val handleDrag_ref : js.Function1[Event,_] = handleDrag _
 
@@ -42,73 +47,79 @@ object ReactDraggable {
 
     lazy val handleDragEnd_ref : js.Function1[Event,_] = handleDragEnd _
 
-
-    def handleDragStart(e : Event) = {
+    def handleDragStart(e : Event): Callback = {
 //      println(s"started dragging e : $e left : ${isLeftClick(e)}")
       // Make it possible to attach event handlers on top of this one
-      if(t.props.onMouseDown != null) t.props.onMouseDown(e)
-      if(isLeftClick(e)) {//only catch left clicks
-        if(!((!t.props.handle.isEmpty && !matchesSelector(e.target.asInstanceOf[js.Dynamic],t.props.handle)) ||
-          (!t.props.cancel.isEmpty && matchesSelector(e.target.asInstanceOf[js.Dynamic].target,t.props.cancel))
-          )) { // Short circuit if handle or cancel prop was provided and selector doesn't match
+      val c1 = t.props.onMouseDown.mapply(e)
+      val c2 = Callback(
+      if (isLeftClick(e)) { //only catch left clicks
+        if (!((!t.props.handle.isEmpty && !matchesSelector(e.target.asInstanceOf[js.Dynamic], t.props.handle)) ||
+          (!t.props.cancel.isEmpty && matchesSelector(e.target.asInstanceOf[js.Dynamic].target, t.props.cancel)))) {
+          // Short circuit if handle or cancel prop was provided and selector doesn't match
           val dragPoint = getControlPosition(e)
           //Initiate Dragging
-          t.modState(_.copy(dragging = true,offsetX = dragPoint.x.toInt , offsetY = dragPoint.y.toInt))
+          t.modState(_.copy(dragging = true, offsetX = dragPoint.x.toInt, offsetY = dragPoint.y.toInt)).runNow()
           // Add a class to the body to disable user-select. This prevents text from
           // being selected all over the page.
           dom.document.body.className += " react-draggable-active"
-          if(t.props.onStart != null) t.props.onStart(e,createUIEvent)
-          Events.on(dom.window,dragEventFor(e,"move"),handleDrag_ref)
-          Events.on(dom.window,dragEventFor(e,"end"),handleDragEnd_ref)
+          t.props.onStart.mapply(e, createUIEvent).runNowU()
+          Events.on(dom.window, dragEventFor(e, "move"), handleDrag_ref)
+          Events.on(dom.window, dragEventFor(e, "end"), handleDragEnd_ref)
         }
       }
+      )
+      c1.voidU >> c2
     }
 
-    def handleDrag(e: Event)  = {
-       val dragPoint = getControlPosition(e)
-        // calculate top and left
-       var clientX = t.state.startX + (dragPoint.x - t.state.offsetX)
-       var clientY = t.state.startY + (dragPoint.y - t.state.offsetY)
+    def handleDrag(e: Event): Callback  = {
+      val c1 = {
+        val dragPoint = getControlPosition(e)
+         // calculate top and left
+        var clientX = t.state.startX + (dragPoint.x - t.state.offsetX)
+        var clientY = t.state.startY + (dragPoint.y - t.state.offsetY)
 
-        // Snap to grid if prop has been provided
-       if(t.props.grid != null) {
-         val directionX = if(clientX < t.state.clientX) -1 else 1
-         val directionY = if(clientY < t.state.clientY) -1 else 1
-         val grid = t.props.grid
-         clientX = if(Math.abs(clientX - t.state.clientX) >= grid.width)
-                t.state.clientX + (grid.width * directionX)
-               else t.state.clientX
-         clientY = if(Math.abs(clientY - t.state.clientY) >= grid.height)
-                t.state.clientY + (grid.height * directionY)
-               else t.state.clientY
-       }
+         // Snap to grid if prop has been provided
+        t.props.grid.foreach {
+          grid =>
+            val directionX = if(clientX < t.state.clientX) -1 else 1
+            val directionY = if(clientY < t.state.clientY) -1 else 1
+            clientX = if(Math.abs(clientX - t.state.clientX) >= grid.width)
+                   t.state.clientX + (grid.width * directionX)
+                  else t.state.clientX
+            clientY = if(Math.abs(clientY - t.state.clientY) >= grid.height)
+                   t.state.clientY + (grid.height * directionY)
+                  else t.state.clientY
+        }
 
-       //min/max contraints
-       if(t.props.minConstraints != null) {
-         clientX = Math.max(t.props.minConstraints.width,clientX)
-         clientY = Math.max(t.props.minConstraints.height,clientY)
-       }
+        //min/max contraints
+        t.props.minConstraints.foreach{ min =>
+          clientX = Math.max(min.width,clientX)
+          clientY = Math.max(min.height,clientY)
+        }
+        t.props.maxConstraints foreach { max =>
+          clientX = Math.max(max.width,clientX) //todo: Math.max seems wrong here
+          clientY = Math.max(max.height,clientY)
+        }
 
-       if(t.props.maxConstraints != null) {
-         clientX = Math.max(t.props.maxConstraints.width,clientX)
-         clientY = Math.max(t.props.maxConstraints.height,clientY)
-       }
-         // Update top and left
-      t.modState(_.copy(clientX = clientX.toInt, clientY = clientY.toInt))
+        // Update top and left
+        t.modState(_.copy(clientX = clientX.toInt, clientY = clientY.toInt))
+      }
       //call event handler
-      if(t.props.onDrag != null) t.props.onDrag(e,createUIEvent)
+      val c2 = t.props.onDrag.mapply(e, createUIEvent)
+
+      c1 >> c2.voidU
     }
 
-    def handleDragEnd(e:Event)  = {
-      e.target
-       if(t.state.dragging) {
-         t.modState(_.copy(dragging = false))
-          // Remove the body class used to disable user-select.
-          g.document.body.className = g.document.body.className.replace(" react-draggable-active", "")
-         if(t.props.onStop != null) t.props.onStop(e,createUIEvent)
-          Events.off(dom.window,dragEventFor(e,"move"),handleDrag_ref)
-          Events.off(dom.window,dragEventFor(e,"end"),handleDragEnd_ref)
-       }
+    def handleDragEnd(e:Event): U[Callback] = {
+      val c1 = t.modState(_.copy(dragging = false))
+      val c2 = t.props.onStop.mapply(e, createUIEvent)
+      val c3 = Callback {
+         // Remove the body class used to disable user-select.
+         g.document.body.className = g.document.body.className.replace(" react-draggable-active", "")
+         Events.off(dom.window,dragEventFor(e,"move"),handleDrag_ref)
+         Events.off(dom.window,dragEventFor(e,"end"),handleDragEnd_ref)
+      }
+      (c1 >> c2.voidU >> c3).filter(t.state.dragging)
     }
 
     def canDragY = t.props.axis == "both" || t.props.axis == "y"
@@ -117,39 +128,68 @@ object ReactDraggable {
 
     def positionToCSSTransform(left : Int, top : Int) = {
       val trans = s"translate(${left}px , ${top}px)"
-      Seq( ^.transform := trans,mozTransform := trans , webkitTransform := trans , msTransform := trans)
+      Seq(
+        ^.transform := trans,
+        mozTransform := trans,
+        webkitTransform := trans,
+        msTransform := trans
+      )
+    }
+
+    def render(P: Props, S: State) = {
+      val topValue = if(canDragY) S.clientY else S.startY
+      val leftValue = if(canDragX) S.clientX else S.startX
+      var stl : TagMod = Seq( ^.top := topValue ,^.left := leftValue)
+      if(P.useCSSTransforms) stl = positionToCSSTransform(leftValue,topValue)
+     <.div(^.classSet1("react-draggable","react-draggable-dragging" -> S.dragging) ,stl)(
+       ^.onMouseDown  ==> handleDragStart,
+       ^.onTouchStart ==> handleDragStart,
+       ^.onMouseUp    ==>? handleDragEnd,
+       ^.onTouchEnd   ==>? handleDragEnd
+      )(
+        t.propsChildren
+      )
     }
   }
 
   val component = ReactComponentB[Props]("ReactDraggable")
-    .initialStateP(p => State(clientX = p.start.x.toInt ,clientY = p.start.y.toInt))
-    .backend(new Backend(_))
-    .render((P,C,S, B) => {
-      val topValue = if(B.canDragY) S.clientY else S.startY
-      val leftValue = if(B.canDragX) S.clientX else S.startX
-      var stl : TagMod = Seq( ^.top := topValue ,^.left := leftValue)
-      if(P.useCSSTransforms) stl = B.positionToCSSTransform(leftValue,topValue)
-     <.div(^.classSet1("react-draggable","react-draggable-dragging" -> S.dragging) ,stl)(
-       ^.onMouseDown ==> B.handleDragStart,^.onTouchStart ==> B.handleDragStart,
-       ^.onMouseUp ==> B.handleDragEnd,^.onTouchEnd ==> B.handleDragEnd
-      )(
-        C
-      )
-    })
+    .initialState_P(p => State(clientX = p.start.x.toInt ,clientY = p.start.y.toInt))
+    .backend(Backend)
+    .render($ => $.backend.render($.props, $.state))
     .componentWillReceiveProps((scope,nextProps) => {
-       if(nextProps.moveOnStartChange) scope.modState(_.copy(clientX = nextProps.start.x.toInt,clientY = nextProps.start.y.toInt))
+       scope.modState(_.copy(
+         clientX = nextProps.start.x.toInt,
+         clientY = nextProps.start.y.toInt)
+       ).filter(nextProps.moveOnStartChange)
     })
     .shouldComponentUpdate((scope,nextP,nextS) => {
       !(scope.props == nextP) || !(scope.state == nextS)
      })
-    .componentWillUnmount(scope => {
+    .componentWillUnmount(scope => Callback{
       Events.off(dom.window,dragEventFor("move"),scope.backend.handleDrag_ref)
       Events.off(dom.window,dragEventFor("end"),scope.backend.handleDragEnd_ref)
     })
     .build
 
 
-  case class Props(cancel: String, onDrag: EventRElementPositionAny, useCSSTransforms: Boolean, clsNames: CssClassType, ref: js.UndefOr[String], moveOnStartChange: Boolean, grid: RGrid, key: js.Any, zIndex: Int, axis: String, onStop: EventRElementPositionAny, start: RPoint, onStart: EventRElementPositionAny, onMouseDown: EventUnit, handle: String,minConstraints : RGrid,maxConstraints : RGrid)
+  case class Props(
+    cancel:            String,
+    onDrag:            U[EventRElementPositionCbAny],
+    useCSSTransforms:  Boolean,
+    clsNames:          CssClassType,
+    ref:               U[String],
+    moveOnStartChange: Boolean,
+    grid:              U[RGrid],
+    key:               js.Any,
+    zIndex:            Int,
+    axis:              String,
+    onStop:            U[EventRElementPositionCbAny],
+    start:             RPoint,
+    onStart:           U[EventRElementPositionCbAny],
+    onMouseDown:       U[EventCb],
+    handle:            String,
+    minConstraints:    U[RGrid],
+    maxConstraints:    U[RGrid])
 
   /**
    *
@@ -178,7 +218,28 @@ object ReactDraggable {
    * @param children
    * @return
    */
-  def apply(cancel: String = "", onDrag: EventRElementPositionAny = null, useCSSTransforms: Boolean = false, clsNames: CssClassType = Map(), ref: js.UndefOr[String] = "", moveOnStartChange: Boolean = false, grid: RGrid = null, key: js.Any = {}, zIndex: Int = 0, axis: String = "both", onStop: EventRElementPositionAny = null, start: RPoint = RPoint(0,0), onStart: EventRElementPositionAny = null, onMouseDown: EventUnit = null, handle: String = "",minConstraints : RGrid = null, maxConstraints : RGrid = null)(children: ReactNode) =
-    component.set(key, ref)(Props(cancel, onDrag, useCSSTransforms, clsNames, ref, moveOnStartChange, grid, key, zIndex, axis, onStop, start, onStart, onMouseDown, handle,minConstraints,maxConstraints), children)
+  def apply(
+    cancel:            String                     = "",
+    onDrag:            EventRElementPositionCbAny = null,
+    useCSSTransforms:  Boolean                    = false,
+    clsNames:          CssClassType               = Map(),
+    ref:               U[String]                  = "",
+    moveOnStartChange: Boolean                    = false,
+    grid:              RGrid                      = null,
+    key:               js.Any                     = {},
+    zIndex:            Int                        = 0,
+    axis:              String                     = "both",
+    onStop:            EventRElementPositionCbAny = null,
+    start:             RPoint                     = RPoint(0, 0),
+    onStart:           EventRElementPositionCbAny = null,
+    onMouseDown:       EventCb                    = null,
+    handle:            String                     = "",
+    minConstraints:    RGrid                      = null,
+    maxConstraints:    RGrid                      = null)
+   (children:          ReactNode) =
 
+    component.set(key, ref)(
+      Props(cancel, onDrag, useCSSTransforms, clsNames, ref, moveOnStartChange, grid, key, zIndex, axis, onStop, start, onStart, onMouseDown, handle, minConstraints, maxConstraints),
+      children
+    )
 }

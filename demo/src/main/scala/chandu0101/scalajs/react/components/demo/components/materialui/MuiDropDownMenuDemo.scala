@@ -1,9 +1,10 @@
-package chandu0101.scalajs.react.components.demo.components.materialui
+package chandu0101.scalajs.react.components
+package demo.components.materialui
 
 import chandu0101.scalajs.react.components.demo.components.CodeExample
-import chandu0101.scalajs.react.components.materialui.{MuiDropdownMenu, MuiAppBar}
-import chandu0101.scalajs.react.components.reactbootstrap.bootStrap.DropdownMenu
-import japgolly.scalajs.react.ReactComponentB
+import chandu0101.scalajs.react.components.materialui.MuiDropdownMenu
+import chandu0101.scalajs.react.components.materialui.MuiDropdownMenu.Item
+import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
 
 import scala.scalajs.js
@@ -34,9 +35,12 @@ object MuiDropDownMenuDemo {
       MuiDropdownMenu.Item(payload = "4",text = "Weekends"),
       MuiDropdownMenu.Item(payload = "5",text = "Weekly")
     )
+    val onChange: (ReactEvent, Int, Item) => Callback =
+      (e, idx, item) => Callback.info(s"Selected $item")
+
     <.div(
       CodeExample(code, "MuiDropDownMenu")(
-        MuiDropdownMenu(menuItems = menuItems)
+        MuiDropdownMenu(menuItems = menuItems, onChange = onChange)
       )
     )
   }).buildU

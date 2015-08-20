@@ -1,8 +1,9 @@
-package chandu0101.scalajs.react.components.demo.routes
+package chandu0101.scalajs.react.components
+package demo.routes
 
 import chandu0101.scalajs.react.components.demo.components.googlemap._
 import chandu0101.scalajs.react.components.demo.pages.{GoogleMapPage, ReactTreeViewPage}
-import japgolly.scalajs.react.extra.router2.RouterConfigDsl
+import japgolly.scalajs.react.extra.router.RouterConfigDsl
 
 object GoogleMapRouteModule {
 

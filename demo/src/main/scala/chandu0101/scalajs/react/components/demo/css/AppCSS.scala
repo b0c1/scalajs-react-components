@@ -1,4 +1,5 @@
-package chandu0101.scalajs.react.components.demo.css
+package chandu0101.scalajs.react.components
+package demo.css
 
 import chandu0101.scalajs.react.components.demo.components.materialui._
 import chandu0101.scalajs.react.components.demo.components.reactinfinite.ReactInfiniteDemo

@@ -1,4 +1,5 @@
-package chandu0101.scalajs.react.components.textfields
+package chandu0101.scalajs.react.components
+package textfields
 
 import japgolly.scalajs.react._
 
@@ -16,63 +17,63 @@ classNamespace: React.PropTypes.string,
 addKeys: React.PropTypes.JArray[Int],
 removeKeys: React.PropTypes.JArray[Int],
 addOnBlur: React.PropTypes.bool,
-onChange: React.PropTypes.(JArray[String],String) => Unit,
-onChangeInput: React.PropTypes.String => Unit,
-onBlur: React.PropTypes.() => Unit,
-onKeyDown: React.PropTypes.ReactEventI => Unit,
-onKeyUp: React.PropTypes.ReactEventI => Unit,
-onTagAdd: React.PropTypes.String => Unit,
-onTagRemove: React.PropTypes.String => Unit,
-transform: React.PropTypes.String => Unit,
+onChange: React.PropTypes.(JArray[String],String) => Callback,
+onChangeInput: React.PropTypes.String => Callback,
+onBlur: React.PropTypes.Callback,
+onKeyDown: React.PropTypes.ReactEventI => Callback,
+onKeyUp: React.PropTypes.ReactEventI => Callback,
+onTagAdd: React.PropTypes.String => Callback,
+onTagRemove: React.PropTypes.String => Callback,
+transform: React.PropTypes.String => Callback,
 validate: React.PropTypes.String => Boolean,
 validateAsync: React.PropTypes.func
 
  */
 
 object ReactTagsInput {
+  def apply(
+    onBlur:         U[Callback]                             = uNone,
+    onKeyDown:      U[ReactEventI => Callback]              = uNone,
+    onTagRemove:    U[String => Callback]                   = uNone,
+    onChange:       U[(JArray[String], String) => Callback] = uNone,
+    removeKeys:     U[JArray[Int]]                          = uNone,
+    validate:       U[String => Boolean]                    = uNone,
+    classNamespace: U[String]                               = uNone,
+    ref:            U[String]                               = uNone,
+    addOnBlur:      U[Boolean]                              = uNone,
+    placeholder:    U[String]                               = uNone,
+    valueLink:      U[js.Object]                            = uNone,
+    onKeyUp:        U[ReactEventI => Callback]              = uNone,
+    key:            U[String]                               = uNone,
+    addKeys:        U[JArray[Int]]                          = uNone,
+    onTagAdd:       U[String => Callback]                   = uNone,
+    validateAsync:  U[js.Function]                          = uNone,
+    onChangeInput:  U[String => Callback]                   = uNone,
+    defaultValue:   U[JArray[String]]                       = uNone,
+    transform:      U[String => Callback]                   = uNone,
+    value:          U[JArray[String]]                       = uNone) = {
 
-  def apply(onBlur: js.UndefOr[() => Unit] = js.undefined,
-            onKeyDown: js.UndefOr[ReactEventI => Unit] = js.undefined,
-            onTagRemove: js.UndefOr[String => Unit] = js.undefined,
-            onChange: js.UndefOr[(JArray[String], String) => Unit] = js.undefined,
-            removeKeys: js.UndefOr[JArray[Int]] = js.undefined,
-            validate: js.UndefOr[String => Boolean] = js.undefined,
-            classNamespace: js.UndefOr[String] = js.undefined,
-            ref: js.UndefOr[String] = js.undefined,
-            addOnBlur: js.UndefOr[Boolean] = js.undefined,
-            placeholder: js.UndefOr[String] = js.undefined,
-            valueLink: js.UndefOr[js.Object] = js.undefined,
-            onKeyUp: js.UndefOr[ReactEventI => Unit] = js.undefined,
-            key: js.UndefOr[String] = js.undefined,
-            addKeys: js.UndefOr[JArray[Int]] = js.undefined,
-            onTagAdd: js.UndefOr[String => Unit] = js.undefined,
-            validateAsync: js.UndefOr[js.Function] = js.undefined,
-            onChangeInput: js.UndefOr[String => Unit] = js.undefined,
-            defaultValue: js.UndefOr[JArray[String]] = js.undefined,
-            transform: js.UndefOr[String => Unit] = js.undefined,
-            value: js.UndefOr[JArray[String]] = js.undefined) = {
-
-    val p = js.Dynamic.literal()
-    onBlur.foreach(v => p.updateDynamic("onBlur")(v))
-    onKeyDown.foreach(v => p.updateDynamic("onKeyDown")(v))
-    onTagRemove.foreach(v => p.updateDynamic("onTagRemove")(v))
-    onChange.foreach(v => p.updateDynamic("onChange")(v))
-    removeKeys.foreach(v => p.updateDynamic("removeKeys")(v))
-    validate.foreach(v => p.updateDynamic("validate")(v))
-    classNamespace.foreach(v => p.updateDynamic("classNamespace")(v))
-    ref.foreach(v => p.updateDynamic("ref")(v))
-    addOnBlur.foreach(v => p.updateDynamic("addOnBlur")(v))
-    placeholder.foreach(v => p.updateDynamic("placeholder")(v))
-    valueLink.foreach(v => p.updateDynamic("valueLink")(v))
-    onKeyUp.foreach(v => p.updateDynamic("onKeyUp")(v))
-    key.foreach(v => p.updateDynamic("key")(v))
-    addKeys.foreach(v => p.updateDynamic("addKeys")(v))
-    onTagAdd.foreach(v => p.updateDynamic("onTagAdd")(v))
-    validateAsync.foreach(v => p.updateDynamic("validateAsync")(v))
-    onChangeInput.foreach(v => p.updateDynamic("onChangeInput")(v))
-    defaultValue.foreach(v => p.updateDynamic("defaultValue")(v))
-    transform.foreach(v => p.updateDynamic("transform")(v))
-    value.foreach(v => p.updateDynamic("value")(v))
+    val p = new TypedJsProps
+    onBlur        .foreach(p.setC("onBlur"))
+    onKeyDown     .foreach(p.setF1C("onKeyDown"))
+    onTagRemove   .foreach(p.setF1C("onTagRemove"))
+    onChange      .foreach(p.setF2C("onChange"))
+    removeKeys    .foreach(p.setV("removeKeys"))
+    validate      .foreach(p.setV("validate"))
+    classNamespace.foreach(p.setV("classNamespace"))
+    ref           .foreach(p.setV("ref"))
+    addOnBlur     .foreach(p.setV("addOnBlur"))
+    placeholder   .foreach(p.setV("placeholder"))
+    valueLink     .foreach(p.setV("valueLink"))
+    onKeyUp       .foreach(p.setF1C("onKeyUp"))
+    key           .foreach(p.setV("key"))
+    addKeys       .foreach(p.setV("addKeys"))
+    onTagAdd      .foreach(p.setF1C("onTagAdd"))
+    validateAsync .foreach(p.setV("validateAsync"))
+    onChangeInput .foreach(p.setF1C("onChangeInput"))
+    defaultValue  .foreach(p.setV("defaultValue"))
+    transform     .foreach(p.setF1C("transform"))
+    value         .foreach(p.setV("value"))
 
     val f = React.asInstanceOf[js.Dynamic].createFactory(js.Dynamic.global.ReactTagsInput)
     f(p).asInstanceOf[ReactComponentU_]

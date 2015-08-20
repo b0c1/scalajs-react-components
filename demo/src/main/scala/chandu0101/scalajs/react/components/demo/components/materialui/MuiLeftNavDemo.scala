@@ -1,9 +1,10 @@
-package chandu0101.scalajs.react.components.demo.components.materialui
+package chandu0101.scalajs.react.components
+package demo.components.materialui
 
 import chandu0101.scalajs.react.components.demo.components.CodeExample
 import chandu0101.scalajs.react.components.materialui._
+import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
-import japgolly.scalajs.react.{BackendScope, ReactComponentB, ReactEventH, Ref}
 
 import scala.scalajs.js
 
@@ -44,40 +45,42 @@ object MuiLeftNavDemo {
 
   case class State(isDocked : Boolean = false)
 
-  class Backend(t: BackendScope[_, State]) {
+  case class Backend(t: BackendScope[Unit, State]) {
 
-    def handleDockedLeftNav(e: ReactEventH) = {
-      dockedLeftnavRef(t).get.toggle()
-      t.modState(s => s.copy(isDocked = !s.isDocked))
+    val handleDockedLeftNav: ReactEvent => Callback = {
+      e =>
+        Callback(dockedLeftnavRef(t).get.toggle()) >>
+        t.modState(s => s.copy(isDocked = !s.isDocked))
     }
 
-    def handleHidableLeftNav(e: ReactEventH) = {
-      nondockedLeftnavRef(t).get.toggle()
+    val handleHidableLeftNav: ReactEvent => Callback =
+      e => Callback(nondockedLeftnavRef(t).get.toggle())
+
+    def render(S: State) = {
+      <.div(
+        CodeExample(code, "MuiAppBar")(
+          <.div(
+            MuiLeftNav(
+              ref = "leftnav", menuItems = menuItems, docked = false
+            ),
+            MuiLeftNav(
+              ref = "leftnavdocked", menuItems = menuItems, docked = S.isDocked
+            ),
+            MuiRaisedButton(label = "Toggle Docked Left Nav", onTouchTap = handleDockedLeftNav)(),
+            <.br(),
+            <.br(),
+            MuiRaisedButton(label = "Show Hideable Left Nav", onTouchTap = handleHidableLeftNav)()
+          )
+        )
+      )
     }
   }
 
   val component = ReactComponentB[Unit]("MuiLeftNavDemo")
     .initialState(State())
-    .backend(new Backend(_))
-    .render((P,S,B) => {
-    <.div(
-      CodeExample(code, "MuiAppBar")(
-        <.div(
-          MuiLeftNav(ref = "leftnav",
-            menuItems = menuItems,docked = false
-          ),
-          MuiLeftNav(ref = "leftnavdocked",
-            menuItems = menuItems,docked = S.isDocked
-          ),
-          MuiRaisedButton(label = "Toggle Docked Left Nav" ,onTouchTap = B.handleDockedLeftNav _)(),
-          <.br(),
-          <.br(),
-          MuiRaisedButton(label = "Show Hideable Left Nav" ,onTouchTap = B.handleHidableLeftNav _)()
-        )
-      )
-    )
-  }).buildU
-
+    .backend(Backend)
+    .render($ => $.backend.render($.state))
+    .buildU
 
   def apply() = component()
 }

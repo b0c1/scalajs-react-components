@@ -1,4 +1,5 @@
-package chandu0101.scalajs.react.components.mixins
+package chandu0101.scalajs.react.components
+package mixins
 
 import japgolly.scalajs.react._
 import org.scalajs.dom
@@ -19,24 +20,30 @@ trait AsyncLoad {
 
 object AsyncLoad {
   def mixin[P, S, B <: AsyncLoad, N <: TopNode] = (c: ReactComponentB[P, S, B, N]) => {
-    c.componentWillMount(scope => {
-      val async = scope.backend.asInstanceOf[AsyncLoad]
-      val links = dom.document.getElementsByTagName("link")
-      async.cssResources.foreach(s => {
-        val head =   dom.document.head
-        val link = dom.document.createElement("link")
-        link.setAttribute("rel","stylesheet")
-        link.setAttribute("href",s)
-        if(!links.contains(link)) head.appendChild(link)
-      })
-      val scripts = dom.document.getElementsByTagName("src")
-      async.jsResources.foreach(s => {
-        val body = dom.document.body
-        val script = dom.document.createElement("script")
-        script.setAttribute("type","text/javascript")
-        script.setAttribute("src",s)
-        if(!scripts.contains(script)) body.appendChild(script)
-      })
-    })
+    c.componentWillMount {
+      scope =>
+        val linksCb = Callback {
+          val links = dom.document.getElementsByTagName("link")
+          val head  = dom.document.head
+          scope.backend.cssResources.foreach{s =>
+            val link = dom.document.createElement("link")
+            link.setAttribute("rel","stylesheet")
+            link.setAttribute("href",s)
+            if(!links.contains(link)) head.appendChild(link)
+          }
+        }
+
+        val scriptsCb = Callback {
+          val scripts = dom.document.getElementsByTagName("src")
+          val body    = dom.document.body
+          scope.backend.jsResources.foreach(s => {
+            val script = dom.document.createElement("script")
+            script.setAttribute("type","text/javascript")
+            script.setAttribute("src",s)
+            if(!scripts.contains(script)) body.appendChild(script)
+          })
+        }
+        linksCb >> scriptsCb
+    }
   }
 }

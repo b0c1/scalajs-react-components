@@ -1,6 +1,8 @@
-package chandu0101.scalajs.react.components.mixins
+package chandu0101.scalajs.react.components
+package mixins
 
 import chandu0101.scalajs.react.components.util.DomUtil
+import japgolly.scalajs.react.ComponentScope.AnyMounted
 import japgolly.scalajs.react._
 import org.scalajs.dom
 import org.scalajs.dom.{Event, html}
@@ -19,7 +21,7 @@ trait ClickAwayable {
 object ClickAwayable {
 
   def mixin[P, S, B, N <: TopNode] = (c: ReactComponentB[P, S, B, N]) => {
-    def initiateListener(t: ComponentScopeM[P, S, B, N]) = {
+    def initiateListener(t: AnyMounted[P, S, B, N]) = {
       val b = t.backend.asInstanceOf[ClickAwayable]
       b.listener =
         (e: dom.Event) => {
@@ -29,10 +31,17 @@ object ClickAwayable {
           }
         }
     }
-    c.componentDidMount(scope => {
+    c.componentDidMount(scope => Callback {
       initiateListener(scope)
       dom.document.addEventListener("click", scope.backend.asInstanceOf[ClickAwayable].listener)
-      })
-      .componentWillUnmount(scope => dom.document.removeEventListener("click", scope.backend.asInstanceOf[ClickAwayable].listener))
+      }
+    ).componentWillUnmount(scope =>
+        Callback(
+          dom.document.removeEventListener(
+            "click",
+            scope.backend.asInstanceOf[ClickAwayable].listener
+          )
+        )
+      )
   }
 }

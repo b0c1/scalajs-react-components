@@ -1,7 +1,9 @@
-package chandu0101.scalajs.react.components.listviews
+package chandu0101.scalajs.react.components
+package listviews
 
 import japgolly.scalajs.react._
 import org.scalajs.dom.raw.HTMLElement
+
 import scala.scalajs.js
 import scala.scalajs.js.JSConverters.JSRichGenTraversableOnce
 
@@ -10,47 +12,48 @@ import scala.scalajs.js.JSConverters.JSRichGenTraversableOnce
 
 key: PropTypes.string,
     ref: PropTypes.String,
-    handleScroll: React.PropTypes.HTMLElement => Unit,
+    handleScroll: React.PropTypes.HTMLElement => Callback,
     preloadBatchSize: React.PropTypes.number,
     preloadAdditionalHeight: React.PropTypes.number,
     elementHeight: React.PropTypes.Seq[Double].isRequired,
     containerHeight: React.PropTypes.number.isRequired,
     infiniteLoadBeginBottomOffset: React.PropTypes.number,
-    onInfiniteLoad: React.PropTypes.() => Unit,
+    onInfiniteLoad: React.PropTypes.Callback,
     loadingSpinnerDelegate: React.PropTypes.node,
     isInfiniteLoading: React.PropTypes.bool,
     timeScrollStateLastsForAfterUserScrolls: React.PropTypes.number,
     className: React.PropTypes.string
 
   */
-case class ReactInfinite(handleScroll: js.UndefOr[HTMLElement => Unit] = js.undefined,
-                         preloadAdditionalHeight: js.UndefOr[Int] = js.undefined,
-                         isInfiniteLoading: js.UndefOr[Boolean] = js.undefined,
-                         preloadBatchSize: js.UndefOr[Int] = js.undefined,
-                         containerHeight: Int,
-                         ref: js.UndefOr[String] = js.undefined,
-                         loadingSpinnerDelegate: js.UndefOr[ReactElement] = js.undefined,
-                         timeScrollStateLastsForAfterUserScrolls: js.UndefOr[Int] = js.undefined,
-                         elementHeight: Double,
-                         key: js.UndefOr[String] = js.undefined,
-                         className: js.UndefOr[String] = js.undefined,
-                         infiniteLoadBeginBottomOffset: js.UndefOr[Int] = js.undefined,
-                         onInfiniteLoad: js.UndefOr[() => Unit] = js.undefined) {
+case class ReactInfinite(
+  handleScroll:                            U[HTMLElement => Callback] = uNone,
+  preloadAdditionalHeight:                 U[Int]                     = uNone,
+  isInfiniteLoading:                       U[Boolean]                 = uNone,
+  preloadBatchSize:                        U[Int]                     = uNone,
+  containerHeight:                         Int,
+  ref:                                     U[String]                  = uNone,
+  loadingSpinnerDelegate:                  U[ReactElement]            = uNone,
+  timeScrollStateLastsForAfterUserScrolls: U[Int]                     = uNone,
+  elementHeight:                           Double,
+  key:                                     U[String]                  = uNone,
+  className:                               U[String]                  = uNone,
+  infiniteLoadBeginBottomOffset:           U[Int]                     = uNone,
+  onInfiniteLoad:                          U[Callback]                = uNone) {
   def toJS = {
-    val p = js.Dynamic.literal()
-    handleScroll.foreach(v => p.updateDynamic("handleScroll")(v))
-    preloadAdditionalHeight.foreach(v => p.updateDynamic("preloadAdditionalHeight")(v))
-    isInfiniteLoading.foreach(v => p.updateDynamic("isInfiniteLoading")(v))
-    preloadBatchSize.foreach(v => p.updateDynamic("preloadBatchSize")(v))
-    p.updateDynamic("containerHeight")(containerHeight)
-    ref.foreach(v => p.updateDynamic("ref")(v))
-    loadingSpinnerDelegate.foreach(v => p.updateDynamic("loadingSpinnerDelegate")(v))
-    timeScrollStateLastsForAfterUserScrolls.foreach(v => p.updateDynamic("timeScrollStateLastsForAfterUserScrolls")(v))
-    p.updateDynamic("elementHeight")(elementHeight)
-    key.foreach(v => p.updateDynamic("key")(v))
-    className.foreach(v => p.updateDynamic("className")(v))
-    infiniteLoadBeginBottomOffset.foreach(v => p.updateDynamic("infiniteLoadBeginBottomOffset")(v))
-    onInfiniteLoad.foreach(v => p.updateDynamic("onInfiniteLoad")(v))
+    val p = new TypedJsProps
+    handleScroll.foreach(p.setF1C("handleScroll"))
+    preloadAdditionalHeight.foreach(p.setV("preloadAdditionalHeight"))
+    isInfiniteLoading.foreach(p.setV("isInfiniteLoading"))
+    preloadBatchSize.foreach(p.setV("preloadBatchSize"))
+    p.setV("containerHeight")(containerHeight)
+    ref.foreach(p.setV("ref"))
+    loadingSpinnerDelegate.foreach(p.setV("loadingSpinnerDelegate"))
+    timeScrollStateLastsForAfterUserScrolls.foreach(p.setV("timeScrollStateLastsForAfterUserScrolls"))
+    p.setV("elementHeight")(elementHeight)
+    key.foreach(p.setV("key"))
+    className.foreach(p.setV("className"))
+    infiniteLoadBeginBottomOffset.foreach(p.setV("infiniteLoadBeginBottomOffset"))
+    onInfiniteLoad.foreach(p.setC("onInfiniteLoad"))
     p
   }
 

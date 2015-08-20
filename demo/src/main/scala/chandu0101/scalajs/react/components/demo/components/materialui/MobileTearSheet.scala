@@ -1,4 +1,5 @@
-package chandu0101.scalajs.react.components.demo.components.materialui
+package chandu0101.scalajs.react.components
+package demo.components.materialui
 
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
@@ -34,7 +35,7 @@ object MobileTearSheet {
 
   val component = ReactComponentB[Unit]("MobileTearSheet")
 
-    .render((P, C) => {
+    .renderPC(($, P, C) => {
     <.div(Style.root,
       <.div(Style.container,
         C

@@ -1,4 +1,5 @@
-package chandu0101.scalajs.react.components.demo.components
+package chandu0101.scalajs.react.components
+package demo.components
 
 import chandu0101.scalajs.react.components.models.Github
 import japgolly.scalajs.react._
@@ -17,14 +18,8 @@ object ComponentCredits {
 
   case class State(users : List[Github])
 
-  class Backend(t: BackendScope[Props, State]) {
-
-  }
-
-  val component = ReactComponentB[Props]("ComponentCredits")
-    .initialState(State(List()))
-    .backend(new Backend(_))
-    .render((P,S,B) => {
+  case class Backend(t: BackendScope[Props, State]) {
+    def render(P: Props, S: State) = {
       if(S.users.isEmpty)<.div("Loading Credits ...")
       else
       <.div(
@@ -33,26 +28,37 @@ object ComponentCredits {
         <.h4("Contributors : "),
        <.div(^.marginRight := "10px")(S.users.tail.map(u => GithubUser(user = u , key = u.login)))
        )
-    })
-    .componentDidMount(scope => {
-        val url = s"https://api.github.com/repos/chandu0101/scalajs-react-components/commits?path=${scope.props.filePath}"
-         Ajax.get(url).onSuccess {
-          case xhr => {
-               if(xhr.status == 200) {
-                  val rawUsers = JSON.parse(xhr.responseText).asInstanceOf[js.Array[js.Dynamic]]
-                  val users = rawUsers.map(u => Github(login = u.author.login.toString,html_url = u.author.html_url.toString , avatar_url = u.author.avatar_url.toString,time = new Date(u.commit.author.date.toString).getTime()))
-                    .toList.groupBy(_.login).map {
-                    case (id,objlist) => objlist.minBy(_.time)
-                  }.toSet.toList
-                  scope.modState(_.copy(users= users.sortBy(_.time)))
-               }
-          }
-        }
-    })
-    .build
+    }
+  }
+
+  val component = ReactComponentB[Props]("ComponentCredits")
+    .initialState(State(List()))
+    .backend(Backend)
+    .render($ => $.backend.render($.props, $.state))
+    .componentDidMount{ scope =>
+      val url = s"https://api.github.com/repos/chandu0101/scalajs-react-components/commits?path=${scope.props.filePath }"
+      Callback(
+        Ajax.get(url).onSuccess {
+          case xhr =>
+            if (xhr.status == 200) {
+              val rawUsers = JSON.parse(xhr.responseText).asInstanceOf[js.Array[js.Dynamic]]
+              val users = rawUsers.map(
+                u => Github(
+                  login = u.author.login.toString,
+                  html_url = u.author.html_url.toString,
+                  avatar_url = u.author.avatar_url.toString,
+                  time = new Date(u.commit.author.date.toString).getTime()
+                )
+              ).toList.groupBy(_.login).map {
+                case (id, objlist) => objlist.minBy(_.time)
+              }.toSet.toList
+              scope.modState(_.copy(users = users.sortBy(_.time))).runNow()
+            }
+      })
+    }.build
 
 
   case class Props(filePath : String)
 
-  def apply(filePath : String,ref: js.UndefOr[String] = "", key: js.Any = {}) = component.set(key, ref)(Props(filePath))
+  def apply(filePath : String,ref: U[String] = "", key: js.Any = {}) = component.set(key, ref)(Props(filePath))
 }

@@ -1,7 +1,7 @@
-package chandu0101.scalajs.react.components.materialui
+package chandu0101.scalajs.react.components
+package materialui
 
 import japgolly.scalajs.react._
-import materialui.Mui
 
 import scala.scalajs.js
 
@@ -26,35 +26,35 @@ value:PropTypes.String,
 
 
 object MuiCheckBox {
+  def apply(
+    name:          U[String]                             = uNone,
+    style:         U[js.Any]                             = uNone,
+    iconStyle:     U[js.Any]                             = uNone,
+    labelPosition: U[MuiSwitchLabelPosition]             = uNone,
+    label:         U[String]                             = uNone,
+    onCheck:       U[(ReactEventI, Boolean) => Callback] = uNone,
+    ref:           U[String]                             = uNone,
+    key:           U[String]                             = uNone,
+    unCheckedIcon: U[ReactElement]                       = uNone,
+    checkedIcon:   U[ReactElement]                       = uNone,
+    disabled:      U[Boolean]                            = uNone,
+    defaultChecked:U[Boolean]                            = uNone,
+    value:         U[String]                             = uNone) = {
 
-  def apply(name : js.UndefOr[String] = js.undefined,
-            style : js.UndefOr[js.Any] = js.undefined,
-            iconStyle : js.UndefOr[js.Any] = js.undefined,
-            labelPosition : js.UndefOr[MuiSwitchLabelPosition] = js.undefined,
-            label : js.UndefOr[String] = js.undefined,
-            onCheck : js.UndefOr[(ReactEventI,Boolean)=>Unit] = js.undefined,
-            ref : js.UndefOr[String] = js.undefined,
-            key : js.UndefOr[String] = js.undefined,
-            unCheckedIcon : js.UndefOr[ReactElement] = js.undefined,
-            checkedIcon : js.UndefOr[ReactElement] = js.undefined,
-            disabled : js.UndefOr[Boolean]=js.undefined,
-            defaultChecked : js.UndefOr[Boolean]=js.undefined,
-            value : js.UndefOr[String] = js.undefined) = {
-
-    val p = js.Dynamic.literal()
-    name.foreach(v => p.updateDynamic("name")(v))
-    style.foreach(v => p.updateDynamic("style")(v))
-    iconStyle.foreach(v => p.updateDynamic("iconStyle")(v))
-    labelPosition.foreach(v => p.updateDynamic("labelPosition")(v.position))
-    label.foreach(v => p.updateDynamic("label")(v))
-    onCheck.foreach(v => p.updateDynamic("onCheck")(v))
-    ref.foreach(v => p.updateDynamic("ref")(v))
-    key.foreach(v => p.updateDynamic("key")(v))
-    unCheckedIcon.foreach(v => p.updateDynamic("unCheckedIcon")(v))
-    checkedIcon.foreach(v => p.updateDynamic("checkedIcon")(v))
-    disabled.foreach(v => p.updateDynamic("disabled")(v))
-    defaultChecked.foreach(v => p.updateDynamic("defaultChecked")(v))
-    value.foreach(v => p.updateDynamic("value")(v))
+    val p = new TypedJsProps
+    name          .foreach(p.setV("name"))
+    style         .foreach(p.setV("style"))
+    iconStyle     .foreach(p.setV("iconStyle"))
+    labelPosition .foreach(p.setV("labelPosition"))
+    label         .foreach(p.setV("label"))
+    onCheck       .foreach(p.setF2C("onCheck"))
+    ref           .foreach(p.setV("ref"))
+    key           .foreach(p.setV("key"))
+    unCheckedIcon .foreach(p.setV("unCheckedIcon"))
+    checkedIcon   .foreach(p.setV("checkedIcon"))
+    disabled      .foreach(p.setV("disabled"))
+    defaultChecked.foreach(p.setV("defaultChecked"))
+    value         .foreach(p.setV("value"))
 
     val f = React.asInstanceOf[js.Dynamic].createFactory(Mui.Checkbox)
     f(p).asInstanceOf[ReactComponentU_]
@@ -78,26 +78,27 @@ value:PropTypes.String,
 
 object MuiRadioButton {
 
-  def apply(style: js.UndefOr[js.Any] = js.undefined,
-            iconStyle: js.UndefOr[js.Any] = js.undefined,
-            labelPosition: js.UndefOr[MuiSwitchLabelPosition] = js.undefined,
-            label: js.UndefOr[String] = js.undefined,
-            ref: js.UndefOr[String] = js.undefined,
-            key: js.UndefOr[String] = js.undefined,
-            disabled: js.UndefOr[Boolean] = js.undefined,
-            defaultChecked: js.UndefOr[Boolean] = js.undefined,
-            value: js.UndefOr[String] = js.undefined) = {
+  def apply(
+    style:          U[js.Any]                 = uNone,
+    iconStyle:      U[js.Any]                 = uNone,
+    labelPosition:  U[MuiSwitchLabelPosition] = uNone,
+    label:          U[String]                 = uNone,
+    ref:            U[String]                 = uNone,
+    key:            U[String]                 = uNone,
+    disabled:       U[Boolean]                = uNone,
+    defaultChecked: U[Boolean]                = uNone,
+    value:          U[String]                 = uNone) = {
 
-    val p = js.Dynamic.literal()
-    style.foreach(v => p.updateDynamic("style")(v))
-    iconStyle.foreach(v => p.updateDynamic("iconStyle")(v))
-    labelPosition.foreach(v => p.updateDynamic("labelPosition")(v.position))
-    label.foreach(v => p.updateDynamic("label")(v))
-    ref.foreach(v => p.updateDynamic("ref")(v))
-    key.foreach(v => p.updateDynamic("key")(v))
-    disabled.foreach(v => p.updateDynamic("disabled")(v))
-    defaultChecked.foreach(v => p.updateDynamic("defaultChecked")(v))
-    value.foreach(v => p.updateDynamic("value")(v))
+    val p = new TypedJsProps
+    style         .foreach(p.setV("style"))
+    iconStyle     .foreach(p.setV("iconStyle"))
+    labelPosition .foreach(p.setV("labelPosition"))
+    label         .foreach(p.setV("label"))
+    ref           .foreach(p.setV("ref"))
+    key           .foreach(p.setV("key"))
+    disabled      .foreach(p.setV("disabled"))
+    defaultChecked.foreach(p.setV("defaultChecked"))
+    value         .foreach(p.setV("value"))
 
     val f = React.asInstanceOf[js.Dynamic].createFactory(Mui.RadioButton)
     f(p).asInstanceOf[ReactComponentU_]
@@ -113,27 +114,28 @@ name: React.PropTypes.string.isRequired,
     valueSelected: React.PropTypes.string,
     defaultSelected: React.PropTypes.string,
     labelPosition: React.PropTypes.MuiSwitchLabelPosition,
-		onChange: React.PropTypes.(ReactEventI,String) => Unit
+		onChange: React.PropTypes.(ReactEventI,String) => Callback
 
  */
-case class MuiRadioButtonGroup(name: String,
-                               style: js.UndefOr[js.Any] = js.undefined,
-                               onChange: js.UndefOr[(ReactEventI, String) => Unit] = js.undefined,
-                               labelPosition: js.UndefOr[MuiSwitchLabelPosition] = js.undefined,
-                               ref: js.UndefOr[String] = js.undefined,
-                               key: js.UndefOr[String] = js.undefined,
-                               defaultSelected: js.UndefOr[String] = js.undefined,
-                               valueSelected: js.UndefOr[String] = js.undefined) {
+case class MuiRadioButtonGroup(
+  name:            String,
+  style:           U[js.Any]                            = uNone,
+  onChange:        U[(ReactEventI, String) => Callback] = uNone,
+  labelPosition:   U[MuiSwitchLabelPosition]            = uNone,
+  ref:             U[String]                            = uNone,
+  key:             U[String]                            = uNone,
+  defaultSelected: U[String]                            = uNone,
+  valueSelected:   U[String]                            = uNone) {
   def toJS = {
-    val p = js.Dynamic.literal()
-    p.updateDynamic("name")(name)
-    style.foreach(v => p.updateDynamic("style")(v))
-    onChange.foreach(v => p.updateDynamic("onChange")(v))
-    labelPosition.foreach(v => p.updateDynamic("labelPosition")(v.position))
-    ref.foreach(v => p.updateDynamic("ref")(v))
-    key.foreach(v => p.updateDynamic("key")(v))
-    defaultSelected.foreach(v => p.updateDynamic("defaultSelected")(v))
-    valueSelected.foreach(v => p.updateDynamic("valueSelected")(v))
+    val p = new TypedJsProps
+    p.setV("name")(name)
+    style          .foreach(p.setV("style"))
+    onChange       .foreach(p.setF2C("onChange"))
+    labelPosition  .foreach(p.setV("labelPosition"))
+    ref            .foreach(p.setV("ref"))
+    key            .foreach(p.setV("key"))
+    defaultSelected.foreach(p.setV("defaultSelected"))
+    valueSelected  .foreach(p.setV("valueSelected"))
     p
   }
 
@@ -163,7 +165,7 @@ label: React.PropTypes.string,
 name: React.PropTypes.string,
     labelPosition: React.PropTypes.MuiSwitchLabelPosition,
 elementStyle: React.PropTypes.js.Any,
-    onToggle: React.PropTypes.(ReactEvent,Boolean) => Unit,
+    onToggle: React.PropTypes.(ReactEvent,Boolean) => Callback,
     toggled: React.PropTypes.bool,
     defaultToggled: React.PropTypes.bool,
     disabled: React.PropTypes.bool
@@ -171,33 +173,33 @@ elementStyle: React.PropTypes.js.Any,
  */
 
 object MuiToggle {
+  def apply(
+    onToggle:       U[(ReactEvent, Boolean) => Callback] = uNone,
+    name:           U[String]                            = uNone,
+    elementStyle:   U[js.Any]                            = uNone,
+    style:          U[js.Any]                            = uNone,
+    defaultToggled: U[Boolean]                           = uNone,
+    labelPosition:  U[MuiSwitchLabelPosition]            = uNone,
+    label:          U[String]                            = uNone,
+    ref:            U[String]                            = uNone,
+    key:            U[String]                            = uNone,
+    disabled:       U[Boolean]                           = uNone,
+    value:          U[String]                            = uNone,
+    toggled:        U[Boolean]                           = uNone) = {
 
-  def apply(onToggle : js.UndefOr[(ReactEvent,Boolean) => Unit] = js.undefined,
-            name : js.UndefOr[String] = js.undefined,
-            elementStyle : js.UndefOr[js.Any] = js.undefined,
-            style : js.UndefOr[js.Any] = js.undefined,
-            defaultToggled : js.UndefOr[Boolean]=js.undefined,
-            labelPosition : js.UndefOr[MuiSwitchLabelPosition] = js.undefined,
-            label : js.UndefOr[String] = js.undefined,
-            ref : js.UndefOr[String] = js.undefined,
-            key : js.UndefOr[String] = js.undefined,
-            disabled : js.UndefOr[Boolean]=js.undefined,
-            value : js.UndefOr[String] = js.undefined,
-            toggled : js.UndefOr[Boolean]=js.undefined) = {
-
-    val p = js.Dynamic.literal()
-    onToggle.foreach(v => p.updateDynamic("onToggle")(v))
-    name.foreach(v => p.updateDynamic("name")(v))
-    elementStyle.foreach(v => p.updateDynamic("elementStyle")(v))
-    style.foreach(v => p.updateDynamic("style")(v))
-    defaultToggled.foreach(v => p.updateDynamic("defaultToggled")(v))
-    labelPosition.foreach(v => p.updateDynamic("labelPosition")(v.position))
-    label.foreach(v => p.updateDynamic("label")(v))
-    ref.foreach(v => p.updateDynamic("ref")(v))
-    key.foreach(v => p.updateDynamic("key")(v))
-    disabled.foreach(v => p.updateDynamic("disabled")(v))
-    value.foreach(v => p.updateDynamic("value")(v))
-    toggled.foreach(v => p.updateDynamic("toggled")(v))
+    val p = new TypedJsProps
+    onToggle      .foreach(p.setF2C("onToggle"))
+    name          .foreach(p.setV("name"))
+    elementStyle  .foreach(p.setV("elementStyle"))
+    style         .foreach(p.setV("style"))
+    defaultToggled.foreach(p.setV("defaultToggled"))
+    labelPosition .foreach(p.setV("labelPosition"))
+    label         .foreach(p.setV("label"))
+    ref           .foreach(p.setV("ref"))
+    key           .foreach(p.setV("key"))
+    disabled      .foreach(p.setV("disabled"))
+    value         .foreach(p.setV("value"))
+    toggled       .foreach(p.setV("toggled"))
 
     val f = React.asInstanceOf[js.Dynamic].createFactory(Mui.Toggle)
     f(p).asInstanceOf[ReactComponentU_]
@@ -214,7 +216,7 @@ trait MuiToggleM extends js.Object {
 
 }
 
-class MuiSwitchLabelPosition private(val position: String) extends AnyVal
+class MuiSwitchLabelPosition private(val value: String) extends ComponentEnum
 
 object MuiSwitchLabelPosition {
 

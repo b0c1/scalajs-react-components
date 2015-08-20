@@ -1,18 +1,17 @@
-package chandu0101.scalajs.react.components.demo.pages
+package chandu0101.scalajs.react.components
+package demo.pages
 
 import chandu0101.scalajs.react.components.demo.components.LeftNavPage
 import chandu0101.scalajs.react.components.demo.routes.{LeftRoute, ReactListViewRouteModule}
-import japgolly.scalajs.react.ReactComponentB
-import japgolly.scalajs.react.extra.router2.RouterCtl
+import japgolly.scalajs.react._
+import japgolly.scalajs.react.extra.router.RouterCtl
 
 
 object ReactListViewPage {
 
 
   val component = ReactComponentB[Props]("ReactListViewPage")
-    .render((P) => {
-    LeftNavPage(ReactListViewRouteModule.menu, P.selectedPage, P.ctrl)
-  })
+    .render_P(P => LeftNavPage(ReactListViewRouteModule.menu, P.selectedPage, P.ctrl))
     .build
 
   case class Props(selectedPage: LeftRoute, ctrl: RouterCtl[LeftRoute])

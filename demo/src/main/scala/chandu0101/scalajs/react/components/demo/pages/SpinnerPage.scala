@@ -1,24 +1,28 @@
-package chandu0101.scalajs.react.components.demo.pages
+package chandu0101.scalajs.react.components
+package demo.pages
 
 import chandu0101.scalajs.react.components.demo.components.LeftNavPage
 import chandu0101.scalajs.react.components.demo.routes.{SpinnerRouteModule, LeftRoute, ReactSelectRouteModule}
 import chandu0101.scalajs.react.components.mixins.AsyncLoad
-import japgolly.scalajs.react.extra.router2.RouterCtl
-import japgolly.scalajs.react.{BackendScope, ReactComponentB}
+import japgolly.scalajs.react.extra.router.RouterCtl
+import japgolly.scalajs.react._
 
 
 object SpinnerPage {
 
-  class Backend(t: BackendScope[_, _]) extends AsyncLoad {
+  case class Backend(t: BackendScope[_, _]) extends AsyncLoad {
     override val jsResources: Vector[String] = Vector("assets/spinnerPage-bundle.js")
+
+    def render(P: Props) = {
+      LeftNavPage(SpinnerRouteModule.menu, P.selectedPage, P.ctrl)
+    }
+
   }
 
   val component = ReactComponentB[Props]("SpinnerPage")
     .stateless
-    .backend(new Backend(_))
-    .render((P,S,B) => {
-    LeftNavPage(SpinnerRouteModule.menu, P.selectedPage, P.ctrl)
-  })
+    .backend(Backend)
+    .render($ ⇒ $.backend.render($.props))
     .configure(AsyncLoad.mixin)
     .build
 

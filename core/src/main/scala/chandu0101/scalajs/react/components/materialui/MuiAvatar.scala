@@ -1,29 +1,30 @@
-package chandu0101.scalajs.react.components.materialui
+package chandu0101.scalajs.react.components
+package materialui
 
 import japgolly.scalajs.react._
-import materialui.Mui
 
 import scala.scalajs.js
 
 
 object MuiAvatar {
 
-  def apply(backgroundColor: js.UndefOr[String] = js.undefined,
-            style: js.UndefOr[js.Any] = js.undefined,
-            icon: js.UndefOr[ReactElement] = js.undefined,
-            ref: js.UndefOr[String] = js.undefined,
-            color: js.UndefOr[String] = js.undefined,
-            key: js.UndefOr[String] = js.undefined,
-            src: js.UndefOr[String] = js.undefined) = {
+  def apply(
+    backgroundColor: U[String]       = uNone,
+    style:           U[js.Any]       = uNone,
+    icon:            U[ReactElement] = uNone,
+    ref:             U[String]       = uNone,
+    color:           U[String]       = uNone,
+    key:             U[String]       = uNone,
+    src:             U[String]       = uNone) = {
 
-    val p = js.Dynamic.literal()
-    backgroundColor.foreach(v => p.updateDynamic("backgroundColor")(v))
-    style.foreach(v => p.updateDynamic("style")(v))
-    icon.foreach(v => p.updateDynamic("icon")(v))
-    ref.foreach(v => p.updateDynamic("ref")(v))
-    color.foreach(v => p.updateDynamic("color")(v))
-    key.foreach(v => p.updateDynamic("key")(v))
-    src.foreach(v => p.updateDynamic("src")(v))
+    val p = new TypedJsProps
+    backgroundColor.foreach(p.setV("backgroundColor"))
+    style          .foreach(p.setV("style"))
+    icon           .foreach(p.setV("icon"))
+    ref            .foreach(p.setV("ref"))
+    color          .foreach(p.setV("color"))
+    key            .foreach(p.setV("key"))
+    src            .foreach(p.setV("src"))
 
     val f = React.asInstanceOf[js.Dynamic].createFactory(Mui.Avatar)
     f(p).asInstanceOf[ReactComponentU_]

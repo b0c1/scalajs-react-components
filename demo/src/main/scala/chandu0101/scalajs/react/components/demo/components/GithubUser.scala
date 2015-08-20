@@ -1,4 +1,5 @@
-package chandu0101.scalajs.react.components.demo.components
+package chandu0101.scalajs.react.components
+package demo.components
 
 import chandu0101.scalajs.react.components.models.Github
 import japgolly.scalajs.react._
@@ -21,7 +22,7 @@ object GithubUser {
   }
 
   val component = ReactComponentB[Props]("GithubUser")
-    .render((P) => {
+    .render_P(P => {
      <.a( Styles.userGroup , ^.href := P.user.html_url)(
         <.img(Styles.userIcon , ^.src := P.user.avatar_url),
         <.span(Styles.userName)(P.user.login)
@@ -31,5 +32,5 @@ object GithubUser {
 
   case class Props(user : Github)
 
-  def apply(user : Github,ref: js.UndefOr[String] = "", key: js.Any = {}) = component.set(key, ref)(Props(user))
+  def apply(user : Github,ref: U[String] = "", key: js.Any = {}) = component.set(key, ref)(Props(user))
 }

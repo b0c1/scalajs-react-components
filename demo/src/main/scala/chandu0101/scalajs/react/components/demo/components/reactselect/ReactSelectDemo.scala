@@ -1,4 +1,5 @@
-package chandu0101.scalajs.react.components.demo.components.reactselect
+package chandu0101.scalajs.react.components
+package demo.components.reactselect
 
 import chandu0101.scalajs.react.components.demo.components.CodeExample
 import chandu0101.scalajs.react.components.optionselectors.{ReactSelect, SelectOption}
@@ -41,42 +42,39 @@ object ReactSelectDemo {
 
   case class State(value : String = "",multiValue : String = "")
 
-  class Backend(t: BackendScope[_, State]) {
+  case class Backend(t: BackendScope[Unit, State]) {
+    val onChange: StringCb =
+      value => t.modState(_.copy(value = value))
 
+    val onMultiChange: StringCb =
+      value => t.modState(_.copy(multiValue = value))
 
-    def onChange(value: String) = {
-      t.modState(_.copy(value = value))
+    def render(S: State) = {
+      <.div(
+        CodeExample(code, "Demo")(
+          <.div(
+            <.h3("Single Select"),
+            ReactSelect(options = options,
+              value = S.value,
+              onChange = onChange)
+          ),
+          <.div(
+            <.h3("Multi Select"),
+            ReactSelect(options = options,
+              value = S.multiValue,
+              multi = true,
+              onChange = onMultiChange)
+          )
+        )
+      )
     }
-
-    def onMultiChange(value: String) = {
-      t.modState(_.copy(multiValue = value))
-    }
-
   }
-
 
   val component = ReactComponentB[Unit]("ReactSelectDemo")
     .initialState(State())
-    .backend(new Backend(_))
-    .render((P, S, B) => {
-    <.div(
-      CodeExample(code, "Demo")(
-        <.div(
-          <.h3("Single Select"),
-          ReactSelect(options = options,
-            value = S.value,
-            onChange = B.onChange _)
-        ),
-        <.div(
-          <.h3("Multi Select"),
-          ReactSelect(options = options,
-            value = S.multiValue,
-            multi = true,
-            onChange = B.onMultiChange _)
-        )
-      )
-    )
-  }).buildU
+    .backend(Backend)
+    .render($ => $.backend.render($.state))
+    .buildU
 
   case class SampleOption(value : String,label : String) extends SelectOption {
     override def toJson: js.Dynamic = json(value = value,label = label)
@@ -85,7 +83,7 @@ object ReactSelectDemo {
     def fromJson(obj : js.Dynamic) = SampleOption(value = obj.value.toString,label = obj.label.toString)
   }
 
-  val options = JArray(
+  lazy val options = JArray(
    SampleOption("value1","label1"),
    SampleOption("value2","label2"),
    SampleOption("value3","label3"),

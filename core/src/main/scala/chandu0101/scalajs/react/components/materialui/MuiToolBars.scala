@@ -1,7 +1,7 @@
-package chandu0101.scalajs.react.components.materialui
+package chandu0101.scalajs.react.components
+package materialui
 
 import japgolly.scalajs.react._
-import materialui.Mui
 
 import scala.scalajs.js
 
@@ -12,16 +12,18 @@ style: PropTypes.js.Any,
 ref: PropTypes.String,
   className: React.PropTypes.string,
  */
-case class MuiToolbar(key: js.UndefOr[String] = js.undefined,
-                      style: js.UndefOr[js.Any] = js.undefined,
-                      ref: js.UndefOr[String] = js.undefined,
-                      className: js.UndefOr[String] = js.undefined) {
+case class MuiToolbar(
+  key:       U[String] = uNone,
+  style:     U[js.Any] = uNone,
+  ref:       U[String] = uNone,
+  className: U[String] = uNone) {
+
   def toJS = {
-    val p = js.Dynamic.literal()
-    key.foreach(v => p.updateDynamic("key")(v))
-    style.foreach(v => p.updateDynamic("style")(v))
-    ref.foreach(v => p.updateDynamic("ref")(v))
-    className.foreach(v => p.updateDynamic("className")(v))
+    val p = new TypedJsProps
+    key      .foreach(p.setV("key"))
+    style    .foreach(p.setV("style"))
+    ref      .foreach(p.setV("ref"))
+    className.foreach(p.setV("className"))
     p
   }
 
@@ -33,15 +35,15 @@ case class MuiToolbar(key: js.UndefOr[String] = js.undefined,
 
 
 object MuiToolbarSeparator {
+  def apply(
+    key:   U[String] = uNone,
+    style: U[js.Any] = uNone,
+    ref:   U[String] = uNone) = {
 
-  def apply(key: js.UndefOr[String] = js.undefined,
-            style: js.UndefOr[js.Any] = js.undefined,
-            ref: js.UndefOr[String] = js.undefined) = {
-
-    val p = js.Dynamic.literal()
-    key.foreach(v => p.updateDynamic("key")(v))
-    style.foreach(v => p.updateDynamic("style")(v))
-    ref.foreach(v => p.updateDynamic("ref")(v))
+    val p = new TypedJsProps
+    key.  foreach(p.setV("key"))
+    style.foreach(p.setV("style"))
+    ref.  foreach(p.setV("ref"))
 
     val f = React.asInstanceOf[js.Dynamic].createFactory(Mui.ToolbarSeparator)
     f(p).asInstanceOf[ReactComponentU_]
@@ -59,16 +61,17 @@ ref: PropTypes.String,
  */
 object MuiToolbarTitle {
 
-  def apply(key: js.UndefOr[String] = js.undefined,
-            style: js.UndefOr[js.Any] = js.undefined,
-            ref: js.UndefOr[String] = js.undefined,
-            text: js.UndefOr[String] = js.undefined) = {
+  def apply(
+    key:   U[String] = uNone,
+    style: U[js.Any] = uNone,
+    ref:   U[String] = uNone,
+    text:  U[String] = uNone) = {
 
-    val p = js.Dynamic.literal()
-    key.foreach(v => p.updateDynamic("key")(v))
-    style.foreach(v => p.updateDynamic("style")(v))
-    ref.foreach(v => p.updateDynamic("ref")(v))
-    text.foreach(v => p.updateDynamic("text")(v))
+    val p = new TypedJsProps
+    key  .foreach(p.setV("key"))
+    style.foreach(p.setV("style"))
+    ref  .foreach(p.setV("ref"))
+    text .foreach(p.setV("text"))
 
     val f = React.asInstanceOf[js.Dynamic].createFactory(Mui.ToolbarTitle)
     f(p).asInstanceOf[ReactComponentU_]
@@ -85,26 +88,26 @@ ref: PropTypes.String,
     float: React.PropTypes.string
 
  */
+case class MuiToolbarGroup(
+  float:     U[String] = uNone,
+  style:     U[js.Any] = uNone,
+  ref:       U[String] = uNone,
+  key:       U[String] = uNone,
+  className: U[String] = uNone) {
 
-
-case class MuiToolbarGroup(float : js.UndefOr[String] = js.undefined,
-                           style : js.UndefOr[js.Any] = js.undefined,
-                           ref : js.UndefOr[String] = js.undefined,
-                           key : js.UndefOr[String] = js.undefined,
-                           className : js.UndefOr[String] = js.undefined) {
   def toJS = {
-    val p = js.Dynamic.literal()
-    float.foreach(v => p.updateDynamic("float")(v))
-    style.foreach(v => p.updateDynamic("style")(v))
-    ref.foreach(v => p.updateDynamic("ref")(v))
-    key.foreach(v => p.updateDynamic("key")(v))
-    className.foreach(v => p.updateDynamic("className")(v))
+    val p = new TypedJsProps
+    float    .foreach(p.setV("float"))
+    style    .foreach(p.setV("style"))
+    ref      .foreach(p.setV("ref"))
+    key      .foreach(p.setV("key"))
+    className.foreach(p.setV("className"))
     p
   }
 
-  def apply(children : ReactNode*) = {
+  def apply(children: ReactNode*) = {
     val f = React.asInstanceOf[js.Dynamic].createFactory(Mui.ToolbarGroup)
-    f(toJS,children.toJsArray).asInstanceOf[ReactComponentU_]
+    f(toJS, children.toJsArray).asInstanceOf[ReactComponentU_]
   }
 }
 

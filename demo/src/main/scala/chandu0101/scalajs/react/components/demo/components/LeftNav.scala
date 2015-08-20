@@ -1,8 +1,9 @@
-package chandu0101.scalajs.react.components.demo.components
+package chandu0101.scalajs.react.components
+package demo.components
 
 import chandu0101.scalajs.react.components.demo.routes.LeftRoute
 import japgolly.scalajs.react._
-import japgolly.scalajs.react.extra.router2.RouterCtl
+import japgolly.scalajs.react.extra.router.RouterCtl
 import japgolly.scalajs.react.vdom.prefix_<^._
 
 import scala.scalajs.js
@@ -41,7 +42,7 @@ object LeftNav {
   //  implicit val propsReuse = Reusability.by((_: Props).selectedPage)
 
   val component = ReactComponentB[Props]("LeftNav")
-    .render(P => {
+    .render_P(P => {
     <.ul(Style.container)(
       P.menus.map(item => <.li(^.key := item.name,
         Style.menuItem(item == P.selectedPage),
@@ -53,5 +54,5 @@ object LeftNav {
     .build
 
 
-  def apply(menus: List[LeftRoute], selectedPage: LeftRoute, ctrl: RouterCtl[LeftRoute], ref: UndefOr[String] = "", key: js.Any = {}) = component.set(key, ref)(Props(menus, selectedPage, ctrl))
+  def apply(menus: List[LeftRoute], selectedPage: LeftRoute, ctrl: RouterCtl[LeftRoute], ref: U[String] = "", key: js.Any = {}) = component.set(key, ref)(Props(menus, selectedPage, ctrl))
 }

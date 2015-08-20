@@ -1,4 +1,5 @@
-package chandu0101.scalajs.react.components.maps
+package chandu0101.scalajs.react.components
+package maps
 
 import chandu0101.scalajs.react.components.fascades._
 import chandu0101.scalajs.react.components.util.CommonUtils
@@ -7,7 +8,7 @@ import japgolly.scalajs.react.vdom.prefix_<^._
 import org.scalajs.dom.{Event, document, html}
 
 import scala.scalajs.js
-import scala.scalajs.js.Dynamic.{global => g, literal => json, newInstance => jsnew}
+import scala.scalajs.js.Dynamic.{global => g}
 
 
 /**
@@ -17,9 +18,9 @@ object GoogleMap {
 
   case class State(loaded: Boolean)
 
-  class Backend(t: BackendScope[Props, State]) {
+  case class Backend(t: BackendScope[Props, State]) {
 
-    def loadScript() = {
+    def loadScript = Callback {
       if (js.isUndefined(g.google) || (!js.isUndefined(g.google) && js.isUndefined(g.google.maps))) {
         val script = document.createElement("script").asInstanceOf[html.Script]
         script.`type` = "text/javascript"
@@ -48,22 +49,19 @@ object GoogleMap {
       }
     }
 
+    def render(P: Props) = {
+      <.div(^.height := P.height, ^.width := P.width)
+    }
   }
 
   case class Props(width : String , height : String,center: LatLng, zoom: Int, markers: Seq[Marker],url :String)
 
   val component = ReactComponentB[Props]("googleMap")
     .initialState(State(loaded = false))
-    .backend(new Backend(_))
-    .render((P, S, B) => {
-     <.div(^.height := P.height, ^.width := P.width)
-    })
-    .componentDidMount(scope => {
-      scope.backend.loadScript
-    })
-    .componentWillUnmount(scope => {
-      scope.backend.gmarkers.foreach(new GClearInstanceListeners(_))
-    })
+    .backend(Backend)
+    .render($ ⇒ $.backend.render($.props))
+    .componentDidMount(_.backend.loadScript)
+    .componentWillUnmount($ => Callback($.backend.gmarkers.foreach(new GClearInstanceListeners(_))))
     .build
 
   /**

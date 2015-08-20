@@ -1,9 +1,11 @@
-package chandu0101.scalajs.react.components.util
+package chandu0101.scalajs.react.components
+package util
 
 import chandu0101.scalajs.react.components.models.RPoint
-import japgolly.scalajs.react.TopNode
+import japgolly.scalajs.react._
 import org.scalajs.dom
 import org.scalajs.dom._
+
 import scala.scalajs.js
 
 /**

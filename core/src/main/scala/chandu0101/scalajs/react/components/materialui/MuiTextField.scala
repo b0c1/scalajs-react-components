@@ -1,7 +1,7 @@
-package chandu0101.scalajs.react.components.materialui
+package chandu0101.scalajs.react.components
+package materialui
 
 import japgolly.scalajs.react._
-import materialui.Mui
 
 import scala.scalajs.js
 
@@ -16,11 +16,11 @@ ref: PropTypes.String,
     multiLine: React.PropTypes.bool,
     disabled: React.PropTypes.bool,
     fullWidth: React.PropTypes.bool,
-    onBlur: React.PropTypes.ReactEventI => Unit,
-    onChange: React.PropTypes.ReactEventI => Unit,
-    onFocus: React.PropTypes.ReactEventI => Unit,
-    onKeyDown: React.PropTypes.ReactEventI => Unit,
-    onEnterKeyDown: React.PropTypes.ReactEventI => Unit,
+    onBlur: React.PropTypes.ReactEventI => Callback,
+    onChange: React.PropTypes.ReactEventI => Callback,
+    onFocus: React.PropTypes.ReactEventI => Callback,
+    onKeyDown: React.PropTypes.ReactEventI => Callback,
+    onEnterKeyDown: React.PropTypes.ReactEventI => Callback,
     type: React.PropTypes.string,
     rows: React.PropTypes.number,
     value :React.PropTypes.string,
@@ -30,47 +30,47 @@ ref: PropTypes.String,
 
 
 object MuiTextField {
+  def apply[T](
+    onBlur:            U[ReactEventI => Callback] = uNone,
+    multiLine:         U[Boolean]                 = uNone,
+    fullWidth:         U[Boolean]                 = uNone,
+    onEnterKeyDown:    U[ReactEventI => Callback] = uNone,
+    onKeyDown:         U[ReactEventI => Callback] = uNone,
+    style:             U[js.Any]                  = uNone,
+    onChange:          U[ReactEventI => Callback] = uNone,
+    ref:               U[String]                  = uNone,
+    hintText:          U[String]                  = uNone,
+    key:               U[String]                  = uNone,
+    id:                U[String]                  = uNone,
+    value:             U[T]                       = uNone,
+    defaultValue:      U[T]                       = uNone,
+    errorText:         U[String]                  = uNone,
+    onFocus:           U[ReactEventI => Callback] = uNone,
+    disabled:          U[Boolean]                 = uNone,
+    floatingLabelText: U[String]                  = uNone,
+    `type`:            U[String]                  = uNone,
+    rows:              U[Int]                     = uNone) = {
 
-  def apply[T](onBlur: js.UndefOr[ReactEventI => Unit] = js.undefined,
-            multiLine: js.UndefOr[Boolean] = js.undefined,
-            fullWidth: js.UndefOr[Boolean] = js.undefined,
-            onEnterKeyDown: js.UndefOr[ReactEventI => Unit] = js.undefined,
-            onKeyDown: js.UndefOr[ReactEventI => Unit] = js.undefined,
-            style: js.UndefOr[js.Any] = js.undefined,
-            onChange: js.UndefOr[ReactEventI => Unit] = js.undefined,
-            ref: js.UndefOr[String] = js.undefined,
-            hintText: js.UndefOr[String] = js.undefined,
-            key: js.UndefOr[String] = js.undefined,
-            id: js.UndefOr[String] = js.undefined,
-            value: js.UndefOr[T] = js.undefined,
-            defaultValue: js.UndefOr[T] = js.undefined,
-            errorText: js.UndefOr[String] = js.undefined,
-            onFocus: js.UndefOr[ReactEventI => Unit] = js.undefined,
-            disabled: js.UndefOr[Boolean] = js.undefined,
-            floatingLabelText: js.UndefOr[String] = js.undefined,
-            `type`: js.UndefOr[String] = js.undefined,
-            rows: js.UndefOr[Int] = js.undefined) = {
-
-    val p = js.Dynamic.literal()
-    onBlur.foreach(v => p.updateDynamic("onBlur")(v))
-    multiLine.foreach(v => p.updateDynamic("multiLine")(v))
-    fullWidth.foreach(v => p.updateDynamic("fullWidth")(v))
-    onEnterKeyDown.foreach(v => p.updateDynamic("onEnterKeyDown")(v))
-    onKeyDown.foreach(v => p.updateDynamic("onKeyDown")(v))
-    style.foreach(v => p.updateDynamic("style")(v))
-    onChange.foreach(v => p.updateDynamic("onChange")(v))
-    ref.foreach(v => p.updateDynamic("ref")(v))
-    hintText.foreach(v => p.updateDynamic("hintText")(v))
-    key.foreach(v => p.updateDynamic("key")(v))
-    id.foreach(v => p.updateDynamic("id")(v))
-    value.foreach(v => p.updateDynamic("value")(v.asInstanceOf[js.Any]))
-    defaultValue.foreach(v => p.updateDynamic("defaultValue")(v.asInstanceOf[js.Any]))
-    errorText.foreach(v => p.updateDynamic("errorText")(v))
-    onFocus.foreach(v => p.updateDynamic("onFocus")(v))
-    disabled.foreach(v => p.updateDynamic("disabled")(v))
-    floatingLabelText.foreach(v => p.updateDynamic("floatingLabelText")(v))
-    `type`.foreach(v => p.updateDynamic("type")(v))
-    rows.foreach(v => p.updateDynamic("rows")(v))
+    val p = new TypedJsProps
+    onBlur           .foreach(p.setF1C("onBlur"))
+    multiLine        .foreach(p.setV("multiLine"))
+    fullWidth        .foreach(p.setV("fullWidth"))
+    onEnterKeyDown   .foreach(p.setF1C("onEnterKeyDown"))
+    onKeyDown        .foreach(p.setF1C("onKeyDown"))
+    style            .foreach(p.setV("style"))
+    onChange         .foreach(p.setF1C("onChange"))
+    ref              .foreach(p.setV("ref"))
+    hintText         .foreach(p.setV("hintText"))
+    key              .foreach(p.setV("key"))
+    id               .foreach(p.setV("id"))
+    value            .foreach(v => p.setV("value")(v.asInstanceOf[js.Any]))
+    defaultValue     .foreach(v => p.setV("defaultValue")(v.asInstanceOf[js.Any]))
+    errorText        .foreach(p.setV("errorText"))
+    onFocus          .foreach(p.setF1C("onFocus"))
+    disabled         .foreach(p.setV("disabled"))
+    floatingLabelText.foreach(p.setV("floatingLabelText"))
+    `type`           .foreach(p.setV("type"))
+    rows             .foreach(p.setV("rows"))
 
     val f = React.asInstanceOf[js.Dynamic].createFactory(Mui.TextField)
     f(p).asInstanceOf[ReactComponentU_]

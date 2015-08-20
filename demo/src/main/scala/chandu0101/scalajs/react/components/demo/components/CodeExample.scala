@@ -1,9 +1,8 @@
-package chandu0101.scalajs.react.components.demo.components
+package chandu0101.scalajs.react.components
+package demo.components
 
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
-import org.scalajs.dom
-import org.scalajs.dom.ext.PimpedNodeList
 
 import scala.scalajs.js
 
@@ -31,7 +30,7 @@ object CodeExample {
   }
 
   val component = ReactComponentB[Props]("codeexample")
-    .render((P, C) => {
+    .renderPC(($, P, C) => {
     <.div(
       P.title.nonEmpty ?= <.h3(P.title,Style.title),
       <.div(Style.pageBodyContent)(
@@ -49,6 +48,6 @@ object CodeExample {
 
   case class Props(code: String,title : String)
 
-  def apply(code: String, title: String = "", ref: js.UndefOr[String] = "", key: js.Any = {})(children: ReactNode*) = component.set(key, ref)(Props(code,title), children)
+  def apply(code: String, title: String = "", ref: U[String] = "", key: js.Any = {})(children: ReactNode*) = component.set(key, ref)(Props(code,title), children)
 
 }

@@ -1,4 +1,5 @@
-package chandu0101.scalajs.react.components.demo.components.reactpopover
+package chandu0101.scalajs.react.components
+package demo.components.reactpopover
 
 import chandu0101.scalajs.react.components.demo.components.CodeExample
 import chandu0101.scalajs.react.components.demo.components.demo.LocalDemoButton
@@ -33,23 +34,55 @@ object ReactPopoverDemo {
     val popoverExample = Seq(^.display := "flex", ^.flexDirection := "column" , ^.alignItems := "center")
   }
 
-  class Backend(t: BackendScope[_, _]) {
+  case class Backend(t: BackendScope[Unit, Unit]) {
 
-    def onRightButtonClick(e: ReactEventH) = {
-      theRightRef(t).get.backend.toggle(e.target)
+    val onRightButtonClick: ReactEventH => Callback =
+      e => theRightRef(t).get.backend.toggle(e.target)
+
+    val onLeftButtonClick: ReactEventH => Callback =
+      e => theLeftRef(t).get.backend.toggle(e.target)
+
+    val onTopButtonClick: ReactEventH => Callback =
+      e => theTopRef(t).get.backend.toggle(e.target)
+
+    val onBottomButtonClick: ReactEventH => Callback =
+      e => theBottomtRef(t).get.backend.toggle(e.target)
+
+    def render = {
+      <.div(
+        <.h3("Demo"),
+        CodeExample(code)(
+         <.div(Style.popoverExample)(
+          <.div(^.padding := "20px")(
+            ReactPopOver(placement = "top", ref = theTopRef)(
+              "I am Top Pop Over"
+            ),
+            LocalDemoButton(name = "Top Button" ,onButtonClick = onTopButtonClick)
+          ),
+          <.div(^.padding := "20px")(
+            ReactPopOver(placement = "left", ref = theLeftRef, title = "Left Title")(
+              "I am Left Popover"
+            ),
+            LocalDemoButton(name = "Left Button" ,onButtonClick = onLeftButtonClick)
+          ),
+          <.div(^.padding := "20px")(
+            ReactPopOver(ref = theRightRef, title = "Right Title")(
+              "I am right Popover"
+            ),
+            LocalDemoButton(name = "Right Button" ,onButtonClick = onRightButtonClick)
+          ),
+
+          <.div(^.padding := "20px")(
+            ReactPopOver(placement = "bottom", ref = theBottomtRef)(
+              "I am bottom Popover"
+            ),
+            LocalDemoButton(name = "Bottom Button" ,onButtonClick = onBottomButtonClick)
+          )
+         )
+        )
+      )
     }
 
-    def onLeftButtonClick(e: ReactEventH) = {
-      theLeftRef(t).get.backend.toggle(e.target)
-    }
-
-    def onTopButtonClick(e: ReactEventH) = {
-      theTopRef(t).get.backend.toggle(e.target)
-    }
-
-    def onBottomButtonClick(e: ReactEventH) = {
-      theBottomtRef(t).get.backend.toggle(e.target)
-    }
   }
 
   val theRightRef = Ref.to(ReactPopOver.component, "theRightRef")
@@ -57,44 +90,11 @@ object ReactPopoverDemo {
   val theTopRef = Ref.to(ReactPopOver.component, "theTopRef")
   val theBottomtRef = Ref.to(ReactPopOver.component, "theBottomRef")
 
-
   val component = ReactComponentB[Unit]("ReactPopoverDemo")
     .stateless
-    .backend(new Backend(_))
-    .render((P, S, B) => {
-    <.div(
-      <.h3("Demo"),
-      CodeExample(code)(
-       <.div(Style.popoverExample)(
-        <.div(^.padding := "20px")(
-          ReactPopOver(placement = "top", ref = theTopRef)(
-            "I am Top Pop Over"
-          ),
-          LocalDemoButton(name = "Top Button" ,onButtonClick = B.onTopButtonClick)
-        ),
-        <.div(^.padding := "20px")(
-          ReactPopOver(placement = "left", ref = theLeftRef, title = "Left Title")(
-            "I am Left Popover"
-          ),
-          LocalDemoButton(name = "Left Button" ,onButtonClick = B.onLeftButtonClick)
-        ),
-        <.div(^.padding := "20px")(
-          ReactPopOver(ref = theRightRef, title = "Right Title")(
-            "I am right Popover"
-          ),
-          LocalDemoButton(name = "Right Button" ,onButtonClick = B.onRightButtonClick)
-        ),
-
-        <.div(^.padding := "20px")(
-          ReactPopOver(placement = "bottom", ref = theBottomtRef)(
-            "I am bottom Popover"
-          ),
-          LocalDemoButton(name = "Bottom Button" ,onButtonClick = B.onBottomButtonClick)
-        )
-       )
-      )
-    )
-  }).buildU
+    .backend(Backend)
+    .render(_.backend.render)
+    .buildU
 
   def apply() = component()
 

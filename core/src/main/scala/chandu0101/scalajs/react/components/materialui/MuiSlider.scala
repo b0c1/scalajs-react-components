@@ -1,7 +1,7 @@
-package chandu0101.scalajs.react.components.materialui
+package chandu0101.scalajs.react.components
+package materialui
 
 import japgolly.scalajs.react._
-import materialui.Mui
 
 import scala.scalajs.js
 
@@ -20,7 +20,7 @@ required: React.PropTypes.bool,
     error: React.PropTypes.string,
     description: React.PropTypes.string,
     name: React.PropTypes.string.isRequired,
-    onChange: React.PropTypes.(ReactEventH,Double) => Unit,
+    onChange: React.PropTypes.(ReactEventH,Double) => Callback,
     onFocus: React.PropTypes.func,
     onBlur: React.PropTypes.func,
     onDragStart: React.PropTypes.func,
@@ -31,45 +31,45 @@ required: React.PropTypes.bool,
 
 
 object MuiSlider {
+  def apply(
+    onBlur:       U[js.Function]                       = uNone,
+    name:         String,
+    onDragStart:  U[js.Function]                       = uNone,
+    step:         U[Int]                               = uNone,
+    style:        U[js.Any]                            = uNone,
+    description:  U[String]                            = uNone,
+    onChange:     U[(ReactEventH, Double) => Callback] = uNone,
+    min:          U[Double]                            = uNone,
+    ref:          U[String]                            = uNone,
+    key:          U[String]                            = uNone,
+    onDragStop:   U[js.Function]                       = uNone,
+    max:          U[Double]                            = uNone,
+    error:        U[String]                            = uNone,
+    onFocus:      U[js.Function]                       = uNone,
+    disabled:     U[Boolean]                           = uNone,
+    required:     U[Boolean]                           = uNone,
+    defaultValue: U[Double]                            = uNone,
+    value:        U[Double]                            = uNone) = {
 
-  def apply(onBlur : js.UndefOr[js.Function] = js.undefined ,
-            name : String ,
-            onDragStart : js.UndefOr[js.Function] = js.undefined ,
-            step : js.UndefOr[Int] = js.undefined,
-            style : js.UndefOr[js.Any] = js.undefined,
-            description : js.UndefOr[String] = js.undefined,
-            onChange : js.UndefOr[(ReactEventH,Double) => Unit] = js.undefined,
-            min : js.UndefOr[Double] = js.undefined,
-            ref : js.UndefOr[String] = js.undefined,
-            key : js.UndefOr[String] = js.undefined,
-            onDragStop : js.UndefOr[js.Function] = js.undefined ,
-            max : js.UndefOr[Double] = js.undefined,
-            error : js.UndefOr[String] = js.undefined,
-            onFocus : js.UndefOr[js.Function] = js.undefined ,
-            disabled : js.UndefOr[Boolean]=js.undefined,
-            required : js.UndefOr[Boolean]=js.undefined,
-            defaultValue : js.UndefOr[Double] = js.undefined,
-            value : js.UndefOr[Double] = js.undefined) = {
-
-    val p = js.Dynamic.literal()
-    onBlur.foreach(v => p.updateDynamic("onBlur")(v))
-    p.updateDynamic("name")(name)
-    onDragStart.foreach(v => p.updateDynamic("onDragStart")(v))
-    step.foreach(v => p.updateDynamic("step")(v))
-    style.foreach(v => p.updateDynamic("style")(v))
-    description.foreach(v => p.updateDynamic("description")(v))
-    onChange.foreach(v => p.updateDynamic("onChange")(v))
-    min.foreach(v => p.updateDynamic("min")(v))
-    ref.foreach(v => p.updateDynamic("ref")(v))
-    key.foreach(v => p.updateDynamic("key")(v))
-    onDragStop.foreach(v => p.updateDynamic("onDragStop")(v))
-    max.foreach(v => p.updateDynamic("max")(v))
-    error.foreach(v => p.updateDynamic("error")(v))
-    onFocus.foreach(v => p.updateDynamic("onFocus")(v))
-    disabled.foreach(v => p.updateDynamic("disabled")(v))
-    required.foreach(v => p.updateDynamic("required")(v))
-    defaultValue.foreach(v => p.updateDynamic("defaultValue")(v))
-    value.foreach(v => p.updateDynamic("value")(v))
+    val p = new TypedJsProps
+    onBlur      .foreach(p.setV("onBlur"))
+    p.setV("name")(name)
+    onDragStart .foreach(p.setV("onDragStart"))
+    step        .foreach(p.setV("step"))
+    style       .foreach(p.setV("style"))
+    description .foreach(p.setV("description"))
+    onChange    .foreach(p.setF2C("onChange"))
+    min         .foreach(p.setV("min"))
+    ref         .foreach(p.setV("ref"))
+    key         .foreach(p.setV("key"))
+    onDragStop  .foreach(p.setV("onDragStop"))
+    max         .foreach(p.setV("max"))
+    error       .foreach(p.setV("error"))
+    onFocus     .foreach(p.setV("onFocus"))
+    disabled    .foreach(p.setV("disabled"))
+    required    .foreach(p.setV("required"))
+    defaultValue.foreach(p.setV("defaultValue"))
+    value       .foreach(p.setV("value"))
 
     val f = React.asInstanceOf[js.Dynamic].createFactory(Mui.Slider)
     f(p).asInstanceOf[ReactComponentU_]

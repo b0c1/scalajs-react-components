@@ -1,7 +1,7 @@
-package chandu0101.scalajs.react.components.popovers
+package chandu0101.scalajs.react.components
+package popovers
 
 
-import chandu0101.scalajs.react.components.all._
 import chandu0101.scalajs.react.components.util.DomUtil
 import chandu0101.scalajs.react.components.util.DomUtil.ClientRect
 import japgolly.scalajs.react._
@@ -121,7 +121,7 @@ object ReactPopOver {
 
   case class State(open: Boolean ,top : Double = 0,left : Double = 0)
 
-  class Backend(t: BackendScope[Props, State]) {
+  case class Backend(t: BackendScope[Props, State]) {
 
     private def show(position: ClientRect) = t.modState(_.copy(open = true, top = position.top, left = position.left))
 
@@ -170,22 +170,15 @@ object ReactPopOver {
       }
     }
 
-    def arrowAfter : TagMod = {
-      val P = t.props
+    def arrowAfter(P: Props) : TagMod = {
       if  (P.placement == "top")  <.span(P.style.popoverArrowAfter,P.style.popoverTopArrowAfter," ")
       else if (P.placement == "left")  <.span(P.style.popoverArrowAfter,P.style.popoverLeftArrowAfter," ")
       else if  (P.placement == "right")  <.span(P.style.popoverArrowAfter,P.style.popoverRightArrowAfter," ")
       else if  (P.placement == "bottom") <.span(P.style.popoverArrowAfter,P.style.popoverBottomArrowAfter," ")
       else ""
     }
-  }
 
-
-
-  val component = ReactComponentB[Props]("ReactPopover")
-    .initialState(State(open = false))
-    .backend(new Backend(_))
-    .render((P, C,S, B) => {
+    def render(P: Props, S: State) = {
      <.div(P.style.popover,
         (P.placement == "top") ?= P.style.popoverTop,
         (P.placement == "left") ?= P.style.popoverLeft,
@@ -196,17 +189,35 @@ object ReactPopOver {
           (P.placement == "top") ?= P.style.popoverTopArrow,
           (P.placement == "left") ?= P.style.popoverLeftArrow,
           (P.placement == "right") ?= P.style.popoverRightArrow,
-          (P.placement == "bottom") ?= P.style.popoverBottomArrow,B.arrowAfter),
+          (P.placement == "bottom") ?= P.style.popoverBottomArrow, arrowAfter(P)),
         !P.title.isEmpty ?= <.h3(P.style.popoverTitle)(P.title),
        <.div(P.style.popoverContent)(
-          C
+          t.propsChildren
         )
       )
-    })
+    }
+  }
+
+
+
+  val component = ReactComponentB[Props]("ReactPopover")
+    .initialState(State(open = false))
+    .backend(Backend)
+    .render($ => $.backend.render($.props, $.state))
     .build
 
-  case class Props(title : String,placement : String ,style : Style)
+  case class Props(title:     String,
+                   placement: String,
+                   style:     Style)
 
-  def apply(title : String = "",placement : String = "right",ref: js.UndefOr[String] = "", key: js.Any = {} ,style : Style = new Style {})(children : ReactNode*) = component.set(key, ref)(Props(title,placement,style),children)
-
+  def apply(title:     String = "",
+            placement: String = "right",
+            ref:       U[String] = "",
+            key:       js.Any = {},
+            style:     Style = new Style {})
+           (children: ReactNode*) =
+    component.set(key, ref)(
+      Props(title, placement, style),
+      children
+    )
 }

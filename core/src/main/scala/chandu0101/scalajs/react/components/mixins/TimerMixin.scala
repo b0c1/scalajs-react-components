@@ -1,5 +1,7 @@
-package chandu0101.scalajs.react.components.mixins
+package chandu0101.scalajs.react.components
+package mixins
 
+import japgolly.scalajs.react.Callback
 import japgolly.scalajs.react.extra.OnUnmount
 import org.scalajs.dom
 
@@ -22,11 +24,11 @@ abstract class TimerMixin extends OnUnmount {
   def clearTimeout(id: Int) = dom.window.clearTimeout(id)
 
   def cleanup() = {
-    _timeouts.map(clearTimeout)
+    _timeouts.foreach(clearTimeout)
     _timeouts = null
 
   }
 
-  onUnmount(cleanup())
+  onUnmount(Callback(cleanup()))
 
 }

@@ -1,20 +1,13 @@
-package chandu0101.scalajs.react.components.demo.components.reactinfinite
+package chandu0101.scalajs.react.components
+package demo.components.reactinfinite
 
 import chandu0101.scalajs.react.components.demo.components.CodeExample
 import chandu0101.scalajs.react.components.listviews.ReactInfinite
-import chandu0101.scalajs.react.components.optionselectors.{ReactSelect, SelectOption}
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
 
-import scala.scalajs.js
 import scala.scalajs.js.Dynamic.{literal => json}
 import scala.scalajs.js.{Array => JArray}
-import japgolly.scalajs.react._
-import japgolly.scalajs.react.vdom.prefix_<^._
-import scala.scalajs.js
-import scala.scalajs.js
-import scala.scalajs.js.undefined
-import scala.scalajs.js.UndefOr
 import scalacss.Defaults._
 import scalacss.ScalaCssReact._
 
@@ -54,41 +47,40 @@ object ReactInfiniteDemo
 
   case class State(isLoading : Boolean = true,data : Vector[String] = Vector())
 
-  class Backend(t: BackendScope[_, State]) {
+  case class Backend(t: BackendScope[Unit, State]) {
 
-
-    def renderRow(s : String) : ReactElement = {
-      <.div(styles.item, s ,^.key := s,
-      <.div(styles.border)
+    def renderRow(s: String): ReactElement =
+      <.div(
+        styles.item,
+        s,
+        ^.key := s,
+        <.div(styles.border)
       )
-    }
 
-    def loadData() = {
+    val loadData = {
       val data = (1 to 500).toVector.map(i => s"List Item $i")
       t.modState(_.copy(isLoading = false,data = data))
     }
 
+    def render(S: State) = {
+      <.div(
+        CodeExample(code, "Demo")(
+          <.div( styles.container,
+            if(S.isLoading) <.div("Loading ..")
+            else ReactInfinite(elementHeight = 70,
+            containerHeight = 400)(S.data.map(renderRow))
+          )
+        )
+      )
+    }
   }
-
 
   val component = ReactComponentB[Unit]("ReactSelectDemo")
     .initialState(State())
-    .backend(new Backend(_))
-    .render((P, S, B) => {
-    <.div(
-      CodeExample(code, "Demo")(
-        <.div( styles.container,
-          if(S.isLoading) <.div("Loading ..")
-          else ReactInfinite(elementHeight = 70,
-          containerHeight = 400)(S.data.map(B.renderRow _))
-        )
-      )
-    )
-  })
-    .componentDidMount(scope => scope.backend.loadData())
+    .backend(Backend)
+    .render($ => $.backend.render($.state))
+    .componentDidMount(_.backend.loadData)
     .buildU
-
-
 
   def apply() = component()
 

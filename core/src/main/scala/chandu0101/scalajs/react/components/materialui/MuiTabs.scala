@@ -1,17 +1,16 @@
-package chandu0101.scalajs.react.components.materialui
+package chandu0101.scalajs.react.components
+package materialui
 
 import japgolly.scalajs.react._
-import materialui.Mui
 
 import scala.scalajs.js
-import scala.scalajs.js.{UndefOr, undefined}
 
 /**
  * key: PropTypes.string,
 style: PropTypes.js.any,
 ref: PropTypes.String,
   initialSelectedIndex: React.PropTypes.number,
-    onActive: React.PropTypes.(Int,ReactElement) => Unit,
+    onActive: React.PropTypes.(Int,ReactElement) => Callback,
     tabWidth: React.PropTypes.number
 
  * @param style
@@ -21,22 +20,21 @@ ref: PropTypes.String,
  * @param tabWidth
  * @param initialSelectedIndex
  */
-
-
-case class MuiTabs(style : UndefOr[js.Any] = undefined,
-                   onChange : UndefOr[(Int,ReactElement) => Unit] = undefined,
-                   ref : UndefOr[String] = undefined,
-                   key : UndefOr[String] = undefined,
-                   tabWidth : UndefOr[Int] = undefined,
-                   initialSelectedIndex : UndefOr[Int] = undefined) {
+case class MuiTabs(
+  style:                U[js.Any]                          = uNone,
+  onChange:             U[(Int, ReactElement) => Callback] = uNone,
+  ref:                  U[String]                          = uNone,
+  key:                  U[String]                          = uNone,
+  tabWidth:             U[Int]                             = uNone,
+  initialSelectedIndex: U[Int]                             = uNone) {
   def toJS = {
-    val p = js.Dynamic.literal()
-    style.foreach(v => p.updateDynamic("style")(v))
-    onChange.foreach(v => p.updateDynamic("onChange")(v))
-    ref.foreach(v => p.updateDynamic("ref")(v))
-    key.foreach(v => p.updateDynamic("key")(v))
-    tabWidth.foreach(v => p.updateDynamic("tabWidth")(v))
-    initialSelectedIndex.foreach(v => p.updateDynamic("initialSelectedIndex")(v))
+    val p = new TypedJsProps
+    style               .foreach(p.setV("style"))
+    onChange            .foreach(p.setF2C("onChange"))
+    ref                 .foreach(p.setV("ref"))
+    key                 .foreach(p.setV("key"))
+    tabWidth            .foreach(p.setV("tabWidth"))
+    initialSelectedIndex.foreach(p.setV("initialSelectedIndex"))
     p
   }
 

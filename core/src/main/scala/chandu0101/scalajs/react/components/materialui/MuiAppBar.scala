@@ -1,20 +1,17 @@
-package chandu0101.scalajs.react.components.materialui
-
+package chandu0101.scalajs.react.components
+package materialui
 
 import japgolly.scalajs.react._
-import materialui.Mui
 
 import scala.scalajs.js
-import scala.scalajs.js.{UndefOr, undefined}
-
 
 /**
  * Created by chandrasekharkode .
  *
  * key: PropTypes.string,
    ref: PropTypes.String,
-   onLeftIconButtonTouchTap: React.PropTypes.ReactEventH => Unit,
-    onRightIconButtonTouchTap: React.PropTypes.ReactEventH => Unit,
+   onLeftIconButtonTouchTap: React.PropTypes.ReactEventH => Callback,
+    onRightIconButtonTouchTap: React.PropTypes.ReactEventH => Callback,
     showMenuIconButton: React.PropTypes.bool,
     iconClassNameLeft: React.PropTypes.string,
     iconClassNameRight: React.PropTypes.string,
@@ -24,34 +21,33 @@ import scala.scalajs.js.{UndefOr, undefined}
     title : React.PropTypes.string,
     zDepth: React.PropTypes.number,
  */
-
-
-case class MuiAppBar(iconStyleRight: UndefOr[js.Object] = undefined,
-                  ref: UndefOr[String] = undefined,
-                  iconClassNameRight: UndefOr[String] = undefined,
-                  iconClassNameLeft: UndefOr[String] = undefined,
-                  zDepth: UndefOr[Int] = undefined,
-                  key: UndefOr[String] = undefined,
-                  iconElementLeft: UndefOr[ReactElement] = undefined,
-                  showMenuIconButton: UndefOr[Boolean] = undefined,
-                  title: UndefOr[String] = undefined,
-                  onLeftIconButtonTouchTap: UndefOr[ReactEventH => Unit] = undefined,
-                  iconElementRight: UndefOr[ReactElement] = undefined,
-                  onRightIconButtonTouchTap: UndefOr[ReactEventH => Unit] = undefined) {
+case class MuiAppBar(
+  iconStyleRight:            U[js.Object]               = uNone,
+  ref:                       U[String]                  = uNone,
+  iconClassNameRight:        U[String]                  = uNone,
+  iconClassNameLeft:         U[String]                  = uNone,
+  zDepth:                    U[Int]                     = uNone,
+  key:                       U[String]                  = uNone,
+  iconElementLeft:           U[ReactElement]            = uNone,
+  showMenuIconButton:        U[Boolean]                 = uNone,
+  title:                     U[String]                  = uNone,
+  onLeftIconButtonTouchTap:  U[ReactEventH => Callback] = uNone,
+  iconElementRight:          U[ReactElement]            = uNone,
+  onRightIconButtonTouchTap: U[ReactEventH => Callback] = uNone) {
   def toJS = {
-    val p = js.Dynamic.literal()
-    iconStyleRight.foreach(v => p.updateDynamic("iconStyleRight")(v))
-    ref.foreach(v => p.updateDynamic("ref")(v))
-    iconClassNameRight.foreach(v => p.updateDynamic("iconClassNameRight")(v))
-    iconClassNameLeft.foreach(v => p.updateDynamic("iconClassNameLeft")(v))
-    zDepth.foreach(v => p.updateDynamic("zDepth")(v))
-    key.foreach(v => p.updateDynamic("key")(v))
-    iconElementLeft.foreach(v => p.updateDynamic("iconElementLeft")(v))
-    showMenuIconButton.foreach(v => p.updateDynamic("showMenuIconButton")(v))
-    title.foreach(v => p.updateDynamic("title")(v))
-    onLeftIconButtonTouchTap.foreach(v => p.updateDynamic("onLeftIconButtonTouchTap")(v))
-    iconElementRight.foreach(v => p.updateDynamic("iconElementRight")(v))
-    onRightIconButtonTouchTap.foreach(v => p.updateDynamic("onRightIconButtonTouchTap")(v))
+    val p = new TypedJsProps
+    iconStyleRight           .foreach(p.setV("iconStyleRight"))
+    ref                      .foreach(p.setV("ref"))
+    iconClassNameRight       .foreach(p.setV("iconClassNameRight"))
+    iconClassNameLeft        .foreach(p.setV("iconClassNameLeft"))
+    zDepth                   .foreach(p.setV("zDepth"))
+    key                      .foreach(p.setV("key"))
+    iconElementLeft          .foreach(p.setV("iconElementLeft"))
+    showMenuIconButton       .foreach(p.setV("showMenuIconButton"))
+    title                    .foreach(p.setV("title"))
+    onLeftIconButtonTouchTap .foreach(p.setF1C("onLeftIconButtonTouchTap"))
+    iconElementRight         .foreach(p.setV("iconElementRight"))
+    onRightIconButtonTouchTap.foreach(p.setF1C("onRightIconButtonTouchTap"))
     p
   }
 

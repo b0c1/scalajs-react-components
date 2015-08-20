@@ -1,4 +1,5 @@
-package chandu0101.scalajs.react.components.demo.components.materialui.svgicons
+package chandu0101.scalajs.react.components
+package demo.components.materialui.svgicons
 
 import chandu0101.scalajs.react.components.materialui.MuiSvgIcon
 import japgolly.scalajs.react._

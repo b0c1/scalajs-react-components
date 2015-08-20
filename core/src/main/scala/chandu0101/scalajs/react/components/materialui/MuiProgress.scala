@@ -1,7 +1,7 @@
-package chandu0101.scalajs.react.components.materialui
+package chandu0101.scalajs.react.components
+package materialui
 
 import japgolly.scalajs.react._
-import materialui.Mui
 
 import scala.scalajs.js
 
@@ -18,25 +18,25 @@ ref: PropTypes.String,
  */
 
 object MuiCircularProgress {
+  def apply(
+    size:  U[Double]          = uNone,
+    style: U[js.Any]          = uNone,
+    min:   U[Int]             = uNone,
+    ref:   U[String]          = uNone,
+    key:   U[String]          = uNone,
+    max:   U[Int]             = uNone,
+    mode:  U[MuiProgressMode] = uNone,
+    value: U[Int]             = uNone) = {
 
-  def apply(size: js.UndefOr[Double] = js.undefined,
-            style: js.UndefOr[js.Any] = js.undefined,
-            min: js.UndefOr[Int] = js.undefined,
-            ref: js.UndefOr[String] = js.undefined,
-            key: js.UndefOr[String] = js.undefined,
-            max: js.UndefOr[Int] = js.undefined,
-            mode: js.UndefOr[MuiProgressMode] = js.undefined,
-            value: js.UndefOr[Int] = js.undefined) = {
-
-    val p = js.Dynamic.literal()
-    size.foreach(v => p.updateDynamic("size")(v))
-    style.foreach(v => p.updateDynamic("style")(v))
-    min.foreach(v => p.updateDynamic("min")(v))
-    ref.foreach(v => p.updateDynamic("ref")(v))
-    key.foreach(v => p.updateDynamic("key")(v))
-    max.foreach(v => p.updateDynamic("max")(v))
-    mode.foreach(v => p.updateDynamic("mode")(v.mode))
-    value.foreach(v => p.updateDynamic("value")(v))
+    val p = new TypedJsProps
+    size .foreach(p.setV("size"))
+    style.foreach(p.setV("style"))
+    min  .foreach(p.setV("min"))
+    ref  .foreach(p.setV("ref"))
+    key  .foreach(p.setV("key"))
+    max  .foreach(p.setV("max"))
+    mode .foreach(p.setV("mode"))
+    value.foreach(p.setV("value"))
 
     val f = React.asInstanceOf[js.Dynamic].createFactory(Mui.CircularProgress)
     f(p).asInstanceOf[ReactComponentU_]
@@ -46,25 +46,25 @@ object MuiCircularProgress {
 
 
 object MuiLinearProgress {
+  def apply(
+    size:  U[Double]          = uNone,
+    style: U[js.Any]          = uNone,
+    min:   U[Int]             = uNone,
+    ref:   U[String]          = uNone,
+    key:   U[String]          = uNone,
+    max:   U[Int]             = uNone,
+    mode:  U[MuiProgressMode] = uNone,
+    value: U[Int]             = uNone) = {
 
-  def apply(size: js.UndefOr[Double] = js.undefined,
-            style: js.UndefOr[js.Any] = js.undefined,
-            min: js.UndefOr[Int] = js.undefined,
-            ref: js.UndefOr[String] = js.undefined,
-            key: js.UndefOr[String] = js.undefined,
-            max: js.UndefOr[Int] = js.undefined,
-            mode: js.UndefOr[MuiProgressMode] = js.undefined,
-            value: js.UndefOr[Int] = js.undefined) = {
-
-    val p = js.Dynamic.literal()
-    size.foreach(v => p.updateDynamic("size")(v))
-    style.foreach(v => p.updateDynamic("style")(v))
-    min.foreach(v => p.updateDynamic("min")(v))
-    ref.foreach(v => p.updateDynamic("ref")(v))
-    key.foreach(v => p.updateDynamic("key")(v))
-    max.foreach(v => p.updateDynamic("max")(v))
-    mode.foreach(v => p.updateDynamic("mode")(v.mode))
-    value.foreach(v => p.updateDynamic("value")(v))
+    val p = new TypedJsProps
+    size .foreach(p.setV("size"))
+    style.foreach(p.setV("style"))
+    min  .foreach(p.setV("min"))
+    ref  .foreach(p.setV("ref"))
+    key  .foreach(p.setV("key"))
+    max  .foreach(p.setV("max"))
+    mode .foreach(p.setV("mode"))
+    value.foreach(p.setV("value"))
 
     val f = React.asInstanceOf[js.Dynamic].createFactory(Mui.LinearProgress)
     f(p).asInstanceOf[ReactComponentU_]
@@ -73,7 +73,7 @@ object MuiLinearProgress {
 }
 
 
-class MuiProgressMode private(val mode: String) extends AnyVal
+class MuiProgressMode private(val value: String) extends ComponentEnum
 
 
 object MuiProgressMode {

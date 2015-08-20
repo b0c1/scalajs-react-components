@@ -1,7 +1,7 @@
-package chandu0101.scalajs.react.components.materialui
+package chandu0101.scalajs.react.components
+package materialui
 
 import japgolly.scalajs.react._
-import materialui.Mui
 
 import scala.scalajs.js
 
@@ -14,22 +14,24 @@ rounded: React.PropTypes.bool,
 zDepth: React.PropTypes.Int,
 transitionEnabled: React.PropTypes.bool
   */
-case class MuiPaper(circle: js.UndefOr[Boolean] = js.undefined,
-                    style: js.UndefOr[js.Any] = js.undefined,
-                    rounded: js.UndefOr[Boolean] = js.undefined,
-                    ref: js.UndefOr[String] = js.undefined,
-                    transitionEnabled: js.UndefOr[Boolean] = js.undefined,
-                    zDepth: js.UndefOr[Int] = js.undefined,
-                    key: js.UndefOr[String] = js.undefined) {
+case class MuiPaper(
+  circle:             U[Boolean] = uNone,
+  style:              U[js.Any]  = uNone,
+  rounded:            U[Boolean] = uNone,
+  ref:                U[String]  = uNone,
+  transitionEnabled:  U[Boolean] = uNone,
+  zDepth:             U[Int]     = uNone,
+  key:                U[String]  = uNone) {
+
   def toJS = {
-    val p = js.Dynamic.literal()
-    circle.foreach(v => p.updateDynamic("circle")(v))
-    style.foreach(v => p.updateDynamic("style")(v))
-    rounded.foreach(v => p.updateDynamic("rounded")(v))
-    ref.foreach(v => p.updateDynamic("ref")(v))
-    transitionEnabled.foreach(v => p.updateDynamic("transitionEnabled")(v))
-    zDepth.foreach(v => p.updateDynamic("zDepth")(v))
-    key.foreach(v => p.updateDynamic("key")(v))
+    val p = new TypedJsProps
+    circle           .foreach(p.setV("circle"))
+    style            .foreach(p.setV("style"))
+    rounded          .foreach(p.setV("rounded"))
+    ref              .foreach(p.setV("ref"))
+    transitionEnabled.foreach(p.setV("transitionEnabled"))
+    zDepth           .foreach(p.setV("zDepth"))
+    key              .foreach(p.setV("key"))
     p
   }
 

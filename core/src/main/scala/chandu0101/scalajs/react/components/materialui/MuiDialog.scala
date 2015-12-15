@@ -1,15 +1,10 @@
-<<<<<<< HEAD
-iDpackage chandu0101.scalajs.react.components.materialui
-=======
-
 package chandu0101.scalajs.react.components.materialui
->>>>>>> chandu0101/master
 
 import chandu0101.macros.tojs.JSMacro
 import japgolly.scalajs.react._
 import scala.scalajs.js
 import scala.scalajs.js.`|`
-  
+
 case class MuiDialog(
 	key:                    js.UndefOr[String]                   = js.undefined,
 	ref:                    js.UndefOr[MuiDialogM => Unit]       = js.undefined,
@@ -80,7 +75,6 @@ case class MuiDialog(contentClassName : js.UndefOr[String] = js.undefined,
     f(props, children.toJsArray).asInstanceOf[ReactComponentU_]
   }
 }
-
 
 @js.native
 class MuiDialogM extends js.Object{

@@ -1,19 +1,25 @@
+
 package chandu0101.scalajs.react.components.materialui
 
 import chandu0101.macros.tojs.JSMacro
 import japgolly.scalajs.react._
-import materialui.Mui
-
 import scala.scalajs.js
-
-
-case class MuiPaper(circle: js.UndefOr[Boolean] = js.undefined,
-                    style: js.UndefOr[js.Any] = js.undefined,
-                    rounded: js.UndefOr[Boolean] = js.undefined,
-                    ref: js.UndefOr[String] = js.undefined,
-                    transitionEnabled: js.UndefOr[Boolean] = js.undefined,
-                    zDepth: js.UndefOr[Int] = js.undefined,
-                    key: js.UndefOr[String] = js.undefined) {
+import scala.scalajs.js.`|`
+  
+case class MuiPaper(
+	key:               js.UndefOr[String]          = js.undefined,
+	ref:               js.UndefOr[String]          = js.undefined,
+	/* default: false: Set to true to generate a circlular paper container.*/
+	circle:            js.UndefOr[Boolean]         = js.undefined,
+	/* default: true: By default, the paper container will have a border radius. Set this to false to generate a container with sharp corners.*/
+	rounded:           js.UndefOr[Boolean]         = js.undefined,
+	/*  Override the inline-styles of Paper's root element.*/
+	style:             js.UndefOr[CssProperties]   = js.undefined,
+	/* default: true: Set to false to disable CSS transitions for the paper element.*/
+	transitionEnabled: js.UndefOr[Boolean]         = js.undefined,
+	/* default: 1: This number represents the zDepth of the paper shadow.*/
+	zDepth:            js.UndefOr[MuiZDepth]       = js.undefined)
+{
 
   def apply(children: ReactNode*) = {
     val props = JSMacro[MuiPaper](this)

@@ -13,8 +13,14 @@ project/boot/
 project/plugins/project/
 
 # Scala-IDE specific
-.scala_dependencies
-.worksheet
+.scala_dependencies/
+.worksheet/
+.cache-main/
+.cache-tests/
+.classpath/
+.metadata/
+.project/
+.settings/
 
 #intellij
 
@@ -22,7 +28,6 @@ project/plugins/project/
 .idea_modules
 
 #project
-
-demo/assets/
-
-demo/node_modules/
+assets/
+node_modules/
+/core/docs

@@ -4,34 +4,45 @@ import org.scalajs.sbtplugin.ScalaJSPlugin.autoImport._
 import sbt.Keys._
 import sbt._
 
-object ScalajsReactComponents extends Build {
+object Build extends Build {
 
   val Scala211 = "2.11.7"
 
-  val scalajsReactVersion = "0.9.2"
-  val scalaCSSVersion = "0.3.0"
-  val macrosVersion = "0.5"
+  val scalajsReactVersion = "0.10.2"
+  val scalaCSSVersion = "0.3.1"
 
   type PE = Project => Project
 
   def commonSettings: PE =
     _.enablePlugins(ScalaJSPlugin)
       .settings(
-        organization       := "com.github.chandu0101.scalajs-react-components",
-        version            := "0.2.0-SNAPSHOT",
-        homepage           := Some(url("https://github.com/chandu0101/scalajs-react-components")),
-        licenses           += ("Apache-2.0", url("http://opensource.org/licenses/Apache-2.0")),
-        scalaVersion       := Scala211,
-        scalacOptions     ++= Seq("-deprecation", "-unchecked", "-feature",
-                                "-language:postfixOps", "-language:implicitConversions",
-                                "-language:higherKinds", "-language:existentials"),
-        updateOptions      := updateOptions.value.withConsolidatedResolution(true))
+        organization         := "com.github.chandu0101.scalajs-react-components",
+        version              := "0.2.1-SNAPSHOT",
+        homepage             := Some(url("https://github.com/chandu0101/scalajs-react-components")),
+        licenses             += ("Apache-2.0", url("http://opensource.org/licenses/Apache-2.0")),
+        scalaVersion         := Scala211,
+        scalacOptions       ++= Seq("-deprecation", "-unchecked", "-feature",
+                                  "-language:postfixOps", "-language:implicitConversions",
+                                  "-language:higherKinds", "-language:existentials"), //"-Ymacro-debug-lite"
+        updateOptions        := updateOptions.value.withCachedResolution(true),
+        dependencyOverrides ++= Set(
+          "org.scala-js"   %% "scalajs-test-interface" % "0.6.5"
+        )
+      )
+
+  def definesMacros: Project => Project =
+    _.settings(
+      scalacOptions += "-language:experimental.macros",
+      libraryDependencies ++= Seq(
+        "org.scala-lang" % "scala-reflect" % Scala211,
+        "org.scala-lang" % "scala-compiler" % Scala211 % Provided))
 
   def preventPublication: PE =
     _.settings(
       publishArtifact := false,
       publishLocalSigned := (),       // doesn't work
       publishSigned := (),            // doesn't work
+      publish := (),
       packagedArtifacts := Map.empty) // doesn't work - https://github.com/sbt/sbt-pgp/issues/42
 
   def publicationSettings: PE =
@@ -54,6 +65,10 @@ object ScalajsReactComponents extends Build {
             <id>chandu0101</id>
             <name>Chandra Sekhar Kode</name>
           </developer>
+          <developer>
+            <id>elacin</id>
+            <name>Øyvind Raddum Berg</name>
+          </developer>
         </developers>)
     .configure(sourceMapsToGithub)
 
@@ -67,18 +82,17 @@ object ScalajsReactComponents extends Build {
     )
 
   def utestSettings: PE =
-      _.configure(useReact("test"))
-      .settings(
-      libraryDependencies  += "com.lihaoyi" %%% "utest" % "0.3.0",
+      _.settings(
+      libraryDependencies  += "com.lihaoyi" %%% "utest" % "0.3.1" % Test,
       testFrameworks       += new TestFramework("utest.runner.Framework"),
       scalaJSStage in Test := FastOptStage,
       requiresDOM          := true,
       jsEnv in Test        := PhantomJSEnv().value)
 
-  def useReact(scope: String = "compile"): PE =
+  def useReact(scope: Configuration = Compile): PE =
     _.settings(
-      libraryDependencies += "com.github.japgolly.scalajs-react" %%% "extra" % scalajsReactVersion
-      )
+      libraryDependencies += "com.github.japgolly.scalajs-react" %%% "extra" % scalajsReactVersion % scope
+    )
 
     val jsDir = "demo/assets"
 
@@ -98,32 +112,41 @@ object ScalajsReactComponents extends Build {
   }
 
   // ==============================================================================================
-  lazy val root = Project("root", file("."))
-    .aggregate(core, demo)
-    .configure(commonSettings, preventPublication, addCommandAliases(
-      "t"  -> "; test:compile ; test/test",
-      "tt" -> ";+test:compile ;+test/test",
-      "T"  -> "; clean ;t",
-      "TT" -> ";+clean ;tt"))
+
+  lazy val macros = project
+    .configure(commonSettings, utestSettings, publicationSettings, definesMacros, useReact())
+    .settings(
+      name := "macros",
+      libraryDependencies ++= Seq(
+        "org.scalatest" %%% "scalatest" % "3.0.0-M12" % Test
+      )
+    )
 
   // ==============================================================================================
   lazy val core = project
-    .configure(commonSettings, publicationSettings)
+    .configure(commonSettings, publicationSettings, useReact())
+    .dependsOn(macros)
     .settings(
       name := "core",
       libraryDependencies ++= Seq(
-        "com.github.japgolly.scalajs-react" %%% "core" % scalajsReactVersion,
-        "com.github.japgolly.scalajs-react" %%% "extra" % scalajsReactVersion,
-        "com.github.japgolly.scalacss" %%% "core" % scalaCSSVersion,
-        "com.github.chandu0101" %%% "macros" % macrosVersion,
-        "com.github.japgolly.scalacss" %%% "ext-react" % scalaCSSVersion),
+        "com.github.japgolly.scalacss"      %%% "core"      % scalaCSSVersion,
+        "com.github.japgolly.scalacss"      %%% "ext-react" % scalaCSSVersion
+      ),
       target in Compile in doc := baseDirectory.value / "docs"
     )
-
 
   // ==============================================================================================
   lazy val demo = project
     .dependsOn(core)
-    .configure(commonSettings,createLauncher(), useReact(), preventPublication)
+    .configure(commonSettings, createLauncher(), preventPublication)
 
+  // ==============================================================================================
+  lazy val root = Project("root", file("."))
+    .aggregate(macros, core, demo)
+    .configure(commonSettings, preventPublication, addCommandAliases(
+      "t"  -> "; test:compile ; test/test",
+      "tt" -> ";+test:compile ;+test/test",
+      "T"  -> "; clean ;t",
+      "TT" -> ";+clean ;tt")
+    )
 }

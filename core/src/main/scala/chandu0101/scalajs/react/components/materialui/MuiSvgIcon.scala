@@ -1,11 +1,9 @@
-package chandu0101.scalajs.react.components.materialui
+package chandu0101.scalajs.react.components
+package materialui
 
-import chandu0101.macros.tojs.JSMacro
 import japgolly.scalajs.react._
-import materialui.Mui
-
 import scala.scalajs.js
-
+import chandu0101.macros.tojs.JSMacro
 
 case class MuiSvgIcon(key: js.UndefOr[String] = js.undefined,
                       style: js.UndefOr[js.Any] = js.undefined,
